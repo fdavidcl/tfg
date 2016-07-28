@@ -10,15 +10,15 @@ La probabilidad se puede estudiar desde el enfoque frecuentista, donde se trabaj
 
 En la práctica se puede partir del mismo tipo de razonamientos y cálculos para trabajar con ambos tipos de probabilidad.
 
-\define
+\defineb
 Una **variable aleatoria** es una función medible $X:\Omega\rightarrow E$ donde $\Omega$ es un espacio de probabilidad y $E$ un espacio medible.
-\enifed
-\define
+\definee
+\defineb
 El par $(E, \Sigma)$ donde $E$ es un conjunto y $\Sigma$ una $\sigma$-álgebra sobre $E$ es un **espacio medible**.
-\enifed
-\define
+\definee
+\defineb
 Si $(\Omega, \mathcal{F})$ es un espacio medible y $\mu$ es una medida sobre $\mathcal{F}$, entonces la terna $(\Omega, \mathcal{F}, \mu)$ es un **espacio de medida**. Si además se verifica $\mu(\Omega)=1$, entonces se trata de un **espacio de probabilidad**.
-\enifed
+\definee
 
 Intuitivamente, una variable aleatoria representa una variable del problema que puede tomar distintos valores, y la probabilidad con la que se darán dichos valores puede ser descrita por una distribución de probabilidad. Cuando notamos $X:\Omega\rightarrow E$, interpretamos que $\Omega$ es el conjunto de todos los sucesos posibles, y los estados que puede tomar la variable $X$ vienen dados por su imagen, $X(\Omega)\subset E$. Se dice que $X$ es **discreta** si $X(\Omega)$ es numerable (incluyendo el caso finito), y es **continua** si $X(\Omega)$ es no numerable.
 

@@ -1,12 +1,13 @@
 ---
 title: Fundamentos matemáticos del Deep Learning
+institute: Universidad de Granada
 author: David Charte
 lang: spanish
 numbersections: yes
 toc: yes
 header-includes:
-  - \newcommand{\define}{\begin{definition}}
-  - \newcommand{\enifed}{\end{definition}}
+  - \newcommand{\defineb}{\begin{definition}}
+  - \newcommand{\definee}{\end{definition}}
   - \newcommand{\exampleb}{\begin{example}}
   - \newcommand{\examplee}{\end{example}}
 ---
