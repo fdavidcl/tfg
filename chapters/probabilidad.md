@@ -64,18 +64,18 @@ $$P(x,y|z)=P(x|z)P(y|z)\forall x\in X^{-1}(\Omega),y\in Y^{-1}(\Omega),z\in Z^{-
 ## Momentos: esperanza, varianza y covarianza
 
 La **esperanza** de una variable aleatoria $X$ viene dada por las expresiones siguientes, para variables discretas y continuas respectivamente:
-$$\mathbb E[X]=\sum_{x\in X^{-1}(\Omega)}xP(x);\quad \mathbb E[X]=\int_{X^{-1}(\Omega)}xp(x)dx~.$$
+$$\mathrm E[X]=\sum_{x\in X^{-1}(\Omega)}xP(x);\quad \mathrm E[X]=\int_{X^{-1}(\Omega)}xp(x)dx~.$$
 
-**Nota**: Todos los momentos se toman respecto de una variable aleatoria y una distribución de probabilidad asociada, por lo que la notación correcta sería $\mathbb E_{X~P}[X]$. Sin embargo, se omitirá excepto para prevenir ambigüedades.
+**Nota**: Todos los momentos se toman respecto de una variable aleatoria y una distribución de probabilidad asociada, por lo que la notación correcta sería $\mathrm E_{X~P}[X]$. Sin embargo, se omitirá excepto para prevenir ambigüedades.
 
 Se puede definir la esperanza de una función $f$ sobre los valores de una variable aleatoria, del siguiente modo:
-$$\mathbb E[X]=\sum_{x\in X^{-1}(\Omega)}f(x)P(x);\quad \mathbb E[X]=\int_{X^{-1}(\Omega)}f(x)p(x)dx~.$$
+$$\mathrm E[X]=\sum_{x\in X^{-1}(\Omega)}f(x)P(x);\quad \mathrm E[X]=\int_{X^{-1}(\Omega)}f(x)p(x)dx~.$$
 
 La **varianza** da idea acerca de cómo de diferentes entre sí son los valores de una variables conforme se muestrean por su distribución de probabilidad:
-$$\mathrm{Var}(X)=\mathbb E[(X-\mathbb E[X])^2]~.$$
+$$\mathrm{Var}(X)=\mathrm E[(X-\mathrm E[X])^2]~.$$
 
 La **covarianza** relaciona dos variables aleatorias, indicando la medida en que están relacionadas linealmente y la escala de dichas variables:
-$$\mathrm{Cov}(X, Y)=\mathbb E[(X-\mathbb E[X])(Y-\mathbb E[Y])]~.$$
+$$\mathrm{Cov}(X, Y)=\mathrm E[(X-\mathrm E[X])(Y-\mathrm E[Y])]~.$$
 
 Para un vector de variables aleatorias, $X=(X_1, \dots X_n)$, la **matriz de covarianza** se define como una función matriz $n\times n$ dada por:
 $$\mathrm{Cov}(X)_{i,j}=\mathrm{Cov}(X_i, X_j)~.$$

@@ -8,7 +8,28 @@ Para formalizar estas intuiciones, definiremos y haremos uso de conceptos como l
 
 ## Entropía
 
+La **entropía** $H$ de una variable aleatoria discreta $X$ viene dada por la siguiente expresión:
+$$H(X)=-\sum_{x\in X^{-1}(\Omega)}P(x)\log P(x)~.$$
 
+Observamos que se puede expresar como la esperanza de una función de la variable $X$:
+$$H(X)=\mathrm E\left[\frac 1 {\log P(X)}\right]~.$$
+
+Además, es interesante notar que $H$ es un funcional de $P$ en el sentido de que no depende de los valores que tome la variable aleatoria, sino únicamente de la probabilidad de los mismos.
+
+### Magnitudes
+
+Según la base que se tome para los logaritmos, la escala de la entropía varía, por lo que se está midiendo en una magnitud distinta.
+
+* Si se toman logaritmos en base 2, entonces se habla de la entropía en **bits**.
+* Si se toman en base $e$, se está midiendo la entropía en **nats**.
+
+Además, el cambio de base de los logaritmos nos permite convertir de una magnitud a otra:
+$$H_e=(\log 2) H_2~,$$
+donde $\log$ denota el logaritmo neperiano.
+
+### Propiedades
+
+Podemos afirmar que la entropía de una variable es siempre positiva o nula. Efectivamente, puesto que $0\leq P(x)\leq 1$ para todo $x$, se tiene que $log(1/p(x))\geq 0$, y como consecuencia la esperanza de dicha función de $X$ es no negativa.
 
 ## Referencias
 
