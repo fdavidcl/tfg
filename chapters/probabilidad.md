@@ -1,5 +1,7 @@
 # Teoría de la Probabilidad
 
+## Conceptos
+
 El objetivo de la Probabilidad es modelar y trabajar con incertidumbre. Dicha incertidumbre puede provenir de diversas fuentes, entre ellas:
 
 * Estocasticidad del sistema modelado (e.g. mecánica cuántica, escenarios hipotéticos con aleatoriedad, etc.).
@@ -35,4 +37,51 @@ Ahora, si suponemos que los sucesos dados por la extracción de cada bola son eq
 $$P(X=\text{negro})=\frac 2 5,\quad P(X=\text{azul})=\frac 3 5~.$$
 \examplee
 
-Una distribución de probabilidad sobre una variable continua $X$ se puede describir mediante una función de densidad (*Probability Density Function*, PDF) $f:X(\Omega)\rightarrow [0,1]$, que verifica $\int_{X(\Omega)} x dx=1$.
+Una distribución de probabilidad sobre una variable continua $X$ se puede describir mediante una función de densidad (*Probability Density Function*, PDF) $p:X(\Omega)\rightarrow [0,1]$, que verifica $\int_{X(\Omega)} x dx=1$.
+
+Cuando una distribución describe varias variables, puede interesar conocer la distribución de un subconjunto de las mismas. Esta se denomina **distribución marginal**, y se consigue sumando o integrando a lo largo de todos los valores de las variables que no están en el subconjunto. Por ejemplo, si $X$ e $Y$ son variables discretas, se tiene $$P(x) = \sum_{y\in Y(\Omega)}P(x, y)~.$$ Si son continuas, entonces se verifica $$P(x) = \int\limits_{Y(\Omega)}p(x, y)dy~.$$
+
+## Probabilidad condicionada
+
+En ocasiones es útil representar la probabilidad de un suceso condicionado a la ocurrencia de otro. Para ello se utilizan **probabilidades condicionadas**, que se notan $P(y|x)$ (donde $y\in Y(\Omega), x\in X(\Omega)$) y se calculan mediante la siguiente fórmula, suponiendo que $P(x) > 0$:
+\begin{equation}P(y|x)=\frac{P(y,x)}{P(x)}~.\label{eq:cond}\end{equation}
+
+### Encadenando probabilidades condicionadas
+
+Una distribución de probabilidad conjunta sobre varias variables se puede descomponer como probabilidades condicionadas sobre una sola variable:
+$$P(x_1, \dots x_n) = P(x_1)\prod\limits_{i=2}^n P(x_i\vert x_1, \dots x_{i-1})~.$$
+
+Esta expresión se deduce por inducción de la ecuación \ref{eq:cond}.
+
+## Independencia e independencia condicionada
+
+Dos variables aleatorias, $X$ e $Y$, son **independientes** si la su probabilidad conjunta equivale al producto de sus probabilidades:
+$$P(x,y)=P(x)P(y)\forall x\in X^{-1}(\Omega),y\in Y^{-1}(\Omega)~.$$
+
+Además, se dice que son **condicionalmente independientes** respecto a una variable $Z$ si la distribución de probabilidad condicionada se factoriza por $X$ e $Y$:
+$$P(x,y|z)=P(x|z)P(y|z)\forall x\in X^{-1}(\Omega),y\in Y^{-1}(\Omega),z\in Z^{-1}(\Omega)~.$$
+
+## Momentos: esperanza, varianza y covarianza
+
+La **esperanza** de una variable aleatoria $X$ viene dada por las expresiones siguientes, para variables discretas y continuas respectivamente:
+$$\mathbb E[X]=\sum_{x\in X^{-1}(\Omega)}xP(x);\quad \mathbb E[X]=\int_{X^{-1}(\Omega)}xp(x)dx~.$$
+
+**Nota**: Todos los momentos se toman respecto de una variable aleatoria y una distribución de probabilidad asociada, por lo que la notación correcta sería $\mathbb E_{X~P}[X]$. Sin embargo, se omitirá excepto para prevenir ambigüedades.
+
+Se puede definir la esperanza de una función $f$ sobre los valores de una variable aleatoria, del siguiente modo:
+$$\mathbb E[X]=\sum_{x\in X^{-1}(\Omega)}f(x)P(x);\quad \mathbb E[X]=\int_{X^{-1}(\Omega)}f(x)p(x)dx~.$$
+
+La **varianza** da idea acerca de cómo de diferentes entre sí son los valores de una variables conforme se muestrean por su distribución de probabilidad:
+$$\mathrm{Var}(X)=\mathbb E[(X-\mathbb E[X])^2]~.$$
+
+La **covarianza** relaciona dos variables aleatorias, indicando la medida en que están relacionadas linealmente y la escala de dichas variables:
+$$\mathrm{Cov}(X, Y)=\mathbb E[(X-\mathbb E[X])(Y-\mathbb E[Y])]~.$$
+
+Para un vector de variables aleatorias, $X=(X_1, \dots X_n)$, la **matriz de covarianza** se define como una función matriz $n\times n$ dada por:
+$$\mathrm{Cov}(X)_{i,j}=\mathrm{Cov}(X_i, X_j)~.$$
+
+## Distribuciones de probabilidad comunes
+
+## Herramientas de inferencia estadística (?)
+
+## Referencias
