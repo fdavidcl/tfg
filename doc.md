@@ -14,3 +14,4 @@ header-includes:
 
 \input{chapters/intro.tex}
 \input{chapters/probabilidad.tex}
+\input{chapters/teoria-informacion.tex}
