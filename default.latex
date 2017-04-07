@@ -192,6 +192,7 @@ $endif$
 %% Theorem environments
 \newtheorem{theorem}{Teorema}[section]
 \newtheorem{lemma}[theorem]{Lema}
+\newtheorem{prop}[theorem]{Proposición}
 
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definición}
