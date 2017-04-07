@@ -14,7 +14,7 @@ $$H(X)=-\sum_{x\in X^{-1}(\Omega)}P(x)\log P(x)~.$$
 Observamos que se puede expresar como la esperanza de una función de la variable $X$:
 $$H(X)=\mathrm E\left[\frac 1 {\log P(X)}\right]~.$$
 
-Además, es interesante notar que $H$ es un funcional de $P$ en el sentido de que no depende de los valores que tome la variable aleatoria, sino únicamente de la probabilidad de los mismos.
+Además, es interesante notar que $H$ es un funcional de $P$ en el sentido de que no depende de los valores que tome la variable aleatoria, sino únicamente de la probabilidad de los mismos. El significado que aporta la entropía de una variable es la cantidad de información esperada en un suceso. Por esto, las distribuciones cercanas a la uniforme tienen mayor entropía que las que son casi determinísticas.
 
 ### Magnitudes
 
