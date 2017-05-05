@@ -1,5 +1,5 @@
 ---
-title: Fundamentos matemáticos del Deep Learning
+title: Deep Learning, técnicas no supervisadas y visualizaciones
 institute: Universidad de Granada
 author: David Charte
 numbersections: yes
@@ -14,6 +14,19 @@ header-includes:
 ---
 
 \input{chapters/intro.tex}
+
+# Fundamentos matemáticos del Deep Learning
+
 \input{chapters/probabilidad.tex}
+
 \input{chapters/teoria-informacion.tex}
+
 \input{chapters/tensores.tex}
+
+# Técnicas de Deep Learning no supervisado
+
+\input{chapters/deep-learning.tex}
+
+# La herramienta Ruta
+
+\input{chapters/ruta.tex}
