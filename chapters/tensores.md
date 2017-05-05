@@ -43,9 +43,13 @@ Dado $V$ espacio vectorial, si $S$ es la matriz de cambio de base de $A$ a $B$ e
   Sea $v\in V$. Si $L(v)=0\forall L\in V^{*}$ entonces $v=0$. Como consecuencia, si $L(v_1)=L(v_2)\forall L\in V^{*}$ entonces $v_1=v_2$.
   
   \begin{proof}
-    Sea $B$ base de $V$. Entonces $L(v)=[L]_B[v]_B$. Basta tomar $L_k=[0, \dots 0, \overset{(k)}{1}, 0, \dots 0]$.
+    Sea $B$ base de $V$. Entonces $L(v)=[L]_B[v]_B$. Basta tomar $L_k=[0, \dots 0, \overset{(k)}{1}, 0, \dots 0]$ y comprobar que en ese caso $L_k[v]_B=0$ implica que la $k$-ésima coordenada de $[v]_B$ es 0. Repitiendo el mismo paso para cada $k$ tenemos que $v=0$.
   \end{proof}
 \end{lemma}
+
+### El segundo dual
+
+Puesto que $V^{*}$ es un espacio vectorial, podemos considerar también su dual, que notaremos $V^{**}$. Comprobaremos que, de hecho, $V^{**}$ es isomorfo a $V$ de una forma natural. Dado un funcional lineal $f\in V^{*}$ y $v\in V$ podemos tomar $L_{v}\in V^{**}$ dado por $L_{v}(f) = f(v)$. 
 
 ## Referencias
 
