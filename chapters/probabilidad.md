@@ -1,6 +1,4 @@
-# Teoría de la Probabilidad
-
-## Conceptos
+# Conceptos
 
 El objetivo de la Probabilidad es modelar y trabajar con incertidumbre. Dicha incertidumbre puede provenir de diversas fuentes, entre ellas:
 
@@ -41,19 +39,19 @@ Una distribución de probabilidad sobre una variable continua $X$ se puede descr
 
 Cuando una distribución describe varias variables, puede interesar conocer la distribución de un subconjunto de las mismas. Esta se denomina **distribución marginal**, y se consigue sumando o integrando a lo largo de todos los valores de las variables que no están en el subconjunto. Por ejemplo, si $X$ e $Y$ son variables discretas, se tiene $$P(x) = \sum_{y\in Y(\Omega)}P(x, y)~.$$ Si son continuas, entonces se verifica $$P(x) = \int\limits_{Y(\Omega)}p(x, y)dy~.$$
 
-## Probabilidad condicionada
+# Probabilidad condicionada
 
 En ocasiones es útil representar la probabilidad de un suceso condicionado a la ocurrencia de otro. Para ello se utilizan **probabilidades condicionadas**, que se notan $P(y|x)$ (donde $y\in Y(\Omega), x\in X(\Omega)$) y se calculan mediante la siguiente fórmula, suponiendo que $P(x) > 0$:
 \begin{equation}P(y|x)=\frac{P(y,x)}{P(x)}~.\label{eq:cond}\end{equation}
 
-### Encadenando probabilidades condicionadas
+## Encadenando probabilidades condicionadas
 
 Una distribución de probabilidad conjunta sobre varias variables se puede descomponer como probabilidades condicionadas sobre una sola variable:
 $$P(x_1, \dots x_n) = P(x_1)\prod\limits_{i=2}^n P(x_i\vert x_1, \dots x_{i-1})~.$$
 
 Esta expresión se deduce por inducción de la ecuación \ref{eq:cond}.
 
-## Independencia e independencia condicionada
+# Independencia e independencia condicionada
 
 Dos variables aleatorias, $X$ e $Y$, son **independientes** si la su probabilidad conjunta equivale al producto de sus probabilidades:
 $$P(x,y)=P(x)P(y)\forall x\in X^{-1}(\Omega),y\in Y^{-1}(\Omega)~.$$
@@ -61,7 +59,7 @@ $$P(x,y)=P(x)P(y)\forall x\in X^{-1}(\Omega),y\in Y^{-1}(\Omega)~.$$
 Además, se dice que son **condicionalmente independientes** respecto a una variable $Z$ si la distribución de probabilidad condicionada se factoriza por $X$ e $Y$:
 $$P(x,y|z)=P(x|z)P(y|z)\forall x\in X^{-1}(\Omega),y\in Y^{-1}(\Omega),z\in Z^{-1}(\Omega)~.$$
 
-## Momentos: esperanza, varianza y covarianza
+# Momentos: esperanza, varianza y covarianza
 
 La **esperanza** de una variable aleatoria $X$ viene dada por las expresiones siguientes, para variables discretas y continuas respectivamente:
 $$\mathrm E[X]=\sum_{x\in X^{-1}(\Omega)}xP(x);\quad \mathrm E[X]=\int_{X^{-1}(\Omega)}xp(x)dx~.$$
@@ -80,8 +78,26 @@ $$\mathrm{Cov}(X, Y)=\mathrm E[(X-\mathrm E[X])(Y-\mathrm E[Y])]~.$$
 Para un vector de variables aleatorias, $X=(X_1, \dots X_n)$, la **matriz de covarianza** se define como una función matriz $n\times n$ dada por:
 $$\mathrm{Cov}(X)_{i,j}=\mathrm{Cov}(X_i, X_j)~.$$
 
-## Distribuciones de probabilidad comunes
+# ~Distribuciones de probabilidad comunes~
 
-## Herramientas de inferencia estadística (?)
+# ~Herramientas de inferencia estadística (?)~
 
-## Referencias
+# Convergencias
+
+## Resultados de convergencia
+
+\lemmab
+\label{lm:convergencia-va}
+Si $\{X_n\}$ es una sucesión de variables aleatorias con varianza finita y se verifican las siguientes condiciones:
+$$\exists x\in \mathbb R:\lim_{m\rightarrow +\infty} \mathrm{E}[X_m]=x,\quad \lim_{m\rightarrow +\infty} \mathrm{Var}[X_m]=0,$$
+entonces se tiene que $X_m\underset{P}{\rightarrow} x$.
+\lemmae
+
+\theob[Teorema de la aplicación continua]
+\label{th:cont-map-conv}
+Sea $\{X_n\}$ es una sucesión de variables aleatorias y $X$ una variable aleatoria, valuadas en un espacio medible $E$. Sea $g:E\rightarrow F$ con $F$ otro espacio medible. Entonces, si $g$ es continua casi por doquier, se tiene:
+\begin{gather*}
+  X_n\pconv X \Rightarrow g(X_n)\pconv g(X),\\
+  X_n\asconv X \Rightarrow g(X_n)\asconv g(X).
+\end{gather*}
+\theoe

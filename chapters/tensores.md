@@ -1,8 +1,8 @@
-# Álgebra Tensorial
+El álgebra tensorial es una herramienta ampliamente utilizada en la implementación de técnicas de aprendizaje automático, **POR QUÉ** La fuente principal de esta sección es @treil2013 [chapter 8].
 
-## Espacios duales
+# Espacios duales
 
-### Funcionales lineales y el espacio dual
+## Funcionales lineales y el espacio dual
 
 \defineb
 Un **funcional lineal** en un espacio vectorial finito dimensional $V$ sobre un cuerpo $K$ es una aplicación lineal $L:V\rightarrow K$.
@@ -21,7 +21,7 @@ Sea $V=\mathbb R^n$ y consideramos $(\mathbb R^n)^*=\left\{L:\mathbb R^n\rightar
 Este hecho se generaliza para cualquier cuerpo $K$: $(K^{n})^{*}\cong K^{n}$.
 \examplee
 
-#### Cambio de coordenadas
+### Cambio de coordenadas
 
 Sea $V$ $K$-espacio vectorial, sean $A=\left\{a_{1}, \dots a_{n}\right\}, B=\left\{b_{1}, \dots b_{n}\right\}$ bases de $V$ donde $n = \dim_{K}V$.
 
@@ -40,6 +40,7 @@ Dado $V$ espacio vectorial, si $S$ es la matriz de cambio de base de $A$ a $B$ e
 \end{prop}
 
 \begin{lemma}
+  \label{lemma:vectorcero}
   Sea $v\in V$. Si $L(v)=0\forall L\in V^{*}$ entonces $v=0$. Como consecuencia, si $L(v_1)=L(v_2)\forall L\in V^{*}$ entonces $v_1=v_2$.
   
   \begin{proof}
@@ -47,10 +48,141 @@ Dado $V$ espacio vectorial, si $S$ es la matriz de cambio de base de $A$ a $B$ e
   \end{proof}
 \end{lemma}
 
-### El segundo dual
+## El segundo dual
 
-Puesto que $V^{*}$ es un espacio vectorial, podemos considerar también su dual, que notaremos $V^{**}$. Comprobaremos que, de hecho, $V^{**}$ es isomorfo a $V$ de una forma natural. Dado un funcional lineal $f\in V^{*}$ y $v\in V$ podemos tomar $L_{v}\in V^{**}$ dado por $L_{v}(f) = f(v)$. 
+Puesto que $V^{*}$ es un espacio vectorial, podemos considerar también su dual, que notaremos $V^{**}$. Comprobaremos que, de hecho, $V^{**}$ es isomorfo a $V$ de una forma natural. Dado $v\in V$ podemos tomar $L_{v}\in V^{**}$ dado por $L_{v}(f) = f(v)\forall f\in V^{*}$. Así, podemos construir una aplicación del espacio $V$ en su segundo dual, $T:V\rightarrow V^{**}$, dada de forma natural por $Tv=L_v\forall v\in V$.
 
-## Referencias
+Para ver que $T$ es un isomorfismo, observamos que las dimensiones de los espacios coinciden: $\dim V^{**}=\dim V^{*}=\dim V$. Por tanto, bastará con ver que $T$ es inyectivo: veamos para ello que $\Ker T=\{0\}$. Dado $v\in \Ker T$, tenemos que $\forall f\in V^{*} f(v)=L_v(f)=T(v)(f)=0$. Por el \autoref{lemma:vectorcero}, se tiene que $v=0$.
 
-- Linear Algebra Done Wrong
+Nótese que el isomorfismo $T$ no depende de la elección de una base en $V$.
+
+# Funciones multilineales. Tensores
+
+\defineb
+
+Sean $V_1,\dots,V_p,V$ espacios vectoriales sobre un cuerpo $\KK$. Una *aplicación multilineal* ($p$-lineal) con valores en V es una función $F:V_1\times \dots\times V_p\rightarrow V$, lineal en cada variable. Es decir, para cada $k\in \{1,\dots, p\}$ y fijado $(v_1,\dots,v_{k-1},0,v_{k+1},\dots,v_p)\in V_1\times \dots\times V_p$, se tiene que la aplicación que lleva $v_k\mapsto F(v_1,\dots,v_{k-1},v_k,v_{k+1},\dots,v_p)$ es lineal.
+
+Notamos por $\LL(V_1,\dots,V_p;V)$ a la familia de todas las aplicaciones $p$-lineales de $V_1\times \dots\times V_p$ en $V$.
+
+\definee
+
+\defineb
+
+Un *tensor* o *funcional multilineal* es una aplicación multilineal con codominio $\KK$, $F:V_1\times \dots\times V_p\rightarrow \KK$. La cantidad $p$ se denomina la *valencia* del tensor.
+
+\definee
+
+En particular, un tensor de valencia 1 es un funcional lineal, y un tensor de valencia 2 es una forma bilineal.
+
+\exampleb
+
+Sean $V_1,\dots,V_p$  $\KK$-espacios vectoriales y sean $f_1\in V_1^{*},\dots f_p\in V_p^{*}$ funcionales lineales. Definimos el funcional multilineal $F:V_1\times\dots\times V_p\rightarrow\KK$ dado por $$F(v_1,\dots,v_p)=f_1(v_1)f_2(v_2)\dots f_p(v_p),\ v_i\in V_i,\ k=1,2,\dots,p.$$
+
+El funcional $F$ se denomina *producto tensorial* de los funcionales $f_i$ y lo notamos $F=f_1\otimes f_2\otimes\dots\otimes f_p$.
+
+\examplee
+
+\remb
+
+El conjunto de las aplicaciones multilineales es un $\KK$-espacio vectorial, mediante las siguientes operaciones de suma y producto por escalar: sean $F_1, F_2\in \LL(V_1,\dots,V_p;V),\alpha\in\KK$
+
+\begin{align*}
+(F_1+F_2)(v_1,\dots,v_p)&=F_1(v_1,\dots,v_p)+F_2(v_1,\dots,v_p),\\
+(\alpha F_1)(v_1,\dots,v_p)&=\alpha F_1(v_1,\dots,v_p).
+\end{align*}
+
+\reme
+
+\propb
+\label{prop:base-funcionales}
+Sean $V_1,\dots,V_p$  $\KK$-espacios vectoriales con bases $B^{(1)},\dots,B^{(p)}$ respectivamente. Notamos $b_i^{(k)}$ al $i$-ésimo elemento de la base $B^{(k)}$.
+
+Para cada $k\in\{1,\dots,p\}$ y para cada $i\in\{1,\dots,\dim V_k\}$ sea $f_{i}^{(k)}$ el funcional lineal de $V_k^{*}$ definido por
+\begin{align*}
+    f_{i}^{(k)}(b_i^{(k)})&=1\\
+    f_{i}^{(k)}(b_j^{(k)})&=0,\ j\neq i.
+\end{align*}
+
+La familia
+$$B=\left\{f_{i_1}^{(1)}\otimes\dots\otimes f_{i_p}^{(p)},\ 1\leq i_k\leq\dim{V_k},\ k\in\{1,\dots,p\}\right\}$$
+es una base del espacio $\LL(V_1,\dots, V_p;\KK)$.
+
+En particular,
+$$\dim\LL(V_1,\dots, V_p;\KK)=(\dim V_1)\dots (\dim V_p).$$
+
+\proofb
+
+Dada $F\in \LL(V_1,\dots, V_p;\KK)$ queremos expresarla de forma única en función de los elementos de la familia $B$, es decir, buscamos coeficientes $\alpha_{i_1,i_2,\dots,i_p}\in\KK$ tales que
+
+\begin{equation}
+  \label{eq:basetensor}
+  F=\sum\limits_{i_k\in\{1,\dots,\dim V_k\}} \alpha_{i_1,i_2,\dots,i_p}f_{i_1}^{(1)}\otimes\dots\otimes f_{i_p}^{(p)}\ .
+\end{equation}
+
+Por la definición de los funcionales, se tiene que
+
+\begin{equation}
+  \label{eq:evalbasetensor}
+  f_{i_1}^{(1)}\otimes\dots\otimes f_{i_p}^{(p)}\left(b_{j_1}^{(1)},\dots,b_{j_p}^{(p)}\right)=1\Leftrightarrow i_1=j_1,\dots,i_p=j_p
+\end{equation}
+y, en otro caso, $$f_{i_1}^{(1)}\otimes\dots\otimes f_{i_p}^{(p)}\left(b_{j_1}^{(1)},\dots,b_{j_p}^{(p)}\right)=0\ .$$
+
+Evaluando ahora $F$ \eqref{eq:basetensor} en $b_{i_1}^{(1)},\dots,b_{i_p}^{(p)}$:
+\begin{equation*}
+F\left(b_{i_1}^{(1)},\dots,b_{i_p}^{(p)}\right)=\alpha_{i_1,\dots,i_p}
+\end{equation*}
+lo cual nos da la unicidad de los coeficientes, en caso de que existan. La existencia se deduce definiendo
+\begin{equation*}
+\alpha_{i_1,\dots,i_p}:=F\left(b_{i_1}^{(1)},\dots,b_{i_p}^{(p)}\right),
+\end{equation*}
+de forma que la condición \eqref{eq:evalbasetensor} se mantiene para todas las tuplas del tipo $b_{j_1}^{(1)},\dots,b_{j_p}^{(p)}$. Así, se tiene la descomposición que buscamos y $B$ es una base.
+
+\proofe
+
+\prope
+
+# Productos tensoriales
+
+\defineb
+Sean $V_1,V_2,\dots,V_p$ espacios vectoriales. El producto tensorial de los espacios es el conjunto de funcionales multilineales $\LL(V_1^*,V_2^*,\dots,V_p^*;\KK)$, y lo notamos $V_1\otimes V_2\otimes\dots\otimes V_p$.
+\definee
+
+\corb
+Sean $V_1,\dots,V_p$  $\KK$-espacios vectoriales con bases $B^{(1)},\dots,B^{(p)}$ respectivamente. Llamamos $b_i^{(k)}$ al $i$-ésimo elemento de la base $B^{(k)}$ y observamos que podemos definir el producto tensorial de elementos de $V_1,\dots,V_p$ viéndolos como funcionales de $V_1^*,\dots,V_p^*$. Entonces, la familia
+$$B=\left\{b_{i_1}^{(1)}\otimes\dots\otimes b_{i_p}^{(p)},\ 1\leq i_k\leq\dim{V_k},\ k\in\{1,\dots,p\}\right\},$$
+es una base del espacio $V_1\otimes V_2\otimes\dots\otimes V_p$.
+\proofb
+Consecuencia de la proposición \ref{prop:base-funcionales} y el isomorfismo $V_k^{**}\cong V_k$.
+\proofe
+\core
+
+\remb
+Dados $v_1\in V_1,\dots v_p\in V_p$, para $v'_k\in V_k,\ k\in\{1,\dots,p\},\lambda,\mu\in\KK$ y cualesquiera $f_1\in V_1^*,\dots f_p\in V_p^*$ se tiene:
+\begin{align*}
+  (v_1\otimes v_2\otimes\dots\otimes(\lambda v_k &+ \mu v'_k)\otimes\dots\otimes v_p)(f_1,\dots,f_p)=\\
+  f_1(v_1)\dots f_k(\lambda v_k &+ \mu v'_k) \dots f_p(v_p) =\\
+  f_1(v_1)\dots (\lambda f_k(v_k) &+ \mu f_k(v'_k)) \dots f_p(v_p) = \\
+  \lambda f_1(v_1)\dots f_k(v_k) \dots f_p(v_p) &+ \mu \lambda f_1(v_1)\dots f_k(v'_k) \dots f_p(v_p) =\\
+  (\lambda v_1\otimes v_2\otimes\dots\otimes v_k\otimes\dots\otimes v_p &+\mu v_1\otimes v_2\otimes\dots\otimes v'_k\otimes\dots\otimes)(f_1,\dots,f_p)
+\end{align*}
+Hemos comprobado que la aplicación $(v_1,v_2,\dots,v_p)\mapsto v_1\otimes v_2\otimes\dots\otimes v_p$ es lineal en cada variable.
+\reme
+
+# Tensores covariantes y contravariantes
+
+Sean $X_1,X_2,\dots X_p,V$ espacios vectoriales y sea $V_k$ bien $X_k$ o bien $X_k^*$, para cada $k=1,2,\dots,p$.
+
+\defineb
+Decimos que una aplicación multilineal $F\in \LL(V_1,V_2,\dots,V_p;V)$ es *covariante* en la $k$-ésima variable si $V_k=X_k$ y *contravariante* en dicha variable si $V_k=X_k^*$.
+
+Si $F$ es covariante (resp. contravariante) en todas las variables decimos simplemente que es covariante (resp. contravariante). Si $F$ es covariante en $r$ variables y contravariante en $s$ variables, decimos que es $r$-covariante $s$-contravariante, o de valencia $(r, s)$.
+\definee
+
+\exampleb
+- Dado un espacio vectorial $V$, un funcional $f\in V^*$ es un tensor 1-covariante.
+- Un vector $v\in V$, visto en el doble dual $V^{**}$, es un tensor 1-contravariante.
+\examplee
+
+# Los tensores en aprendizaje automático
+
+## Tensores como *multi-arrays*

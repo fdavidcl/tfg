@@ -1,83 +1,134 @@
-# Introducción
+# Redes neuronales prealimentadas profundas
 
-## Aprendizaje automático
+Las redes prealimentadas profundas, también conocidas como perceptrones multicapa, son el modelo canónico de aprendizaje profundo [@goodfellow2016]. El objetivo de una red prealimentada es aproximar una función $f^{*}$, definiendo una aplicación $f(x;\theta)$ y aprendiendo el valor de los parámetros $\theta$ que resultan en la mejor aproximación.
 
-El aprendizaje profundo o Deep Learning comprende una clase de técnicas englobadas dentro del aprendizaje automático. Esta sección introduce los conceptos básicos de aprendizaje automático, que son comunes a todas lastécnicas desarrolladas en el ámbito.
+En concreto, las redes prealimentadas se caracterizan por que no se forman ciclos en las conexiones entre unidades. Así, la información se evalúa siempre hacia adelante a través de las conexiones intermedias usadas para definir $f$, hasta la salida de la red. No hay retroalimentaciones en las que salidas de algunas unidades de la red vuelvan a ser entradas del modelo.
 
-Un *algoritmo de aprendizaje*, según @mitchell1997 es un programa cuyo rendimiento respecto de un conjunto de tareas $T$ y una medida de rendimiento $P$ mejora tras conocer una experiencia $E$. En ese caso, se dice que el algoritmo ha *aprendido* de dicha experiencia.
+Estas redes se suelen representar como una composición en cadena de varias funciones, que se puede asociar a un grafo acíclico. Por ejemplo, podríamos tener una red composición de funciones vectoriales $f_1, f_2, f_3$ de la siguiente forma: $f(x)=f_3(f_2(f_1(x)))$. En este caso, decimos que $f_1$ es la primera capa, $f_2$ la segunda capa y $f_3$ la capa de salida. Las capas que no corresponden a la salida de $f$ se suelen denominar *capas ocultas*. La longitud de esta cadena nos da la profundidad del modelo.
 
-Estas tareas y experiencias pueden ser de muy diversas clases, lo que propicia la aparición de algoritmos y técnicas de aprendizaje diferentes que tratan de abordarlas. Estos algoritmos computacionales son necesarios cuando la complejidad o el tamaño de la tarea impide tratarla con técnicas manuales.
+A diferencia de otros algoritmos de aprendizaje automático, las redes neuronales mantienen esta estructura de capas de forma que la capa $i+1$-ésima únicamente opera con los datos de salida de la $i$-ésima; en particular, sólo la primera capa utiliza directamente los datos de entrada. Además, por la inspiración biológica de las redes, cada componente de cada capa se puede interpretar como una *neurona*, actuando como una función de $\RR^{n_{i-1}}$ en $\RR$, donde $n_{i-1}$ es el número de componentes de la capa anterior. El comportamiento es similar a una neurona en el sentido de que recoge información de varias unidades cercanas y calcula su propio valor de activación, así como la estructuración en capas se ha tomado de la neurociencia.
+ 
+# Optimización en Deep Learning
 
-Entre las tareas de aprendizaje que se presentan en la literatura se incluyen:
+## Gradiente descendiente estocástico (SGD)
 
-- clasificación
-- regresión
-- detección de anomalías
-- agrupamiento (*clustering*)
-- reducción de dimensionalidad
-- detección y eliminación de ruido
-- traducción automática
+En aprendizaje automático, es común utilizar conjuntos de datos con un gran número de instancias, para favorecer la capacidad de generalización de los modelos producidos por algoritmos. Esto provoca que el coste computacional de calcular cada paso de un gradiente descendente haga inviable su uso. Sin embargo, se puede utilizar una aproximación estocástica al algoritmo denominada gradiente descendiente estocástico (*Stochastic Gradient Descent*, SGD). En esta versión de gradiente descendiente se asienta la mayor parte del desarrollo del Deep Learning en la actualidad.
 
-Por otro lado, la mayoría de *experiencias* de las que puede aprender un algoritmo permite categorizarlos en dos grandes clases: supervisados y no supervisados.
+Al ser una aproximación estocástica, SGD calcula un estimador del gradiente de la función objetivo a partir de un número reducido de muestras.
 
-### Aprendizaje supervisado
+\begin{algorithm}
+\caption{Gradiente descendiente estocástico, iteración $k$-ésima}
+\label{alg:sgd}
+\begin{algorithmic}
+  \REQUIRE{Tasa de aprendizaje $\varepsilon_k$}
+  \REQUIRE{Parámetro inicial $\theta$}
+  \WHILE{no se alcanza criterio de parada}
+  \STATE{Escoger un minilote de $m$ instancias del conjunto de entrenamiento $x^{(1)},\dots,x^{(m)}$ con correspondientes objetivos $y^{(i)}$}
+  \STATE{Calcular estimador del gradiente: $\hat g\gets \frac 1 m \nabla \sum_i L(f(x^{(i)}; \theta),y^{(i)})$}
+  \STATE{Actualizar parámetro: $\theta\gets\theta - \varepsilon_k\hat g$}
+  \ENDWHILE
+\end{algorithmic}
+\end{algorithm}
 
-En este tipo de aprendizaje, se le proporciona al algoritmo un conjunto de ejemplos para los cuales la tarea está resuelta. Así, se pretende que aprenda a realizar la misma tarea para nuevos ejemplos.
+## Variantes de SGD
 
-Un caso particular de esta clase de aprendizaje lo forman los problemas de clasificación. En ellos, el programa debe deducir para cada ejemplo una etiqueta o clase, y para ello el aprendizaje se suele realizar mediante un conjunto de ejemplos que ya tienen asignada su etiqueta.
+### SGD con momento
 
-Entre las aplicaciones del aprendizaje supervisado se encuentran la clasificación de mensajes de correo (en particular de spam) [@cohen1996], diagnóstico de enfermedades [@kononenko2001] y detección de fraude [@phua2010].
+\begin{algorithm}
+\caption{Gradiente descendiente estocástico con momento}
+\label{alg:sgdm}
+\begin{algorithmic}
+  \REQUIRE{Tasa de aprendizaje $\varepsilon$, momento $\alpha$}
+  \REQUIRE{Parámetro inicial $\theta$, velocidad inicial $v$}
+  \WHILE{no se alcanza criterio de parada}
+  \STATE{Escoger un minilote de $m$ instancias del conjunto de entrenamiento $x^{(1)},\dots,x^{(m)}$ con correspondientes objetivos $y^{(i)}$}
+  \STATE{Calcular estimador del gradiente: $\hat g\gets \frac 1 m \nabla \sum_i L(f(x^{(i)}; \theta),y^{(i)})$}
+  \STATE{Actualizar la velocidad: $v\gets\alpha v - \varepsilon \hat g$}
+  \STATE{Actualizar parámetro: $\theta\gets\theta + v$}
+  \ENDWHILE
+\end{algorithmic}
+\end{algorithm}
 
-### Aprendizaje no supervisado
+### AdaGrad
 
-Esta modalidad de aprendizaje implica a tareas de las que el algoritmo no tiene una resolución previa para ejemplos. La experiencia que se le proporciona puede estar basada en otras características de los datos.
+@adagrad
 
-Un caso particular es la clase de problemas de agrupamiento o *clustering*, en la cual se proporcionan al algoritmo datos sin clasificar que debe subdividir en diferentes conjuntos de forma que los datos del mismo conjunto sean más similares entre sí que entre elementos de distintos conjuntos.
+\begin{algorithm}
+\caption{Adagrad}
+\label{alg:adagrad}
+\begin{algorithmic}
+  \REQUIRE{Tasa de aprendizaje $\varepsilon$, constante pequeña $\delta$}
+  \REQUIRE{Parámetro inicial $\theta$}
+  \STATE{Inicializar: $r\gets 0$}
+  \WHILE{no se alcanza criterio de parada}
+  \STATE{Escoger un minilote de $m$ instancias del conjunto de entrenamiento $x^{(1)},\dots,x^{(m)}$ con correspondientes objetivos $y^{(i)}$}
+  \STATE{Calcular estimador del gradiente: $\hat g\gets \frac 1 m \nabla \sum_i L(f(x^{(i)}; \theta),y^{(i)})$}
+  \STATE{Acumular cuadrado del gradiente: $r\gets r + \hat g\odot \hat g$}
+  \STATE{Calcular actualización: $\Delta\theta\gets - \frac{\varepsilon}{\delta + \sqrt{r}}\odot \hat g$}
+  \STATE{Actualizar parámetro: $\theta\gets\theta + \Delta\theta$}
+  \ENDWHILE
+\end{algorithmic}
+\end{algorithm}
 
-El aprendizaje no supervisado abarca multitud de problemas ampliamente estudiados que tienen diversas aplicaciones presentes en distintos campos, como el tratamiento de imágenes y reconocimiento de objetos [@ranzato], análisis semántico [@hofmann] y sintáctico del lenguaje [@brent] o el preprocesamiento de datos y pre-entrenamiento para una posterior fase de aprendizaje [@erhan2009].
+donde $\odot$ es el producto componente a componente, $\sqrt{.}$ es la raíz cuadrada componente a componente y la división por $\frac{1}{\delta + \sqrt r}$ se realiza componente a componente.
 
-### Problema de clasificación
+### RMSProp
 
-Un problema clásico en el aprendizaje automático es el de clasificación. Una formulación sencilla del problema es la siguiente:
+\begin{algorithm}
+\caption{RMSProp}
+\label{alg:rmsprop}
+\begin{algorithmic}
+  \REQUIRE{Tasa de aprendizaje $\varepsilon$, constante pequeña $\delta$}
+  \REQUIRE{Tasa de decaimiento $\rho$}
+  \REQUIRE{Parámetro inicial $\theta$}
+  \STATE{Inicializar: $r\gets 0$}
+  \WHILE{no se alcanza criterio de parada}
+  \STATE{Escoger un minilote de $m$ instancias del conjunto de entrenamiento $x^{(1)},\dots,x^{(m)}$ con correspondientes objetivos $y^{(i)}$}
+  \STATE{Calcular estimador del gradiente: $\hat g\gets \frac 1 m \nabla \sum_i L(f(x^{(i)}; \theta),y^{(i)})$}
+  \STATE{Acumular cuadrado del gradiente: $r\gets \rho r + (1 - \rho) \hat g\odot \hat g$}
+  \STATE{Calcular actualización: $\Delta\theta\gets - \frac{\varepsilon}{\sqrt{\delta + r}}\odot \hat g$}
+  \STATE{Actualizar parámetro: $\theta\gets\theta + \Delta\theta$}
+  \ENDWHILE
+\end{algorithmic}
+\end{algorithm}
 
-\defineb
-Sean $A_1, A_2, \dots A_f$ conjuntos no vacíos llamados *atributos de entrada*. Llamaremos *espacio de atributos* (o *espacio de características*) a $\mathcal A=A_1\times A_2\times\dots\times A_f$.
-\definee
+De nuevo, las operaciones $\odot$, raíz cuadrada y división se realizan componente a componente.
 
-<!--
-\defineb
-Dado $L$ un conjunto finito, que llamaremos de *clases* o *etiquetas*, sea $l:\mathcal A\rightarrow L$ una aplicación que denominaremos *verdadero etiquetado*.
-\definee
--->
+### Adam
 
-\defineb
-Sea $D\subset \mathcal A\times L$ un subconjunto finito del espacio de atributos, lo llamaremos *conjunto de instancias* o *dataset*.
-\definee
-
-\defineb
-Decimos que la tripleta $\mathcal P=\left(\mathcal A, L, D\right)$ es un *problema de clasificación*.
-\definee
-
-\defineb
-Dado un problema de clasificación $\left(\mathcal A, L, D\right)$, un *clasificador* es una aplicación $c:\mathcal A\rightarrow L$.
-\definee
-
-Así, el objetivo que se persigue al abordar un problema de clasificación $\mathcal P$ es encontrar el clasificador $c$ que mejor se adapte al problema, según una o varias métricas de evaluación. Intuitivamente, el procedimiento por el que se obtenga dicho clasificador debe ser capaz de utilizar la información de las instancias en el dataset $D$ para predecir una clase en nuevas instancias del espacio de atributos.
-
-Las definiciones previas componen una formalización simple del problema de clasificación. Una modelización más detallada y con resultados teóricos interesantes se encuentra en la Teoría de Aprendizaje PAC [@shwartz2014].
-
-### Problema de reducción de dimensionalidad
-
-
-
-## Redes neuronales artificiales
-
-## Deep Learning
-
-[@goodfellow2016]
+\begin{algorithm}
+\caption{Adam}
+\label{alg:adam}
+\begin{algorithmic}
+  \REQUIRE{Tasa de aprendizaje $\varepsilon$, constante pequeña $\delta$}
+  \REQUIRE{Tasas de decaimiento exponencial $\rho_{1}, \rho_2\in[0,1[$}
+  \REQUIRE{Parámetro inicial $\theta$}
+  \STATE{Inicializar: $s\gets 0, r\gets 0, t\gets 0$}
+  \WHILE{no se alcanza criterio de parada}
+  \STATE{Escoger un minilote de $m$ instancias del conjunto de entrenamiento $x^{(1)},\dots,x^{(m)}$ con correspondientes objetivos $y^{(i)}$}
+  \STATE{Calcular estimador del gradiente: $\hat g\gets \frac 1 m \nabla \sum_i L(f(x^{(i)}; \theta),y^{(i)})$}
+  \STATE{Incrementar tiempo: $t\gets t + 1$}
+  \STATE{Actualizar estimador sesgado del 1er momento: $s\gets \rho_1 s + (1 - \rho_1)\hat g$}
+  \STATE{Actualizar estimador sesgado del 2º momento: $r\gets \rho_2 s + (1 - \rho_2)\hat g\odot \hat g$}
+  \STATE{Corregir sesgos: $\hat s\gets\frac{s}{1 - \rho_1^t},\ \hat r\gets\frac{r}{1 - \rho_2^t}$}
+  \STATE{Calcular actualización: $\Delta\theta\gets - \frac{\varepsilon}{\delta + \sqrt{\hat r}}\hat s$ (operaciones componente a componente)}
+  \STATE{Actualizar parámetro: $\theta\gets\theta + \Delta\theta$}
+  \ENDWHILE
+\end{algorithmic}
+\end{algorithm}
 
 # Estructuras profundas no supervisadas
 
-## Autoencoders
+## Máquina de Boltzmann restringidas (RBM)
+
+## Autoencoder
+
+@hinton2006autoencoder
+
+## Entrenamiento de autoencoders
+
+### Pre-entrenamiento
+
+### Ajuste fino
 
 # Referencias

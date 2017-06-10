@@ -1,1 +1,5 @@
-# Introducción
+- Objetivo del trabajo
+- Introducción del problema
+- Idea general del contenido
+- Organización del trabajo
+- Nota sobre documentación y software libre
