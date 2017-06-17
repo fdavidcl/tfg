@@ -139,6 +139,8 @@ Por otro lado, la construcción de características se pone en práctica de form
 
 # Métodos de optimización: gradiente descendiente
 
+\label{sec:grad-desc}
+
 Gran parte del trabajo computacional en aprendizaje automático requiere optimizar funciones, es decir, encontrar el máximo o el mínimo de una función $f:\RR^n\rightarrow \RR$. Dicha función se suele denominar *función objetivo*, y normalmente corresponde al coste o error de aprendizaje de un algoritmo. En lo sucesivo, se supondrá que el objetivo a conseguir es encontrar el mínimo de la función $f$. Los resultados y algoritmos son análogos para la búsqueda de un máximo, simplemente cambiando el signo de $f$.
 
 Estudiemos una simplificación del problema de optimización a una variable. Sea $f:[a,b]\rightarrow\RR$ continua en $[a,b]$ y derivable con derivada continua en $]a,b[$. Por un resultado elemental de análisis matemático, es conocido que un extremo (máximo o mínimo) local en una función derivable se encuentra siempre en un punto de derivada cero. Además, por el teorema del valor medio, para $\varepsilon>0$ se tiene que
