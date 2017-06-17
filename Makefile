@@ -4,7 +4,7 @@ TEMPLATE=default.latex
 BIB=bibliography.bib
 CSL=iso690-author-date-es.csl
 
-PANDOC_FLAGS = --bibliography $(BIB) --csl $(CSL)
+PANDOC_FLAGS = --bibliography $(BIB) --biblatex
 
 all: doc.pdf
 
