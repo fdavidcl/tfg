@@ -1,0 +1,93 @@
+%% Stuff from Pandoc
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\setlength{\parskip}{1mm}
+%\setlength{\mathindent}{0mm}
+
+%% Algorithms
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\renewcommand{\algorithmicrequire}{\textbf{Entrada:}}
+\renewcommand{\algorithmicensure}{\textbf{Salida:}}
+\makeatletter
+\renewcommand{\ALG@name}{Algoritmo}
+\renewcommand{\listalgorithmname}{Lista de \ALG@name s}
+\makeatother
+
+%% Tikz for neural network diagrams
+\usepackage{tikz}
+
+%% Theorem environments
+\usepackage{amsthm}
+\newtheorem{theorem}{Teorema}[chapter]
+\newtheorem{lemma}[theorem]{Lema}
+\newtheorem{prop}[theorem]{Proposición}
+\newtheorem{cor}[theorem]{Corolario}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definición}[chapter]
+\newtheorem{example}{Ejemplo}[chapter]
+\newtheorem{exca}{Ejercicio}[chapter]
+
+\theoremstyle{remark}
+\newtheorem{remark}{Observación}[chapter]
+
+%\numberwithin{equation}{section}
+
+% Replacing environments by pairs of commands for use in Markdown
+\newcommand{\defineb}{\begin{definition}}
+\newcommand{\definee}{\end{definition}}
+\newcommand{\theob}{\begin{theorem}}
+\newcommand{\theoe}{\end{theorem}}
+\newcommand{\lemmab}{\begin{lemma}}
+\newcommand{\lemmae}{\end{lemma}}
+\newcommand{\propb}{\begin{prop}}
+\newcommand{\prope}{\end{prop}}
+\newcommand{\remb}{\begin{remark}}
+\newcommand{\reme}{\end{remark}}
+\newcommand{\proofb}{\begin{proof}}
+\newcommand{\proofe}{\end{proof}}
+\newcommand{\exampleb}{\begin{example}}
+\newcommand{\examplee}{\end{example}}
+\newcommand{\corb}{\begin{cor}}
+\newcommand{\core}{\end{cor}}
+
+% hyperref
+%\PassOptionsToPackage{xetex,hyperfootnotes=false,pdfpagelabels}{hyperref}
+%    \usepackage{hyperref}
+
+%% ATAJOS
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\KK}{\mathbb{K}}
+\newcommand{\LL}{\mathcal{L}}
+
+% Distribuciones de probabilidad
+\newcommand{\PN}{\mathcal{N}}
+
+% Traspuesta
+\newcommand{\Tr}[1]{#1^{\mathrm{T}}}
+% Norma
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+%\newcommand{\dim}{\mathrm{dim}}
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Ker}{\mathrm{Ker}}
+\newcommand{\Mid}{\mid\mid}
+
+\newcommand{\asconv}{\overset{cs}{\rightarrow}}
+\newcommand{\pconv}{\overset{P}{\rightarrow}}
+\newcommand{\softmax}[1]{\mathrm{softmax}(#1)}
+
+% Autoref commands
+%\newcommand*{\theoremautorefname}{Teorema}
+\newcommand*{\corollaryautorefname}{Corolario}
+\newcommand*{\propositionautorefname}{Proposición}
+\newcommand*{\lemmaautorefname}{Lema}
+\newcommand*{\definitionautorefname}{Definición}
+\newcommand*{\exampleautorefname}{Ejemplo}
+\newcommand*{\remarkautorefname}{Observación}
+\newcommand*{\algorithmautorefname}{Algoritmo}
