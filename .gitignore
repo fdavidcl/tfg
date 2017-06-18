@@ -1,4 +1,15 @@
-*.tex
+*.aux
+*.toc
+*.xml
+*.bbl
+*.out
+*.log
+*.lof
+*.blg
+*.sty
+*.lol
+*.lot
+plantilla_ugr
 *.pdf
 *~
 *#
