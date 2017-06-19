@@ -1,6 +1,8 @@
-\section{Introducción a R}\label{introducciuxf3n-a-r}
+\section{El lenguaje R}\label{introducciuxf3n-a-r}
 
-R es un lenguaje de programación dirigido al tratamiento de datos, y
+\subsection{Introducción}
+
+R \autocite{rlang} es un lenguaje de programación dirigido al tratamiento de datos, y
 como tal proporciona estructuras de datos y funcionalidades básicas para
 representar y tratar problemas de minería de datos. Además, existe toda
 una plataforma de paquetes para R denominada CRAN, que cuenta con
@@ -11,16 +13,117 @@ algoritmos.
 Algunas de las técnicas más relevantes de Deep Learning no supervisado
 están disponibles ya en paquetes como \texttt{h2o} \autocite{h2o},
 \texttt{deepnet} \autocite{deepnet} o \texttt{darch} \autocite{darch}.
-Sin embargo, hasta ahora ninguna herramienta para R ha incluido
-mecanismos de visualización que faciliten entender el comportamiento de
-las redes profundas no supervisadas o los modelos generados por ellas.
+Sin embargo, hasta ahora ninguna herramienta para R se ha centrado en ser exhaustiva con las estructuras no supervisadas, ni ha incluido mecanismos de visualización que faciliten entender el comportamiento de
+estas redes o los modelos generados por ellas.
 
-\section{\texorpdfstring{El paquete
-\texttt{ruta}}{El paquete ruta}}\label{el-paquete-ruta}
+\subsection{Instalación}
 
-Se ha desarrollado un paquete software, denominado \texttt{ruta}, con el
+Para utilizar el software desarrollado, será necesario instalar R junto con las utilidades de desarrollador del lenguaje. En general, hay disponibles paquetes binarios en los repositorios de las distribuciones más comunes de Linux, así como para Windows y macOS. Por ejemplo, para instalar R en distribuciones basadas en Debian como Ubuntu, ejecutaremos el siguiente comando:
+
+\begin{verbatim}
+sudo apt install r-base r-base-dev
+\end{verbatim}
+
+Los instaladores para Windows y macOS se pueden descargar desde el sitio web del proyecto R\footnote{\url{https://www.r-project.org/}}.
+
+\subsection{Uso del lenguaje}
+
+El lenguaje R se puede utilizar de forma interactiva mediante el REPL que se invoca con el comando \texttt{R}, mediante scripts que se pueden ejecutar con el programa \texttt{Rscript} o desde un IDE como RStudio \autocite{rstudio}.
+
+\section{La biblioteca MXNet}\label{sec:mxnet}
+\subsection{Introducción}
+MXNet \autocite{mxnet} es una biblioteca de algoritmos de Deep Learning. Frente a otras bibliotecas similares como Tensorflow \autocite{tensorflow} o Theano \autocite{theano}, el motor de MXNet está escrito en el lenguaje C++, lo que reduce los tiempos de ejecución. Sin embargo, esto no limita su uso puesto que proporciona acceso a las funcionalidades mediante APIs para otros lenguajes como Python, Scala o R.
+
+Esta biblioteca permite ejecutar los algoritmos de forma secuencial, distribuida o en dispositivos GPU. Además, proporciona dos mecánicas de programación diferenciadas: simbólica e imperativa. Por un lado, la programación simbólica permite diseñar un modelo de forma rápida sin necesidad de aportar los datos de entrada \textit{a priori} ni ejecutar los algoritmos de forma inmediata. Esto permite una programación más flexible, pudiendo acceder a los parámetros y modificarlos de forma desconectada de los cálculos costosos. Por otro lado, la programación imperativa facilita el control sobre los procesos de aprendizaje y la forma en que los datos se propagan por una red neuronal.
+
+\subsection{Instalación}
+
+Para disponer de MXNet en un ordenador y poder usarla desde R, es necesario compilar e instalar tanto la biblioteca como el paquete compañero para R. Las dependencias son las herramientas de compilación básicas (G++, GNU Make) y una implementación de la biblioteca de álgebra lineal BLAS. como OpenBLAS o ATLAS. Opcionalmente se puede instalar OpenCV para facilitar el tratamiento de imágenes. Tras esto, se ejecutan los siguientes comandos para descargar y compilar el software:
+
+\begin{verbatim}
+git clone --recursive https://github.com/dmlc/mxnet
+cd mxnet
+cp make/config.mk . # editar las entradas necesarias
+make -j $(nproc)
+sudo install -D lib/libmxnet.so /usr/lib/libmxnet.so
+\end{verbatim}
+
+Si se desea soporte para cómputo sobre GPU con CUDA, se añadirán las opciones \texttt{USE\_CUDA=1} \texttt{USE\_CUDA\_PATH=/opt/cuda} \texttt{USE\_CUDNN=1} al archivo \texttt{config.mk}, utilizando el camino conveniente para la biblioteca CUDA.
+
+Alternativamente, en sistemas basados en Arch Linux basta con instalar el paquete \texttt{mxnet}\footnote{\url{https://aur.archlinux.org/packages/mxnet/}} del repositorio de usuarios AUR.
+
+Por último, para instalar el paquete compañero para R, se utilizan las siguientes órdenes de línea de comandos desde el directorio donde se ha clonado el repositorio:
+
+\begin{verbatim}
+make rpkg
+R CMD INSTALL mxnet_current_r.tar.gz
+\end{verbatim}
+
+\subsection{Uso de la biblioteca}
+Para construir una estructura de aprendizaje profunda con MXNet, basta con comenzar con un símbolo que corresponderá a los datos de entrada, después especificar las capas que formarán la red, y por último el tipo de salida deseada.
+
+Después, para ajustar el modelo creado con un conjunto de entrenamiento, MXNet proporciona algunas utilidades de alto nivel y otras más cercanas al cómputo paso a paso de las propagaciones hacia adelante y hacia atrás. De las primeras podemos destacar \texttt{mx.model.FeedForward.create} y de las últimas \texttt{mx.exec.backward} y \texttt{mx.exec.forward}.
+
+\begin{example}
+
+  En este ejemplo vamos a construir una red prealimentada sencilla que permitirá aproximar el cálculo de la hipotenusa de un triángulo rectángulo a partir de las longitudes de los catetos.
+
+  Primero, comenzamos construyendo la red. Creamos la variable simbólica que contendrá los datos y la enlazamos con dos capas ocultas de 2 y 10 unidades respectivamente, y con la capa de salida que aproximará la hipotenusa, evaluará la pérdida y permitirá realizar el aprendizaje.
+  
+  \begin{verbatim}
+library(mxnet)
+red <- mx.symbol.Variable("data")
+red <- mx.symbol.FullyConnected(red, num_hidden = 2)
+red <- mx.symbol.Activation(red, act_type = "relu")
+red <- mx.symbol.FullyConnected(red, num_hidden = 10)
+red <- mx.symbol.Activation(red, act_type = "relu")
+red <- mx.symbol.FullyConnected(red, num_hidden = 1)
+red <- mx.symbol.LinearRegressionOutput(red)
+\end{verbatim}
+  
+  Ahora, creamos los datos de entrada: aleatoriamente escogemos catetos y después calculamos la hipotenusa en la variable \texttt{label}. Separamos en un conjunto para entrenamiento y otro para test. De forma similar, podríamos también proceder con una validación cruzada.
+  
+\begin{verbatim}
+set.seed(42)
+mx.set.seed(42)
+
+input <- data.frame(
+  cat1 = round(runif(100, min = 1, max = 10)),
+  cat2 = round(runif(100, min = 1, max = 10)))
+x = t(data.matrix(input))
+label <- sqrt(input$cat1 ** 2 + input$cat2 ** 2)
+train_x <- x[,1:74]
+train_y <- label[1:74]
+test_x <- x[,75:100]
+test_y <- label[75:100]
+\end{verbatim}
+
+Por último, entrenamos el modelo que creamos anteriormente, escogiendo los parámetros del proceso de aprendizaje, en particular el optimizador SGD explicado en la sección \ref{sec:sgd}, y obtenemos las predicciones sobre el conjunto de test.
+  
+\begin{verbatim}
+model <- mx.model.FeedForward.create(
+  symbol = red,
+  X = train_x,
+  y = train_y,
+  num.round = 240,
+  array.layout = "colmajor",
+  optimizer = "sgd",
+  learning.rate = 0.015,
+  momentum = 0.2,
+  eval.metric = mx.metric.rmse
+)
+# => Train-rmse=0.693727073714297
+predict(model, test_x)
+\end{verbatim} 
+  
+\end{example}
+
+
+\section{El paquete Ruta}\label{el-paquete-ruta}
+
+Se ha desarrollado un paquete software, denominado Ruta, con el
 objetivo de proporcionar en una sola herramienta el mayor número de
-estructuras de aprendizaje profundo no supervisado posible.
+estructuras de aprendizaje profundo no supervisado posible. El paquete se ha escrito en el lenguaje R utilizando los recursos de la biblioteca MXNet.
 
 \subsection{Metodología de
 desarrollo}\label{metodologuxeda-de-desarrollo}
@@ -29,8 +132,11 @@ desarrollo}\label{metodologuxeda-de-desarrollo}
 
 \subsection{Componentes del paquete}\label{componentes-del-paquete}
 
-\section{\texorpdfstring{Visualización:
-\texttt{rutavis}}{Visualización: rutavis}}\label{visualizaciuxf3n-rutavis}
+\subsection{Instalación}
+
+\subsection{Uso}
+
+\section{Visualización con Rutavis}\label{visualizaciuxf3n-rutavis}
 
 Una herramienta compañera a \texttt{ruta} es \texttt{rutavis}, una
 aplicación con interfaz de usuario web que permite componer

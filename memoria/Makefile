@@ -9,12 +9,11 @@ clean:
 	rm -f *.pdf *.aux *.toc *.tmp
 
 memoria.pdf: $(basename $(DOC)).tex $(CHAPTERS) classicthesis-config.tex $(basename $(DOC)).bbl
-	#pandoc $< -o $@ --latex-engine $(TEX)
+	$(BIB) $(basename $(DOC))
 	$(TEX) $<
 	$(TEX) $<
 
 %.bbl: %.bib $(basename $(DOC)).aux
-	$(BIB) $(basename $(DOC))
 	$(TEX) $(basename $(DOC)).tex -shell-escape
 
 %.aux: %.tex
