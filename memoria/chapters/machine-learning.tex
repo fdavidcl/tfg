@@ -80,21 +80,23 @@ pre-entrenamiento para una posterior fase de aprendizaje
 
 \section{Problema de clasificación}\label{problema-de-clasificaciuxf3n}
 
-Un problema clásico en el aprendizaje automático es el de clasificación.
+Un problema clásico en el aprendizaje automático es el de clasificación. Se trata de una tarea de aprendizaje automático que consiste en aprender acerca de la etiqueta o clase de una secuencia de instancias clasificadas, para después ser capaz de predecir el valor de dicha etiqueta en nuevas instancias sin clasificar.
+
+\subsection{Definición}
+
 Una formulación sencilla del problema es la siguiente:
 
 \defineb
 Sean \(A_1, A_2, \dots A_f\) conjuntos no vacíos llamados
 \emph{atributos de entrada}. Llamaremos \emph{espacio de atributos} (o
 \emph{espacio de características}) a
-\(\mathcal A=A_1\times A_2\times\dots\times A_f\). \definee
+\(\mathcal A=A_1\times A_2\times\dots\times A_f\).
 
-\defineb
+Sea $L$ un conjunto finito al que denominaremos \emph{conjunto de etiquetas}.
+
 Sea \(D\subset \mathcal A\times L\) un subconjunto finito del espacio de
 atributos, lo llamaremos \emph{conjunto de instancias} o \emph{dataset}.
-\definee
 
-\defineb
 Decimos que la tripleta \(\mathcal P=\left(\mathcal A, L, D\right)\) es
 un \emph{problema de clasificación}. \definee
 
@@ -110,10 +112,28 @@ procedimiento por el que se obtenga dicho clasificador debe ser capaz de
 utilizar la información de las instancias en el dataset \(D\) para
 predecir una clase en nuevas instancias del espacio de atributos.
 
+Atendiendo a la estructura de $L$, es decir, el número de características que estarán ausentes en los nuevos datos y sus posibles valores, distinguiremos tres tipos de clasificación:
+\begin{itemize}
+\item Binaria: implica clasificar en 2 clases (generalmente significan que una condición es verdadera o falsa), utilizando una característica que tome únicamente dos valores. Así, $L = \{0,1\}$.
+\item Multiclase: en este caso habrá más de dos clases, pero cada instancia pertenecerá a una y solo una de ellas, por lo que se usará una característica que contenga tantos valores como clases: $L=\{0, 1,\dots, l\}$.
+\item Multietiqueta: en esta situación, cada instancia puede asociarse a más de una etiqueta, por tanto se usarán tantos atributos como etiquetas, cada uno de ellos conteniendo dos valores: $L=\{0,1\}\times\dots\times\{0,1\}$.
+\end{itemize}
+
+
 Las definiciones previas componen una formalización simple del problema
 de clasificación. Una modelización más detallada y con resultados
 teóricos interesantes se encuentra en la Teoría de Aprendizaje PAC
-\autocite{shwartz2014}.
+\autocite{shwartz2014}. De esta teoría además se extraen algunos resultados
+interesantes. Por un lado, el hecho de que los algoritmos sean capaces de generalizar
+un modelo adecuado a partir de una cantidad finita de muestras. Por contraposición,
+considerados sobre el conjunto de todas las distribuciones de datos
+posibles, todos los algoritmos de clasificación presentan en media la
+misma tasa de error en la predicción de clases para nuevos ejemplos
+(Teorema de \textit{No Free Lunch}).
+
+\begin{example}
+\textcolor{red}{Si se me ocurre un ejemplo, añadirlo.}
+\end{example}
 
 \subsection{Estructura del espacio de
 atributos}\label{estructura-del-espacio-de-atributos}
@@ -172,16 +192,15 @@ esperanza. Así, llamamos \(\mu_m = \E[d_m(X_{mi})^p]\) y sea
 Veamos que \(V_m\pconv 1\): primero, tenemos que
 \(\E[V_m] = \frac{\mu_m}{\mu_m} = 1\), y como consecuencia
 \(\lim_{m\rightarrow +\infty}\E[V_m] = 1\). Por hipótesis,
-\(\lim_{m\rightarrow +\infty}\Var[V_m] = 1\), y usando el lema
-\ref{lm:convergencia-va} deducimos que \(V_m\pconv 1\).
+\(\lim_{m\rightarrow +\infty}\Var[V_m] = 1\), y usando el
+\autoref{lm:convergencia-va} deducimos que \(V_m\pconv 1\).
 
 Ahora, definimos la variable aleatoria
 \[Y_m=\left(\frac{d_m(X_{m1})^p}{\mu_m}, \dots, \frac{d_m(X_{mn})^p}{\mu_m}\right).\]
 Como cada componente del vector \(Y_m\) es idénticamente distribuida a
 \(V_m\), se tiene que \(Y_m\pconv (1, \dots, 1)\). Como \(\min\) y
 \(\max\) (que dan la componente mínima y máxima del vector,
-respectivamente) son funciones continuas, podemos utilizar el Teorema de
-Slutsky \eqref{th:cont-map-conv} para obtener que
+respectivamente) son funciones continuas, podemos utilizar el \autoref{th:cont-map-conv} para obtener que
 \(\min(Y_m)\pconv \min\{1, \dots, 1\} = 1\) y \(\max(Y_m)\pconv 1\).
 
 Notemos ahora que
@@ -346,7 +365,7 @@ cercano a cero, con una tolerancia dada.
 \end{figure}
 
 La técnica de gradiente descendente presenta algunos problemas: como se
-puede observar en la figura \ref{fig:grad-desc}, cuando el gradiente de
+puede observar en la \autoref{fig:grad-desc}, cuando el gradiente de
 la función es próximo a cero el algoritmo tiende a dar pasos muy cortos,
 convergiendo muy lentamente hacia el extremo local encontrado. Asimismo,
 en general puede presentar un comportamiento de ``zig-zag'' para ciertas

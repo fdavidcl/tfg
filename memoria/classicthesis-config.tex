@@ -23,8 +23,9 @@
 % 1. Configure classicthesis for your needs here, e.g., remove "drafting" below 
 % in order to deactivate the time-stamp on the pages
 % ****************************************************************************************************
-\PassOptionsToPackage{listings,%drafting,%
+\PassOptionsToPackage{listings,eulerchapternumbers,%eulermath,%drafting,%
                       pdfspacing,floatperchapter,%linedheaders,%
+                      beramono,
                       subfig,parts,dottedtoc}{classicthesis}                                        
 % ********************************************************************
 % Available options for classicthesis.sty 
@@ -141,16 +142,16 @@
 % ****************************************************************************************************
 \usepackage{listings} 
 %\lstset{emph={trueIndex,root},emphstyle=\color{BlueViolet}}%\underbar} % for special keywords
-\lstset{language=[LaTeX]Tex,%C++,
+\lstset{language=R,%
     morekeywords={PassOptionsToPackage,selectlanguage},
-    keywordstyle=\color{RoyalBlue},%\bfseries,
-    basicstyle=\small\ttfamily,
-    %identifierstyle=\color{NavyBlue},
-    commentstyle=\color{Green}\ttfamily,
-    stringstyle=\rmfamily,
-    numbers=none,%left,%
-    numberstyle=\scriptsize,%\tiny
-    stepnumber=5,
+    keywordstyle=\color{black},%\bfseries,
+    basicstyle=\small\color{Periwinkle}\ttfamily,
+    identifierstyle=\color{black},
+    commentstyle=\itshape\color{OliveGreen},
+    stringstyle=\color{Thistle},
+    numbers=left,%none,%left,%
+    numberstyle=\color{Gray}\scriptsize,%\tiny
+    stepnumber=1,
     numbersep=8pt,
     showstringspaces=false,
     breaklines=true,

@@ -380,7 +380,7 @@ algoritmo \ref{alg:fwdprop}.
 \end{algorithm}
 
 \subsection{Propagación hacia
-atrás}\label{propagaciuxf3n-hacia-atruxe1s}
+atrás}\label{sec:backprop}
 
 Consideremos una red neuronal prealimentada profunda, determinada por un
 vector de parámetros \(\theta\). Durante el entrenamiento, la salida
@@ -451,12 +451,15 @@ f(x_1,x_2;\theta)=\\g\left(w_{21}^{(2)}g\left(w_{11}^{(1)}x_{1}+w_{12}^{(1)}x_2+
 \end{gather*}
 
 Ahora, mediante la regla de la cadena podemos desarrollar la parcial de $f$ respecto de cualquiera de los parámetros. Llamamos
+\footnotesize
 \begin{align*}
   \alpha&=g'\left(w_{21}^{(2)} g\left(w_{11}^{(1)}x_{1}+w_{12}^{(1)}x_2+b_1^{(1)}\right) + w_{22}^{(2)} g\left(w_{21}^{(1)}x_1+w_{22}^{(1)}x_2+b_2^{(1)}\right)+b_1^{(2)}\right)\\
   \beta&=g'\left(w_{11}^{(1)}x_{1}+w_{12}^{(1)}x_2+b_1^{(1)}\right)\\
   \gamma&=g'\left(w_{21}^{(1)}x_{1}+w_{22}^{(1)}x_2+b_2^{(1)}\right)
 \end{align*}
+\normalsize
 y se tiene
+\footnotesize
 \begin{alignat*}{3}
   \frac{\partial f}{\partial w_{11}^{(1)}}(x_1,x_2;\theta)&=\alpha w_{11}^{(2)}\beta x_1,\quad&
   \frac{\partial f}{\partial w_{12}^{(1)}}(x_1,x_2;\theta)&=\alpha w_{11}^{(2)}\beta x_2,\\
@@ -468,6 +471,7 @@ y se tiene
   \frac{\partial f}{\partial w_{12}^{(2)}}(x_1,x_2;\theta)&=\alpha g(w_{21}^{(1)}x_{1}+w_{22}^{(1)}x_2 + b_2^{(1)}),&\quad
   \frac{\partial f}{\partial b_{1}^{(2)}}(x_1,x_2;\theta)&=\alpha.
 \end{alignat*}
+\normalsize
 
 Como podemos observar, algunos de los factores de las parciales se repiten en varias de ellas, de forma que se ahorrarán muchos cálculos innecesarios si no se repiten. Este hecho se hace aún más evidente conforme se añaden capas a la red y unidades a cada capa. Por ello, el algoritmo de propagación hacia atrás permite optimizar el cálculo del gradiente mediante varios pasos intermedios para evitar cálculos repetidos.
 
@@ -641,10 +645,72 @@ RMSProp con momento. Se describe en el algoritmo \ref{alg:adam}.
 \section{Estructuras profundas no
 supervisadas}\label{estructuras-profundas-no-supervisadas}
 
-\subsection{Máquina de Boltzmann restringidas
+En esta sección nos centramos en las estructuras dedicadas a aprendizaje no supervisado en Deep Learning. Estudiaremos las máquinas de Boltzmann restringidas (\textit{Restricted Boltzmann Machine}, RBM) y los autoencoders y sus variantes. La fuente principal de esta sección es \textcite[capítulos 14 y 20]{goodfellow2016}.
+
+\subsection{Máquina de Boltzmann restringida
 (RBM)}\label{muxe1quina-de-boltzmann-restringidas-rbm}
 
-\subsection{Autoencoder}\label{autoencoder}
+Las máquinas de Boltzmann restringidas o RBMs son modelos basados en energía no direccionales. No son por sí mismas modelos profundos, pero son la base de algunas arquitecturas de Deep Learning como las \textit{Deep Belief Networks} \autocite{hinton2006dbn}. Contienen una capa de variables observables o visibles y una sola capa de variables ocultas o latentes.
+
+Se denominan restringidas porque, a diferencia de las máquinas de Boltzmann generales, forman grafos bipartitos donde no hay conexiones entre unidades de la misma capa, como se puede observar en la \autoref{fig:rbm}. Que sean modelos basados en energía quiere decir que la distribución de probabilidad $\tilde p$ que aprenden viene dada de la forma
+\[
+  \tilde p(x)=e^{-E(x)}~,
+\]
+donde la función $E$ se llama \textit{función de energía}. Por último, son no direccionales ya que las conexiones entre unidades funcionan en ambos sentidos.
+
+\begin{figure}[hbtp]
+  \centering
+  
+\begin{tikzpicture}[scale=0.18]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (13.9,-15.6) circle (3);
+\draw [black] (13.9,-23.8) circle (3);
+\draw [black] (13.9,-31.9) circle (3);
+\draw [black] (13.9,-39.6) circle (3);
+\draw [black] (13.9,-47.6) circle (3);
+\draw [black] (29.3,-23.8) circle (3);
+\draw [black] (29.3,-31.9) circle (3);
+\draw [black] (29.3,-39.6) circle (3);
+\draw (13.9,-10.4) node {$v$};
+\draw (29.3,-10.4) node {$h$};
+\draw [black] (16.55,-17.01) -- (26.65,-22.39);
+\draw [black] (15.96,-17.78) -- (27.24,-29.72);
+\draw [black] (15.52,-18.12) -- (27.68,-37.08);
+\draw [black] (16.9,-23.8) -- (26.3,-23.8);
+\draw [black] (16.56,-25.2) -- (26.64,-30.5);
+\draw [black] (15.99,-25.95) -- (27.21,-37.45);
+\draw [black] (16.56,-30.5) -- (26.64,-25.2);
+\draw [black] (16.9,-31.9) -- (26.3,-31.9);
+\draw [black] (16.58,-33.24) -- (26.62,-38.26);
+\draw [black] (15.99,-37.45) -- (27.21,-25.95);
+\draw [black] (16.58,-38.26) -- (26.62,-33.24);
+\draw [black] (16.9,-39.6) -- (26.3,-39.6);
+\draw [black] (15.53,-45.08) -- (27.67,-26.32);
+\draw [black] (16,-45.46) -- (27.2,-34.04);
+\draw [black] (16.56,-46.22) -- (26.64,-40.98);
+\end{tikzpicture}
+  \caption[Máquina de Boltzmann restringida]{Ilustración de las unidades de una máquina de Boltzmann restringida y las conexiones entre ellas}
+  \label{fig:rbm}
+\end{figure}
+
+Las RBMs en su versión básica sólo contemplan valores binarios en las variables. Formalmente, si $V$ es un vector de variables aleatorias binarias observables, y llamamos $H$ al vector de variables aleatorias binarias ocultas, la distribución conjunta representada por la RBM asociada es
+\[
+  P(V=v,H=h)=\frac 1 Z e^{-E(v,h)}~,
+\]
+donde la función de energía $E$ viene dada por la expresión
+\[
+  E(v,h)=-\Tr b v -\Tr c h - \Tr v W h~,
+\]
+y $Z$ es la constante de normalización correspondiente:
+\[
+Z=\sum_{v}\sum_{h}e^{-E(v,h)}~.
+\]
+
+Puesto que dicha constante $Z$ es, en general, demasiado costosa de calcular como para que sea factible la evaluación directa de $P(v, h)$, se suelen utilizar otras técnicas para entrenar un modelo de RBM. Estas incluyen \textit{Contrastive Divergence} \autocite{hinton2002cd} y máxima verosimilitud estocástica, conocida también como \textit{Persistent Contrastive Divergence} \autocite{tieleman2008pcd}.
+
+\subsection{Autoencoder}\label{sec:autoencoder}
+
+Un autoencoder es una red neuronal que se entrena con el objetivo de copiar la entrada a su salida. Internamente, contiene una capa oculta que describe un código utilizado para representar la entrada. Se puede considerar una red compuesta por dos partes: una función codificadora $f$ que transforma la entrada en el código, y una función decodificadora $g$ que se aplica al código y trata de reconstruir la entrada. Una ilustración de la arquitectura se muestra en la \autoref{fig:autoencoder}, donde la etapa de codificación se realiza entre la primera y la segunda capa, y la decodificación entre la segunda y la última.
 
 \begin{figure}[hbtp]
   \centering
@@ -693,14 +759,254 @@ supervisadas}\label{estructuras-profundas-no-supervisadas}
 \draw [black] (38.86,-34.82) -- (48.14,-41.28);
 \fill [black] (48.14,-41.28) -- (47.77,-40.42) -- (47.2,-41.24);
 \end{tikzpicture}
-\caption{\label{fig:autoencoder}Autoencoder de tres capas} 
+\caption{\label{fig:autoencoder}Autoencoder de tres capas. Tiene 4 variables de entrada y genera una codificación en 2 variables} 
 \end{figure}
 
-\textcite{hinton2006autoencoder}
+El interés de los autoencoders reside en restringirlos, mediante la estructura de la red u otros parámetros, de forma que sean incapaces de simplemente aprender la función identidad. Así, la codificación que aprenden contiene información útil acerca de los datos de entrada, ya que se le fuerza a descartar los aspectos que no sean representativos. Si la codificación, además, es de menor dimensionalidad que la entrada, se puede utilizar el autoencoder como reductor de la dimensionalidad.
+
+El concepto de los autoencoders no es nuevo, pero hasta hace unos años no se habían desarrollado técnicas para un entrenamiento eficiente. La aparición de SGD y sus derivados (\autoref{sec:dl-opt}) permitieron entrenar redes profundas de forma rápida, en particular los autoencoders. Además, \textcite{hinton2006autoencoder} introdujeron una técnica de entrenamiento basada en un cálculo de pesos iniciales previo y un posterior ajuste.
+
+Existen diferentes variantes de los autoencoders según su estructura y función de coste, a continuación estudiamos las principales.
+
+\subsubsection{Autoencoders infracompletos}
+
+La primera restricción sencilla que permite obtener información interesante a partir del entrenamiento de un autoencoder es reducir la dimensión de la capa interna respecto de la de entrada, como se ve en el ejemplo de la \autoref{fig:autoencoder}. La representación de los datos que aprende este autoencoder se puede denominar \textit{infracompleta} (del inglés \textit{undercomplete}). Al entrenar un autoencoder de este tipo, los aspectos más representativos de los datos se quedan en la codificación porque sirven para reconstruirlos.
+
+El proceso de aprendizaje consiste en minimizar una función de coste del tipo
+\[
+  L(x,g(f(x)))~,
+\]
+donde $L$ da una medida de la diferencia entre la entrada y su reconstrucción, como puede ser el error medio cuadrático.
+
+Adicionalmente, se puede añadir un término de \textit{regularización} $\Omega$ junto a la función $L$, que dependa de los valores de la capa de codificación y añada ciertas propiedades deseadas al autoencoder. Algunas de las variaciones que se mencionan a continuación surgen a partir de esta generalización.
+
+\subsubsection{Autoencoders dispersos}
+
+Un autoencoder disperso (\textit{sparse autoencoder)} es simplemente un autoencoder cuya función de coste involucra, además del error cometido en la reconstrucción, una penalización de dispersión sobre la codificación $h$:
+\[
+  L(x,g(f(x)))+\Omega(h)~.
+\]
+
+La penalización de dispersión fuerza al autoencoder a aprender representaciones (infracompletas o sobrecompletas) en las que muy pocas unidades están activas, es decir, la mayor parte dan salida nula. Por esto, los autoencoders dispersos son muy útiles para la construcción de características que se pueden usar en una tarea de clasificación.
+
+\subsubsection{Autoencoders con eliminación de ruido}
+
+Otra tarea que puede aprender un autoencoder es la reparación del ruido en instancias (\textit{denoising autoencoder)}. Para ello, si tenemos para cada instancia $x$ una copia $\tilde x$ a la que se le ha introducido algún tipo de ruido, entrenamos un autoencoder que minimice la función
+\[
+  L(x, g(f(\tilde x)))~.
+\]
+
+De esta forma, el autoencoder se ve forzado a aprender la distribución de los datos de forma implícita, y se hace robusto al ruido. Una vez entrenado, podremos inyectar nuevas instancias ruidosas en la red y recuperar instancias limpias en la capa de salida.
+
+\subsubsection{Autoencoders contractivos}
+
+Un autoencoder contractivo (\textit{contractive autoencoder}) es un autoencoder con una regularización del tipo
+\[
+  \Omega(h)=\lambda\norm{\frac{\partial f(x)}{\partial x}}^2_F~,
+\]
+que hace que las parciales de f tiendan a ser lo más pequeñas posible.
+
+Los autoencoders contractivos son robustos a perturbaciones locales en los datos de entrada, es decir, si una instancia $x$ se aplica en $f(x)$, entonces una instancia vecina $x'$ muy cercana a $x$ se aplicará también cerca de $f(x)$. Sin embargo, si los puntos $x$ y $x'$ son lejanos, sus imágenes por $f$ pueden ser aún más lejanas, de ahí la naturaleza local del comportamiento del autoencoder. Intuitivamente, se puede considerar que el autoencoder ``contrae'' el vecindario de cada instancia.
+
+Una aplicación de los autoencoders contractivos es realizar aprendizaje de variedades (\textit{manifold learning}) sobre los datos.
+
+%\subsubsection{Autoencoders variacionales}
 
 \subsection{Entrenamiento de
-autoencoders}\label{entrenamiento-de-autoencoders}
+  autoencoders}\label{entrenamiento-de-autoencoders}
+
+Para el entrenamiento de autoencoders, es posible utilizar las técnicas que se han estudiado anteriormente, en concreto la propagación hacia atrás (\autoref{sec:backprop}) para calcular gradientes y los algoritmos basados en gradiente descendiente estocástico (\autoref{sec:dl-opt}) para optimizar la función objetivo.
+
+Sin embargo, en autoencoders muy profundos, este aprendizaje se puede tornar un proceso muy lento, por el hecho de que la inicialización de pesos no utiliza información acerca de los datos. Para solventar este problema, se puede añadir una fase previa de pre-entrenamiento que encuentra unos pesos que acercan el autoencoder a un mínimo local, tras lo cual la fase de aprendizaje se emplea para realizar ajustes sobre dichos pesos \autocite{hinton2006autoencoder}. Este mismo proceso de entrenamiento es el que se utiliza en las \textit{Deep Belief Network}, que después se pueden entrenar adicionalmente para tareas supervisadas.
 
 \subsubsection{Pre-entrenamiento}\label{pre-entrenamiento}
 
+En esta fase, se toman parejas de capas consecutivas de la capa codificadora del autoencoder, comenzando por la de entrada y la siguiente, y se entrenan RBMs para cada una.
+
+\begin{figure}[hbtp]
+  \centering
+  \begin{tikzpicture}[scale=0.15]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (13.9,-15.6) circle (3);
+\draw [black] (13.9,-23.8) circle (3);
+\draw [black] (13.9,-31.9) circle (3);
+\draw [black] (13.9,-39.6) circle (3);
+\draw [black] (13.9,-47.6) circle (3);
+\draw [black] (29.3,-23.8) circle (3);
+\draw [black] (29.3,-31.9) circle (3);
+\draw [black] (29.3,-39.6) circle (3);
+\draw [black] (40.8,-23.8) circle (3);
+\draw [black] (40.8,-31.9) circle (3);
+\draw [black] (40.8,-39.6) circle (3);
+\draw [black] (53.2,-27.2) circle (3);
+\draw [black] (53.2,-35.9) circle (3);
+\draw (21.2,-9.7) node {$W^{(1)}$};
+\draw (47.3,-9.7) node {$W^{(2)}$};
+\draw [black] (16.55,-17.01) -- (26.65,-22.39);
+%\fill [black] (26.65,-22.39) -- (26.18,-21.57) -- (25.71,-22.46);
+\draw [black] (15.96,-17.78) -- (27.24,-29.72);
+%\fill [black] (27.24,-29.72) -- (27.05,-28.79) -- (26.33,-29.48);
+\draw [black] (15.52,-18.12) -- (27.68,-37.08);
+%fill [black] (27.68,-37.08) -- (27.67,-36.13) -- (26.83,-36.67);
+\draw [black] (16.9,-23.8) -- (26.3,-23.8);
+%\fill [black] (26.3,-23.8) -- (25.5,-23.3) -- (25.5,-24.3);
+\draw [black] (16.56,-25.2) -- (26.64,-30.5);
+%\fill [black] (26.64,-30.5) -- (26.17,-29.69) -- (25.7,-30.57);
+\draw [black] (15.99,-25.95) -- (27.21,-37.45);
+%\fill [black] (27.21,-37.45) -- (27.01,-36.53) -- (26.29,-37.23);
+\draw [black] (16.56,-30.5) -- (26.64,-25.2);
+%\fill [black] (26.64,-25.2) -- (25.7,-25.13) -- (26.17,-26.01);
+\draw [black] (16.9,-31.9) -- (26.3,-31.9);
+%\fill [black] (26.3,-31.9) -- (25.5,-31.4) -- (25.5,-32.4);
+\draw [black] (16.58,-33.24) -- (26.62,-38.26);
+%\fill [black] (26.62,-38.26) -- (26.12,-37.45) -- (25.68,-38.35);
+\draw [black] (15.99,-37.45) -- (27.21,-25.95);
+%\fill [black] (27.21,-25.95) -- (26.29,-26.17) -- (27.01,-26.87);
+\draw [black] (16.58,-38.26) -- (26.62,-33.24);
+%\fill [black] (26.62,-33.24) -- (25.68,-33.15) -- (26.12,-34.05);
+\draw [black] (16.9,-39.6) -- (26.3,-39.6);
+%\fill [black] (26.3,-39.6) -- (25.5,-39.1) -- (25.5,-40.1);
+\draw [black] (15.53,-45.08) -- (27.67,-26.32);
+%\fill [black] (27.67,-26.32) -- (26.82,-26.72) -- (27.66,-27.26);
+\draw [black] (16,-45.46) -- (27.2,-34.04);
+%\fill [black] (27.2,-34.04) -- (26.28,-34.26) -- (27,-34.96);
+\draw [black] (16.56,-46.22) -- (26.64,-40.98);
+%\fill [black] (26.64,-40.98) -- (25.7,-40.91) -- (26.16,-41.8);
+\draw [black] (43.69,-24.59) -- (50.31,-26.41);
+%\fill [black] (50.31,-26.41) -- (49.67,-25.71) -- (49.4,-26.68);
+\draw [black] (43.61,-30.84) -- (50.39,-28.26);
+%\fill [black] (50.39,-28.26) -- (49.47,-28.08) -- (49.82,-29.01);
+\draw [black] (42.92,-37.48) -- (51.08,-29.32);
+%\fill [black] (51.08,-29.32) -- (50.16,-29.53) -- (50.87,-30.24);
+\draw [black] (42.95,-25.9) -- (51.05,-33.8);
+%\fill [black] (51.05,-33.8) -- (50.83,-32.89) -- (50.13,-33.6);
+\draw [black] (43.66,-32.82) -- (50.34,-34.98);
+%\fill [black] (50.34,-34.98) -- (49.74,-34.26) -- (49.43,-35.21);
+\draw [black] (43.67,-38.74) -- (50.33,-36.76);
+\end{tikzpicture}
+  \caption[Pre-entrenamiento de un autoencoder]{Pre-entrenamiento de un autoencoder de 5 capas, con un codificador de 5, 3 y 2 neuronas en la primera, segunda y tercera capa respectivamente}
+  \label{fig:ae-pretrain}
+\end{figure}
+
+En el ejemplo de la \autoref{fig:ae-pretrain}, se toma la primera capa y la segunda y se entrena una RBM con los datos de entrada. A continuación, la segunda y la tercera forman otra RBM que se entrena con los datos resultantes de atravesar la primera RBM con los datos de entrada. De esta forma, se obtienen sendas matrices de pesos $W^{(1)}$ y $W^{(2)}$.
+
 \subsubsection{Ajuste fino}\label{ajuste-fino}
+
+Una vez obtenidos unos pesos iniciales mediante el pre-entrenamiento, se ``desenrolla'' la estructura completa del autoencoder, manteniendo los pesos aprendidos tanto en el codificador como en el decodificador, como se puede observar en la \autoref{fig:ae-unroll}. Por último, se ejecuta un optimizador basado en SGD para ajustar estos pesos y los sesgos, para minimizar la función de coste requerida, según el tipo de autoencoder construido.
+
+\begin{figure}[hbtp]
+  \centering
+  \begin{tikzpicture}[scale=0.15]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (15.7,-15.6) circle (3);
+\draw [black] (15.7,-23.8) circle (3);
+\draw [black] (15.7,-31.9) circle (3);
+\draw [black] (15.7,-39.6) circle (3);
+\draw [black] (15.7,-47.6) circle (3);
+\draw [black] (29.3,-23.8) circle (3);
+\draw [black] (29.3,-31.9) circle (3);
+\draw [black] (29.3,-39.6) circle (3);
+\draw [black] (41.8,-27) circle (3);
+\draw [black] (41.8,-36.5) circle (3);
+\draw (23.5,-13.7) node {$W^{(1)}$};
+\draw (35.5,-17.4) node {$W^{(2)}$};
+\draw [black] (53.7,-23.8) circle (3);
+\draw [black] (53.7,-31.9) circle (3);
+\draw [black] (53.7,-39.6) circle (3);
+\draw [black] (65.4,-15.6) circle (3);
+\draw [black] (65.4,-23.8) circle (3);
+\draw [black] (65.4,-31.9) circle (3);
+\draw [black] (65.4,-39.6) circle (3);
+\draw [black] (65.4,-47.6) circle (3);
+\draw (47.7,-17.4) node {$\Tr{(W^{(2)})}$};
+\draw (58.3,-13.7) node {$\Tr{(W^{(1)})}$};
+\draw [black] (18.27,-17.15) -- (26.73,-22.25);
+\fill [black] (26.73,-22.25) -- (26.3,-21.41) -- (25.79,-22.27);
+\draw [black] (17.62,-17.9) -- (27.38,-29.6);
+\fill [black] (27.38,-29.6) -- (27.25,-28.66) -- (26.48,-29.3);
+\draw [black] (17.18,-18.21) -- (27.82,-36.99);
+\fill [black] (27.82,-36.99) -- (27.86,-36.05) -- (26.99,-36.54);
+\draw [black] (18.7,-23.8) -- (26.3,-23.8);
+\fill [black] (26.3,-23.8) -- (25.5,-23.3) -- (25.5,-24.3);
+\draw [black] (18.28,-25.34) -- (26.72,-30.36);
+\fill [black] (26.72,-30.36) -- (26.29,-29.53) -- (25.78,-30.39);
+\draw [black] (17.66,-26.07) -- (27.34,-37.33);
+\fill [black] (27.34,-37.33) -- (27.2,-36.39) -- (26.44,-37.05);
+\draw [black] (18.28,-30.36) -- (26.72,-25.34);
+\fill [black] (26.72,-25.34) -- (25.78,-25.31) -- (26.29,-26.17);
+\draw [black] (18.7,-31.9) -- (26.3,-31.9);
+\fill [black] (26.3,-31.9) -- (25.5,-31.4) -- (25.5,-32.4);
+\draw [black] (18.31,-33.38) -- (26.69,-38.12);
+\fill [black] (26.69,-38.12) -- (26.24,-37.29) -- (25.75,-38.16);
+\draw [black] (17.66,-37.33) -- (27.34,-26.07);
+\fill [black] (27.34,-26.07) -- (26.44,-26.35) -- (27.2,-27.01);
+\draw [black] (18.31,-38.12) -- (26.69,-33.38);
+\fill [black] (26.69,-33.38) -- (25.75,-33.34) -- (26.24,-34.21);
+\draw [black] (18.7,-39.6) -- (26.3,-39.6);
+\fill [black] (26.3,-39.6) -- (25.5,-39.1) -- (25.5,-40.1);
+\draw [black] (17.19,-45) -- (27.81,-26.4);
+\fill [black] (27.81,-26.4) -- (26.98,-26.85) -- (27.85,-27.35);
+\draw [black] (17.66,-45.33) -- (27.34,-34.17);
+\fill [black] (27.34,-34.17) -- (26.43,-34.44) -- (27.19,-35.1);
+\draw [black] (18.29,-46.08) -- (26.71,-41.12);
+\fill [black] (26.71,-41.12) -- (25.77,-41.1) -- (26.28,-41.96);
+\draw [black] (32.21,-24.54) -- (38.89,-26.26);
+\fill [black] (38.89,-26.26) -- (38.24,-25.57) -- (37.99,-26.54);
+\draw [black] (32.09,-30.81) -- (39.01,-28.09);
+\fill [black] (39.01,-28.09) -- (38.08,-27.92) -- (38.44,-28.85);
+\draw [black] (31.41,-37.47) -- (39.69,-29.13);
+\fill [black] (39.69,-29.13) -- (38.77,-29.35) -- (39.48,-30.05);
+\draw [black] (31.4,-25.94) -- (39.7,-34.36);
+\fill [black] (39.7,-34.36) -- (39.49,-33.44) -- (38.78,-34.14);
+\draw [black] (32.12,-32.94) -- (38.98,-35.46);
+\fill [black] (38.98,-35.46) -- (38.41,-34.72) -- (38.06,-35.66);
+\draw [black] (32.21,-38.88) -- (38.89,-37.22);
+\fill [black] (38.89,-37.22) -- (37.99,-36.93) -- (38.23,-37.9);
+\draw [black] (44.7,-37.26) -- (50.8,-38.84);
+\fill [black] (50.8,-38.84) -- (50.15,-38.16) -- (49.9,-39.13);
+\draw [black] (44.6,-35.42) -- (50.9,-32.98);
+\fill [black] (50.9,-32.98) -- (49.98,-32.8) -- (50.34,-33.74);
+\draw [black] (43.85,-34.31) -- (51.65,-25.99);
+\fill [black] (51.65,-25.99) -- (50.74,-26.23) -- (51.47,-26.91);
+\draw [black] (44.7,-26.22) -- (50.8,-24.58);
+\fill [black] (50.8,-24.58) -- (49.9,-24.3) -- (50.16,-25.27);
+\draw [black] (44.57,-28.14) -- (50.93,-30.76);
+\fill [black] (50.93,-30.76) -- (50.38,-29.99) -- (50,-30.92);
+\draw [black] (43.86,-29.18) -- (51.64,-37.42);
+\fill [black] (51.64,-37.42) -- (51.45,-36.49) -- (50.73,-37.18);
+\draw [black] (56.16,-22.08) -- (62.94,-17.32);
+\fill [black] (62.94,-17.32) -- (62,-17.37) -- (62.58,-18.19);
+\draw [black] (56.7,-23.8) -- (62.4,-23.8);
+\fill [black] (62.4,-23.8) -- (61.6,-23.3) -- (61.6,-24.3);
+\draw [black] (56.17,-25.51) -- (62.93,-30.19);
+\fill [black] (62.93,-30.19) -- (62.56,-29.33) -- (61.99,-30.15);
+\draw [black] (56.21,-33.55) -- (62.89,-37.95);
+\fill [black] (62.89,-37.95) -- (62.5,-37.09) -- (61.95,-37.93);
+\draw [black] (55.49,-26.21) -- (63.61,-37.19);
+\fill [black] (63.61,-37.19) -- (63.54,-36.25) -- (62.74,-36.84);
+\draw [black] (55.02,-26.49) -- (64.08,-44.91);
+\fill [black] (64.08,-44.91) -- (64.17,-43.97) -- (63.27,-44.41);
+\draw [black] (55.45,-29.46) -- (63.65,-18.04);
+\fill [black] (63.65,-18.04) -- (62.78,-18.4) -- (63.59,-18.98);
+\draw [black] (56.17,-30.19) -- (62.93,-25.51);
+\fill [black] (62.93,-25.51) -- (61.99,-25.55) -- (62.56,-26.37);
+\draw [black] (56.7,-31.9) -- (62.4,-31.9);
+\fill [black] (62.4,-31.9) -- (61.6,-31.4) -- (61.6,-32.4);
+\draw [black] (55.49,-34.31) -- (63.61,-45.19);
+\fill [black] (63.61,-45.19) -- (63.53,-44.25) -- (62.73,-44.85);
+\draw [black] (55.01,-36.9) -- (64.09,-18.3);
+\fill [black] (64.09,-18.3) -- (63.29,-18.8) -- (64.18,-19.23);
+\draw [black] (55.49,-37.19) -- (63.61,-26.21);
+\fill [black] (63.61,-26.21) -- (62.74,-26.56) -- (63.54,-27.15);
+\draw [black] (56.21,-37.95) -- (62.89,-33.55);
+\fill [black] (62.89,-33.55) -- (61.95,-33.57) -- (62.5,-34.41);
+\draw [black] (56.7,-39.6) -- (62.4,-39.6);
+\fill [black] (62.4,-39.6) -- (61.6,-39.1) -- (61.6,-40.1);
+\draw [black] (56.18,-41.29) -- (62.92,-45.91);
+\fill [black] (62.92,-45.91) -- (62.55,-45.04) -- (61.98,-45.87);
+\end{tikzpicture}
+  \caption[Desenrollado del autoencoder]{Desenrollado del autoencoder, manteniendo las matrices de pesos aprendidas en el pre-entrenamiento}
+  \label{fig:ae-unroll}
+\end{figure}
+
+Durante la optimización, los datos se hacen pasar por la red (propagación hacia adelante) en minilotes, es decir, cada gradiente no se calcula respecto del conjunto completo de instancias sino de una muestra de ellas de un tamaño fijo dado. De esta forma, cada iteración del algoritmo es más rápida, sin perder capacidad de generalización ya que en cada iteración hay oportunidad de escoger nuevas instancias. El número de iteraciones también se conoce como número de \emph{épocas}, y suele ser un parámetro escogido por el usuario. Según la rapidez de la convergencia del algoritmo, serán necesarias más o menos épocas para llegar a un mínimo local.
