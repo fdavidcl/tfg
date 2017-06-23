@@ -1,0 +1,6 @@
+[submodule "ruta"]
+	path = ruta
+	url = git@github.com:fdavidcl/ruta
+[submodule "rutavis"]
+	path = rutavis
+	url = git@github.com:fdavidcl/rutavis
