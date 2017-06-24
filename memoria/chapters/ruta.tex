@@ -4,10 +4,10 @@
 
 R \autocite{rlang} es un lenguaje de programación dirigido al tratamiento de datos, y
 como tal proporciona estructuras de datos y funcionalidades básicas para
-representar y tratar problemas de minería de datos. Es un proyecto GNU, y se considera una implementación alternativa del lenguaje S para estadística, desarrollado originalmente en Bell Labs.
+representar y tratar problemas de minería de datos. Es un proyecto GNU\footnote{GNU es un proyecto extenso que abarca distintos paquetes de software libre, R es uno de ellos: \url{https://www.gnu.org/}.}, y se considera una implementación alternativa del lenguaje S para estadística, desarrollado originalmente en Bell Labs.
 
 Además, existe toda
-una plataforma de paquetes para R denominada CRAN, que cuenta con
+una plataforma de paquetes para R denominada CRAN\footnote{\url{https://cran.r-project.org}}, que cuenta con
 multitud de bibliotecas que facilitan tareas muy diversas, desde lectura y
 visualización de datos hasta el propio procesamiento mediante distintos
 algoritmos.
@@ -24,7 +24,7 @@ Los instaladores para Windows y macOS se pueden descargar desde el sitio web del
 
 \subsection{Uso del lenguaje}
 
-El lenguaje R se puede utilizar de forma interactiva mediante el REPL que se invoca con el comando \texttt{R}, mediante scripts que se pueden ejecutar con el programa \texttt{Rscript} o desde un IDE como RStudio \autocite{rstudio}.
+El lenguaje R se puede utilizar de forma interactiva mediante el REPL\footnote{Un REPL (\emph{read-eval-print-loop}) es un entorno de programación interactivo donde se evalúa el código línea a línea.} que se invoca con el comando \texttt{R}, mediante scripts que se pueden ejecutar con el programa \texttt{Rscript} o desde un IDE como RStudio \autocite{rstudio}.
 
 R soporta la mayoría de tipos de dato básicos de cualquier otro lenguaje:
 \begin{itemize}
@@ -43,7 +43,7 @@ Las funciones son objetos de primera clase en R. Esto quiere decir que se pueden
 R incorpora tres sistemas de orientación a objetos distintos: S3, S4 y \textit{Reference Classes} (RC). El primero de ellos es el más sencillo y el más utilizado, y es también el que se usa en el software desarrollado. Consiste simplemente en objetos tipo lista a los que se le ha aplicado un atributo de clase mediante la función \texttt{class}. Este atributo permite escoger un método cuando se realiza una llamada a una función genérica.
 
 \begin{example}
-  Para realizar una demostración sobre la orientación a objetos S3 de R, vamos a definir objetos de clase \texttt{animal} que implementen el método \texttt{print}. \texttt{print} es ya una función genérica de R, luego la asociación del método que definamos con nuestros objetos será automática. Para crearlos, podemos usar una función que hará las veces de constructor:
+  Para realizar una demostración sobre la orientación a objetos S3 de R, vamos a definir objetos de clase \texttt{animal} que implementen el método \texttt{print}. Este es ya una función genérica de R, luego la asociación del método que definamos con nuestros objetos será automática. Para crearlos, podemos usar una función que hará las veces de constructor:
   \begin{lstlisting}
 animal <- function(nombre, sonido) {
   objeto <- list(
@@ -98,7 +98,7 @@ R CMD INSTALL mxnet_current_r.tar.gz
 \end{lstlisting}
 
 \subsection{Uso de la biblioteca}
-Para construir una estructura de aprendizaje profunda con MXNet, basta con comenzar con un símbolo que corresponderá a los datos de entrada, después especificar las capas que formarán la red, y por último el tipo de salida deseada.
+Para construir una estructura de aprendizaje profunda con MXNet, basta con comenzar con un símbolo que corresponderá a los datos de entrada, después especificar las capas que formarán la red y, por último, el tipo de salida deseada.
 
 Después, para ajustar el modelo creado con un conjunto de entrenamiento, MXNet proporciona algunas utilidades de alto nivel y otras más cercanas al cómputo paso a paso de las propagaciones hacia adelante y hacia atrás. De las primeras podemos destacar \texttt{mx.model.FeedForward.create} y de las últimas \texttt{mx.exec.backward} y \texttt{mx.exec.forward}.
 
@@ -162,31 +162,21 @@ predict(model, test_x)
 Se ha desarrollado un paquete software, denominado Ruta, con el
 objetivo de proporcionar acceso a diversas estructuras de aprendizaje profundo no supervisado de forma muy sencilla. El paquete se ha escrito en el lenguaje R utilizando los recursos de la biblioteca MXNet.
 
-\subsection{Motivación}
-
-Algunas de las técnicas más relevantes de Deep Learning no supervisado
-están disponibles ya en paquetes como \texttt{h2o} \autocite{h2o},
-\texttt{deepnet} \autocite{deepnet} o \texttt{darch} \autocite{darch}.
-
-Sin embargo, hasta ahora ninguna herramienta para R se ha centrado en ser exhaustiva con las estructuras no supervisadas, ni ha incluido mecanismos de visualización que faciliten entender el comportamiento de
-estas redes o los modelos generados por ellas.
-
-El software Ruta trata de llenar este hueco suministrando una serie de funcionalidades para la creación, entrenamiento y evaluación de técnicas de DL no supervisado de muy fácil uso. El proyecto compañero Rutavis, descrito en la sección \ref{sec:rutavis}, se encarga de proporcionar una interfaz gráfica de usuario desde la que entrenar modelos y generar visualizaciones que expliquen su comportamiento.
-
 \subsection{Desarrollo y metodologías}\label{metodologuxeda-de-desarrollo}
 
-Al comienzo del desarrollo del software, se han analizado los objetivos perseguidos y se han escogido las tecnologías que nos facilitarían su consecución. En concreto, se ha elegido el lenguaje R por varias razones. Por un lado apenas dispone de herrmientas de Deep Learning cómodas y consolidadas, luego este nuevo software no es redundante con nada existente. Además, R es un lenguaje que aporta muchas facilidades para la visualización de datos, lo cual es beneficioso ya que parte del software desarrollado se dedica a eso. También se eligió la biblioteca MXNet tras comparar con varias de las competidoras en el mercado en ese momento: Tensorflow se descartó por ser relativamente más lenta que el resto, y Theano y Caffe no disponían de API para R, mientras que otras librerías no estaban tan desarrolladas y no aportaban la funcionalidad que necesitábamos.
+Al comienzo del desarrollo del software, se han analizado los objetivos perseguidos y se han escogido las tecnologías que nos facilitarían su consecución. En concreto, se ha elegido el lenguaje R por varias razones. Por un lado apenas dispone de herramientas de Deep Learning cómodas y consolidadas, luego este nuevo software no es redundante con nada existente. Además, R es un lenguaje que aporta muchas facilidades para la visualización de datos, lo cual es beneficioso ya que parte del software desarrollado se dedica a eso. También se eligió la biblioteca MXNet tras comparar con varias de las competidoras en el mercado en ese momento: Tensorflow se descartó por ser relativamente más lenta que el resto, y Theano y Caffe no disponían de API para R, mientras que otras librerías no estaban tan desarrolladas y no aportaban la funcionalidad que necesitábamos.
 
-La metodología de desarrollo ha sido de tipo ágil, es decir, se ha desarrollado partiendo de un prototipo funcional, alterando y aumentando sus funcionalidades según se ha ido requiriendo. La documentación\footnote{Se puede consultar desde R mediante \texttt{?} delante del nombre de la función. Por ejemplo, \texttt{?ruta.makeTask}.} es exhaustiva en el sentido de que cubre toda la funcionalidad disponible para el usuario, pero no es excesiva. Además, progresivamente se ha ido adaptando el desarrollo según las nuevas necesidades o los obstáculos encontrados. \textcolor{red}{Prototipo: dlvisR presentado en congreso???}
+La metodología de desarrollo ha sido de tipo ágil, es decir, se ha desarrollado partiendo de un prototipo funcional, alterando y aumentando sus funcionalidades según se ha ido requiriendo. La documentación\footnote{Se puede consultar desde R mediante \texttt{?} delante del nombre de la función. Por ejemplo, \texttt{?ruta.makeTask}.} es exhaustiva en el sentido de que cubre toda la funcionalidad disponible para el usuario, pero no es excesiva. Además, progresivamente se ha ido adaptando el desarrollo según las nuevas necesidades o los obstáculos encontrados.
 
+Un prototipo preliminar de esta herramienta, con funcionalidades básicas de entrenamiento de autoencoders y visualizaciones sencillas, se implementó bajo el nombre \emph{dlvisR} y se presentó en el congreso nacional CAEPIA 2016 \autocite{charte2016dlvisr}.
 
-Puesto que se trata de un software científico que se sostiene sobre varias piezas de software libre, se ha decidido que también esta herramienta será de código abierto y libre. Para asegurar que se mantiene libre, además, se ha utilizado la licencia \textit{GNU General Public License} (GPL) 3.0, que requiere que las modificaciones que se realicen sobre el código del software se liberen bajo la misma licencia. Así, el código del software está publicado en \href{https://github.com/fdavidcl/ruta/}{el repositorio fdavidcl/ruta de GitHub}.
+Puesto que se trata de un software científico que se sostiene sobre varias piezas de software libre, se ha decidido que también esta herramienta será de código abierto y libre. Para asegurar que se mantiene libre, además, se ha utilizado la licencia \textit{GNU General Public License} (GPL) 3.0, que requiere que las modificaciones que se realicen sobre el código del software se liberen bajo la misma licencia\footnote{Texto de la licencia disponible en \url{https://www.gnu.org/licenses/gpl.html}.}. Así, el código del software está publicado en el repositorio fdavidcl/ruta de GitHub\footnote{\url{https://github.com/fdavidcl/ruta/}}.
 
 Para asistir a la comprobación del software completo durante su desarrollo, se ha utilizado un sistema de integración continua, es decir, automatización de \textit{builds} y de tests. Este sistema realiza, a cada avance publicado en GitHub, una comprobación mediante el programa \texttt{R CMD check}.
 
 \subsection{Instalación}
 
-Para instalar la última versión estable de Ruta y el paquete compañero Rutavis, basta con utilizar el conocido paquete \texttt{devtools} para realizar automáticamente la descarga y la instalación. Desde la consola de R ejecutamos:
+Para instalar la última versión estable de Ruta y el paquete compañero Rutavis, basta con utilizar el conocido paquete \texttt{devtools} \autocite{devtools} para realizar automáticamente la descarga y la instalación. Desde la consola de R ejecutamos:
 \begin{lstlisting}[numbers=none]
 devtools::install_github("fdavidcl/ruta")
 devtools::install_github("fdavidcl/rutavis")
@@ -235,7 +225,7 @@ Las funcionalidades del paquete se han dividido en tres categorías:
 \item Algoritmos de aprendizaje
 \item Modelos entrenados
 \end{itemize}
-Aquí se ha utilizado como guía la arquitectura del paquete \texttt{mlR} \autocite{mlr} dirigido a aprendizaje automático en general.
+Aquí se ha utilizado como guía la arquitectura del paquete \texttt{mlr} \autocite{mlr} dirigido a aprendizaje automático en general.
 
 Por un lado, las tareas representan conjuntos de datos de los que se desea aprender un modelo. Para ello, se construirán representaciones de los algoritmos de aprendizaje, ajustadas con diversos parámetros, que después se podrán entrenar y generar un modelo. Dicho modelo se podrá estudiar para obtener información sobre nuevos datos o sobre los aprendidos.
 
@@ -314,11 +304,11 @@ deepf <- ruta.deepFeatures(model, task)
   \end{lstlisting}
 \end{example}
 
-Para conseguir el buen funcionamiento de estas características, ha sido necesaria la implementación de una funcionalidad ausente en la API de MXNet para R: la predicción de capas internas de una red. Dicha implementación se encuentra también incluida en el paquete como la función \texttt{predictPartial}. Esta función trabaja a bajo nivel, controlando la propagación de datos a través de cada capa.
+Para conseguir extraer estas características internas, ha sido necesaria la implementación de una funcionalidad ausente en la API de MXNet para R: la predicción de capas internas de una red. Dicha implementación se encuentra también incluida en el paquete como la función \texttt{predictPartial}. Esta función trabaja a bajo nivel, controlando la propagación de datos a través de cada capa.
 
 \section{Visualización con Rutavis}\label{sec:rutavis}
 
-Una herramienta compañera a \texttt{ruta} es \texttt{rutavis}, una
+Una herramienta complementaria a \texttt{ruta} es \texttt{rutavis}, una
 aplicación con interfaz de usuario web que permite componer
 visualizaciones de forma interactiva y compararlas.
 
@@ -357,7 +347,9 @@ De nuevo, este software se estructura como un paquete convencional de R, siguien
 
 Rutavis es un paquete totalmente dependiente de Ruta, centrado exclusivamente en la generación de gráficos a partir de modelos entrenados. Cumple dos responsabilidades principales: por una parte, la gestión de visualizaciones que ayuden a entender el comportamiento de las técnicas no supervisadas y de los modelos que entrenan; por otra, una interfaz web que facilita al usuario la creación de dichas visualizaciones.
 
-Los gráficos generados se muestran mediante la herramienta de visualización Plotly \autocite{plotly}, que tiene una amplia gama de gráficas y una extensa documentación. Además, para la creación del servidor web y la aplicación web desde R, se ha utilizado el paquete Shiny \autocite{shiny}, que proporciona diversas utilidades para el intercambio de datos entre el cliente y el servidor.
+Los gráficos generados se muestran mediante la herramienta de visualización Plotly \autocite{plotly}, que tiene una amplia gama de gráficas y una extensa documentación. Cuenta también con un paquete homónimo para R.
+
+Además, para la creación del servidor web y la aplicación web desde R, se ha aprovechado el paquete Shiny \autocite{shiny}, que proporciona diversas utilidades para el intercambio de datos entre el cliente y el servidor. Se ha utilizado el \emph{framework} CSS Bulma\footnote{\url{http://bulma.io}} para dar estructura y estilo a los elementos de la página. La interactividad con el usuario se ha programado en JavaScript en el cliente, que envía los datos al servidor y gestiona las respuestas.
 
 \subsection{Uso de la aplicación}\label{uso-de-la-aplicaciuxf3n}
 
@@ -370,7 +362,7 @@ plot(model, task)
 \end{lstlisting}
 \begin{figure}[hbtp]
   \centering
-  \includegraphics[width=0.8\textwidth]{images/plot_iris_ae2.png}
+  \includegraphics[width=0.8\textwidth]{images/rutavis_iris.png}
   \caption{\label{fig:irisplot}Gráfico de la codificación de los datos de entrada mediante la capa interna del autoencoder}
 \end{figure}
 
@@ -382,3 +374,41 @@ Para lanzar la interfaz de usuario web, simplemente hay que ejecutar la siguient
 \begin{lstlisting}[numbers=none]
 rutavis::ruta.gui()
 \end{lstlisting}
+
+Se abrirá una pestaña de navegador con la interfaz de usuario, inicialmente en la pantalla mostrada en la \autoref{fig:rutavis-welcome}, que nos permitirá crear una nueva visualización. Se pueden gestionar simultáneamente varias visualizaciones, de forma que se puedan estudiarse una a una y modificar sus parámetros, ver comparativamente en formato mosaico, o listar en estilo \emph{notebook} junto a los parámetros establecidos.
+
+\begin{figure}[hbtp]
+  \centering
+  \fbox{\includegraphics[width=0.8\textwidth]{images/rutavis_welcome}}
+  \caption[Interfaz gráfica de Rutavis]{Pantalla de bienvenida de Rutavis}
+  \label{fig:rutavis-welcome}
+\end{figure}
+
+Vamos a realizar paso a paso un entrenamiento de dos modelos basados en autoencoders para el conjunto de datos WDBC (\emph{Wisconsin Diagnostic Breast Cancer}) obtenido de \autocite{Lichman:2013}. El conjunto representa un problema de clasificación binaria, donde a partir de características médicas se pretende predecir si un tumor es benigno o maligno.
+
+Comenzamos lanzando la interfaz web y seleccionando la opción \emph{New visualization}. Se abrirá una vista compuesta por un panel de ajustes y un espacio para los gráficos. Cargamos el conjunto de datos mediante la opción \emph{Upload new dataset} del panel. Seleccionamos la característica que corresponde con la clase de la lista \emph{Class attribute}.
+
+Para configurar un modelo de aprendizaje, escogemos los parámetros deseados. Como se puede observar en el ejemplo de la \autoref{fig:rutavis2}, utilizamos capas con unidades de tipo \emph{leaky} ReLU, una codificación en 3 variables, un entrenamiento con AdaGrad de 200 épocas ajustando la tasa de aprendizaje a $0.02$. En la \autoref{fig:rutavis1} se muestra la vista de visualización única con el gráfico resultante, que corresponde a la salida de la capa interna del autoencoder respecto a los datos de entrada (los puntos verdes corresponden a tumores benignos y los azules a malignos). Se trata de un gráfico interactivo, sobre el que podemos arrastrar el ratón para mover los ejes, acercar o alejar la vista, y guardar en formato PNG.
+
+\begin{figure}[hbtp]
+  \centering
+  \fbox{\includegraphics[width=0.4\textwidth]{images/rutavis_params}}
+  \caption[Interfaz gráfica de Rutavis]{El panel de ajuste de parámetros en detalle}
+  \label{fig:rutavis2}
+\end{figure}
+
+\begin{figure}[hbtp]
+  \centering
+  \fbox{\includegraphics[width=\textwidth]{images/rutavis_plot2}}
+  \caption[Interfaz gráfica de Rutavis]{Interfaz gráfica de usuario de Rutavis. Arriba, la barra de pestañas y modos de visualización. A la izquierda, ajuste de parámetros. En el centro, visualización de las gráficas generadas}
+  \label{fig:rutavis1}
+\end{figure}
+
+Añadimos un segundo entorno de visualización mediante el botón \emph{+} de la barra superior de pestañas. Entrenamos un modelo similar, en este caso con unidades con función de activación tangente hiperbólica y distintos parámetros de épocas y tasa de aprendizaje. Seleccionamos la vista de mosaico para comparar ambos resultados, como se muestra en la \autoref{fig:rutavis3}. La vista estilo \emph{notebook} es similar a esta, pero apilando verticalmente todas las visualizaciones añadidas.
+
+\begin{figure}[hbtp]
+  \centering
+  \fbox{\includegraphics[width=\textwidth]{images/rutavis_compare}}
+  \caption[Modo mosaico de Rutavis]{Comparación de dos visualizaciones en el modo mosaico de Rutavis}
+  \label{fig:rutavis3}
+\end{figure}
