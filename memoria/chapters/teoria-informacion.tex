@@ -1,5 +1,5 @@
-La Teoría de la Información estudia y cuantifica la información presente
-en una señal. El objetivo de la misma es el diseño de códigos para
+La teoría de la información estudia y cuantifica la información presente
+en una señal. El origen de la misma es la búsqueda de códigos para
 compresión de datos y la maximización de la tasa de transmisión en
 comunicación. A causa de sus fundamentos y aplicaciones, es un campo de
 estudio que se relaciona con muchos otros ámbitos, como la ingeniería
@@ -10,7 +10,9 @@ A partir de lo estudiado en el capítulo anterior, si queremos añadir una
 intuición acerca de la información que aporta un suceso, será razonable
 que la cantidad de información sea menor cuanto más probable sea el
 suceso dado. En el caso extremo, el suceso seguro no aporta información
-ninguna.
+alguna.
+
+Realizaremos dos aplicaciones de esta teoría al problema que ocupa este trabajo. Por un lado, el concepto de entropía cruzada nos permitirá definir en la \autoref{sec:funciones-de-coste} las funciones de coste o funciones objetivo que se tratarán de optimizar mediante las técnicas de Deep Learning. Por otro, la desigualdad de la información nos aportará la intuición de que un modelo muy cercano a la distribución de los datos nos permitirá reducir mejor la dimensionalidad.
 
 Para formalizar estas intuiciones, definiremos y haremos uso de
 conceptos como la entropía. La fuente principal de este capítulo es
@@ -24,7 +26,7 @@ magnitudes}\label{entropuxeda.-propiedades-y-magnitudes}
 \defineb
 La \emph{entropía} \(H\) de una variable aleatoria discreta \(X\) con
 distribución \(p(x)=P(X=x)\) viene dada por la siguiente expresión:
-\[H(X)=-\sum_{x\in X^{-1}(\Omega)}p(x)\log p(x)~.\] Si se usa otra base
+\[H(X)=-\sum_{x\in X^{-1}(\Omega)}p(x)\log p(x)~.\] $\log$ denota el logaritmo neperiano. Si se usa otra base
 \(b\) para el logaritmo de la definición notaremos \(H_{b}\). \definee
 
 Observamos que se puede expresar como la esperanza de una función de la
@@ -49,8 +51,7 @@ función de \(X\) es no negativa. \proofe
 \lemmab
 \(H_b(X)=\left(\log_b a\right)H_a(X)\) \label{lm:entropy-base-change}
 \proofb
-Basta recordar que \(\log_{b}p=\log_{b}a\log_a p\) y aplicar la
-definición. \proofe
+Es consecuencia del cambio de base de los logaritmos. \proofe
 \lemmae
 
 \subsection{Magnitudes}\label{magnitudes}
@@ -65,7 +66,7 @@ varía, por lo que se está midiendo en una magnitud distinta.
   \emph{bits}.
 \item
   Si se toman en base \(e\), se está midiendo la entropía en
-  \emph{nats}.
+  \emph{nats}\footnote{Denominación de la unidad de medida de información análoga al \emph{bit} para base $e$.}.
 \end{itemize}
 
 Además, el cambio de base del
@@ -80,9 +81,7 @@ La \emph{entropía conjunta} \(H(X,Y)\) de dos variables aleatorias
 discretas con distribución conjunta \(p(x,y)\) se define como
 
 \begin{equation}H(X,Y)=-\sum_{x\in\Omega}\sum_{x\in\Omega'}p(x,y)\log p(x,y)~,\end{equation}
-
 que también se puede expresar como
-
 \begin{equation}H(X,Y)=-\E\left[\log p(x,y)\right]~.\end{equation}
 
 \definee
@@ -178,7 +177,7 @@ sobre \(Y\) como \(Y\) sobre \(X\):
         &=H(X)-H(X\mid Y)~.
 \end{align*}
 
-Utilizando que \(H(X,Y)=H(X)+H(Y\mid X)\) se tiene la consecuencia.
+La consecuencia se deduce de la igualdad \(H(X,Y)=H(X)+H(Y\mid X)\).
 \proofe
 
 \theoe
@@ -195,8 +194,7 @@ La \emph{entropía relativa condicional}
 \definee
 
 Un concepto similar al de entropía relativa es la entropía cruzada.
-Simplemente, en lugar de considerar la longitud de código adicional al
-utilizar un código, se considera la longitud completa.
+Simplemente, se considera la longitud completa de código necesaria para describir la variable en función de un código basado en la distribución $q$ frente a $p$, en lugar de considerar la longitud de código adicional.
 
 \defineb
 La \emph{entropía cruzada} entre dos funciones de probabilidad \(p\) y
@@ -258,7 +256,6 @@ masa, veámoslo para \(k\) puntos. Escribiendo
                        &\geq f\left(p_kx_k+(1-p_k) \sum_{i=1}^{k-1}p'_ix_i\right)\\
                        &=f\left(\sum_{i=1}^kP_ix_i\right)~,  
 \end{align*}
-
 donde la primera desigualdad se deduce de la hipótesis de inducción y la
 segunda es consecuencia de la convexidad.
 
@@ -266,7 +263,7 @@ Por argumentos de continuidad se puede extender esta demostración a
 distribuciones continuas. \proofe
 \theoe
 
-\theob[Desigualdad de la información]
+\theob[Desigualdad de la información]\label{th:information-ineq}
 Sean \(p\), \(q\), funciones de probabilidad de una variable aleatoria
 \(X\). Entonces, \[D(p\Mid q)\geq 0\] \proofb
 Sea \(A=\{x\in\Omega :p(x)>0\}\) el soporte de \(p\). Entonces, notando
@@ -299,3 +296,5 @@ Para una variable aleatoria \(X\) y funciones de probabilidad \(p\)
 (dada por la distribución de X) y \(q\), \[C(p, q)\geq H(X)~.\] De igual
 forma, si \(Y\) es otra variable aleatoria con la misma distribución, se
 tiene \[C(p(y\mid x), q(y\mid x))\geq H(Y\mid X)~.\] \core
+
+Lo que nos dicen el \autoref{th:information-ineq} y sus consecuencias es que cada vez que asumimos un modelo sobre unos datos que no coincide con su verdadera distribución, necesitamos una mayor longitud de código que la óptima para representarlos. En nuestro caso, si vamos a tratar de reducir la dimensionalidad de un conjunto de datos, nos aporta la intuición de que un modelo muy ajustado a la distribución verdadera será más beneficioso a la hora de obtener una representación de menor dimensionalidad.

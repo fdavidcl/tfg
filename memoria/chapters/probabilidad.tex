@@ -1,6 +1,8 @@
-\section{Conceptos}\label{conceptos}
+A lo largo de este capítulo se definen conceptos básicos de la teoría de la probabilidad, que serán utilizados en el resto del trabajo. También se hace mención a unas propiedades de la convergencia que nos permiten después demostrar un resultado técnico que motiva el problema de reducción de la dimensionalidad, estudiado con más detalle en la \autoref{sec:red-dim}.  La fuente principal del capítulo es \textcite{jaynes2003}.
 
-El objetivo de la Probabilidad es modelar y trabajar con incertidumbre.
+\section{Recordatorio de conceptos}\label{conceptos}
+
+El objetivo de la probabilidad es modelar y trabajar con incertidumbre.
 Dicha incertidumbre puede provenir de diversas fuentes, entre ellas:
 
 \begin{itemize}
@@ -18,30 +20,28 @@ Dicha incertidumbre puede provenir de diversas fuentes, entre ellas:
   útil que uno absolutamente preciso).
 \end{itemize}
 
-La probabilidad se puede estudiar desde el enfoque frecuentista, donde
-se trabaja con las tasas de ocurrencia de sucesos, o desde el enfoque
-bayesiano, que trata de medir los grados de creencia, de certidumbre,
-con los que ocurre un evento. En la práctica se puede partir del mismo
-tipo de razonamientos y cálculos para trabajar con ambos tipos de
-probabilidad.
+En el ámbito de estudio de este trabajo, el del aprendizaje automático, la
+teoría de la probabilidad nos sirve para estudiar los algoritmos de
+aprendizaje desde un punto de vista teórico y construir representaciones de los
+modelos que aprenden a partir de los datos.
 
 En esta sección se realiza un recordatorio de conceptos necesarios para
 trabajar con probabilidades en el resto del texto.
 
 \defineb
-Una \textbf{variable aleatoria} es una función medible
+Una \emph{variable aleatoria} es una función medible
 \(X:\Omega\rightarrow E\) donde \(\Omega\) es un espacio de probabilidad
 y \(E\) un espacio métrico. \definee
 \defineb
 El par \((\Omega, \Sigma)\) donde \(\Omega\) es un conjunto y \(\Sigma\)
-una \(\sigma\)-álgebra sobre \(\Omega\) es un \textbf{espacio medible}.
+una \(\sigma\)-álgebra sobre \(\Omega\) es un \emph{espacio medible}.
 \definee
 \defineb
 Si \((\Omega, \mathcal{F})\) es un espacio medible y \(\mu\) es una
 medida sobre \(\mathcal{F}\), entonces la terna
-\((\Omega, \mathcal{F}, \mu)\) es un \textbf{espacio de medida}. Si
+\((\Omega, \mathcal{F}, \mu)\) es un \emph{espacio de medida}. Si
 además se verifica \(\mu(\Omega)=1\), entonces se trata de un
-\textbf{espacio de probabilidad}. \definee
+\emph{espacio de probabilidad}. \definee
 
 Intuitivamente, una variable aleatoria representa una variable del
 problema que puede tomar distintos valores, y la probabilidad con la que
@@ -49,9 +49,9 @@ se darán dichos valores puede ser descrita por una distribución de
 probabilidad. Cuando notamos \(X:\Omega\rightarrow E\), interpretamos
 que \(\Omega\) es el conjunto de todos los sucesos posibles, y los
 estados que puede tomar la variable \(X\) vienen dados por su imagen,
-\(X(\Omega)\subset E\). Se dice que \(X\) es \textbf{discreta} si
+\(X(\Omega)\subset E\). Se dice que \(X\) es \emph{discreta} si
 \(X(\Omega)\) es numerable (incluyendo el caso finito), y es
-\textbf{continua} si \(X(\Omega)\) es no numerable.
+\emph{continua} si \(X(\Omega)\) es no numerable.
 
 Una distribución de probabilidad sobre una variable discreta \(X\) se
 puede describir mediante una función de probabilidad (\emph{Probability
@@ -63,9 +63,11 @@ puede describir mediante una función de densidad (\emph{Probability
 Density Function}, PDF) \(p:X(\Omega)\rightarrow [0,1]\), que verifica
 \(\int_{X(\Omega)} x dx=1\).
 
+\subsection{Distribuciones marginales}\label{marginal}
+
 Cuando una distribución describe varias variables, puede interesar
 conocer la distribución de un subconjunto de las mismas. Esta se
-denomina \textbf{distribución marginal}, y se consigue sumando o
+denomina \emph{distribución marginal}, y se consigue sumando o
 integrando a lo largo de todos los valores de las variables que no están
 en el subconjunto. Por ejemplo, si \(X\) e \(Y\) son variables
 discretas, se tiene \[P(x) = \sum_{y\in Y(\Omega)}P(x, y)~.\] Si son
@@ -76,14 +78,14 @@ continuas, entonces se verifica
 
 En ocasiones es útil representar la probabilidad de un suceso
 condicionado a la ocurrencia de otro. Para ello se utilizan
-\textbf{probabilidades condicionadas}, que se notan \(P(y|x)\) (donde
+\emph{probabilidades condicionadas}, que se notan \(P(y|x)\) (donde
 \(y\in Y(\Omega), x\in X(\Omega)\)) y se calculan mediante la siguiente
 fórmula, suponiendo que \(P(x) > 0\):
 
 \begin{equation}P(y|x)=\frac{P(y,x)}{P(x)}~.\label{eq:cond}\end{equation}
 
-\subsubsection{Encadenando probabilidades
-condicionadas}\label{encadenando-probabilidades-condicionadas}
+%\subsubsection{Encadenando probabilidades
+%condicionadas}\label{encadenando-probabilidades-condicionadas}
 
 Una distribución de probabilidad conjunta sobre varias variables se
 puede descomponer como probabilidades condicionadas sobre una sola
@@ -95,24 +97,30 @@ Esta expresión se deduce por inducción de la ecuación~\eqref{eq:cond}.
 \subsection{Independencia e independencia
 condicionada}\label{independencia-e-independencia-condicionada}
 
-Dos variables aleatorias, \(X\) e \(Y\), son \textbf{independientes} si
+\defineb
+Dos variables aleatorias, \(X\) e \(Y\), son \emph{independientes} si
 la su probabilidad conjunta equivale al producto de sus probabilidades:
 \[P(x,y)=P(x)P(y)\forall x\in X^{-1}(\Omega),y\in Y^{-1}(\Omega)~.\]
+\definee
 
-Además, se dice que son \textbf{condicionalmente independientes}
+\defineb
+Además, se dice que son \emph{condicionalmente independientes}
 respecto a una variable \(Z\) si la distribución de probabilidad
 condicionada se factoriza por \(X\) e \(Y\):
 \[P(x,y|z)=P(x|z)P(y|z)\forall x\in X^{-1}(\Omega),y\in Y^{-1}(\Omega),z\in Z^{-1}(\Omega)~.\]
+\definee
 
 \subsection{Momentos: esperanza, varianza y
 covarianza}\label{momentos-esperanza-varianza-y-covarianza}
 
-La \textbf{esperanza} de una variable aleatoria \(X\) viene dada por las
+\defineb
+La \emph{esperanza} de una variable aleatoria \(X\) viene dada por las
 expresiones siguientes, para variables discretas y continuas
 respectivamente:
 \[\mathrm E[X]=\sum_{x\in X^{-1}(\Omega)}xP(x);\quad \mathrm E[X]=\int_{X^{-1}(\Omega)}xp(x)dx~.\]
+\definee
 
-\textbf{Nota}: Todos los momentos se toman respecto de una variable
+\textbf{Nota:} Todos los momentos se toman respecto de una variable
 aleatoria y una distribución de probabilidad asociada, por lo que la
 notación correcta sería \(\mathrm E_{X~P}[X]\). Sin embargo, se omitirá
 excepto para prevenir ambigüedades.
@@ -121,21 +129,29 @@ Se puede definir la esperanza de una función \(f\) sobre los valores de
 una variable aleatoria, del siguiente modo:
 \[\mathrm E[X]=\sum_{x\in X^{-1}(\Omega)}f(x)P(x);\quad \mathrm E[X]=\int_{X^{-1}(\Omega)}f(x)p(x)dx~.\]
 
-La \textbf{varianza} da idea acerca de cómo de diferentes entre sí son
+\defineb
+La \emph{varianza} da idea acerca de cómo de diferentes entre sí son
 los valores de una variables conforme se muestrean por su distribución
 de probabilidad: \[\mathrm{Var}(X)=\mathrm E[(X-\mathrm E[X])^2]~.\]
+\definee
 
-La \textbf{covarianza} relaciona dos variables aleatorias, indicando la
+\defineb
+La \emph{covarianza} relaciona dos variables aleatorias, indicando la
 medida en que están relacionadas linealmente y la escala de dichas
 variables:
 \[\mathrm{Cov}(X, Y)=\mathrm E[(X-\mathrm E[X])(Y-\mathrm E[Y])]~.\]
+\definee
 
+\defineb
 Para un vector de variables aleatorias, \(X=(X_1, \dots X_n)\), la
-\textbf{matriz de covarianza} se define como una función matriz
+\emph{matriz de covarianza} se define como una función matriz
 \(n\times n\) dada por:
 \[\mathrm{Cov}(X)_{i,j}=\mathrm{Cov}(X_i, X_j)~.\]
+\definee
 
 \section{Resultados de convergencia}\label{resultados-de-convergencia}
+
+Ahora nos situamos en distribuciones de probabilidad sobre espacios vectoriales reales. En concreto, sobre $\RR^k$ para $k\geq 1$. Existen distintos conceptos de convergencia que podemos definir, aquí trabajaremos principalmente con la convergencia en probabilidad.
 
 Sea \(d\) una distancia en \(\RR^k\) y sea
 \(\{X_n:\Omega\rightarrow\RR^k\}\) una sucesión de variables aleatorias,
@@ -162,7 +178,7 @@ condiciones:
 entonces se tiene que \(X_m\pconv x\). \lemmae
 
 \theob[Teorema de la aplicación continua]
-\label{th:cont-map-conv} Sea \(\{X_n\}\) es una sucesión de variables
+\label{th:cont-map-conv} Sea \(\{X_n\}\) una sucesión de variables
 aleatorias y \(X\) una variable aleatoria, valuadas en un espacio
 medible \(E\). Sea \(g:E\rightarrow F\) con \(F\) otro espacio medible.
 Entonces, si \(g\) es continua casi por doquier, se tiene:
@@ -174,8 +190,98 @@ Entonces, si \(g\) es continua casi por doquier, se tiene:
 
 \theoe
 
-\section{\textasciitilde{}Herramientas de inferencia estadística
-(?)\textasciitilde{}}\label{herramientas-de-inferencia-estaduxedstica}
+%\section{\textasciitilde{}Herramientas de inferencia estadística
+%(?)\textasciitilde{}}\label{herramientas-de-inferencia-estaduxedstica}
 
-\subsection{Estimadores
-máximo-verosímiles}\label{estimadores-muxe1ximo-verosuxedmiles}
+%\subsection{Estimadores
+%máximo-verosímiles}\label{estimadores-muxe1ximo-verosuxedmiles}
+
+\section{La maldición de la
+dimensionalidad}\label{sec:dim-curse}
+
+Vamos a aplicar los resultados teóricos anteriores para estudiar una propiedad interesante que determinará uno de los problemas tratados en el campo del aprendizaje automático (\autoref{sec:red-dim}). Supongamos que contamos con una muestra de datos, en forma de subconjunto finito de $\RR^{n}$. Nos podemos plantear qué efecto tiene el tamaño de $n$, en ocasiones denominado \emph{dimensionalidad}, sobre nuestra capacidad para extraer información útil de los datos. 
+
+Algunos de los algoritmos más usuales utilizan distancias para medir similitudes entre los datos. Veremos que, conforme $n$ crece, las distancias usuales pierden significado, en el
+sentido de que el punto más lejano y el más cercano a uno dado están a
+distancias similares. Este hecho se suele denominar la maldición de la
+alta dimensionalidad (del inglés \emph{curse of high dimensionality}). Una
+formalización se encuentra en \textcite{beyer1999}, y se expone a
+continuación:
+
+\theob
+\label{th:dim-curse}
+Sea \(\{F_{m}\}_{m\in\NN}\) una sucesión de distribuciones de
+probabilidad, \(n\in \mathbb N\) y \(p\in\mathbb R^+\) fijos. Para cada
+\(m\in\NN\) sean \(X_{m1},\dots,X_{mn}\sim F_m\) muestras independientes
+e idénticamente distribuidas. Supongamos que tenemos una función
+\(d_m:\mathrm{Dom}(F_m)\rightarrow \mathbb R^+_0\) y llamamos
+
+\begin{align*}
+  \mathrm{DMIN}_{m}&=\min\{d_m(X_{mi}):i=1,\dots,n\},\\
+  \mathrm{DMAX}_{m}&=\max\{d_m(X_{mi}):i=1,\dots,n\}.
+\end{align*}
+
+Entonces, si
+\(\lim_{m\rightarrow +\infty}\Var\left[\frac{d_m(X_{m1})^p}{E[d_m(X_{m1})^p]}\right]=0\)
+se tiene que, para cada \(\varepsilon > 0\),
+\[\lim_{m\rightarrow +\infty}P\left[\mathrm{DMAX}_m\leq (1+\varepsilon) \mathrm{DMIN}_m\right]=1.\]
+\proofb
+
+Puesto que las muestras \(X_{mi}\) son idénticamente distribuidas,
+tienen la misma esperanza, y funciones de las mismas también comparten
+esperanza. Así, llamamos \(\mu_m = \E[d_m(X_{mi})^p]\) y sea
+\(V_m =\frac{d_m(X_{m1})^p}{\mu_m}\).
+
+Veamos que \(V_m\pconv 1\): primero, tenemos que
+\(\E[V_m] = \frac{\mu_m}{\mu_m} = 1\), y como consecuencia
+\(\lim_{m\rightarrow +\infty}\E[V_m] = 1\). Por hipótesis,
+\(\lim_{m\rightarrow +\infty}\Var[V_m] = 1\), y usando el
+\autoref{lm:convergencia-va} deducimos que \(V_m\pconv 1\).
+
+Ahora, definimos la variable aleatoria
+\[Y_m=\left(\frac{d_m(X_{m1})^p}{\mu_m}, \dots, \frac{d_m(X_{mn})^p}{\mu_m}\right).\]
+Como cada componente del vector \(Y_m\) es idénticamente distribuida a
+\(V_m\), se tiene que \(Y_m\pconv (1, \dots, 1)\). Como \(\min\) y
+\(\max\) (que dan la componente mínima y máxima del vector,
+respectivamente) son funciones continuas, podemos utilizar el \autoref{th:cont-map-conv} para obtener que
+\(\min(Y_m)\pconv \min\{1, \dots, 1\} = 1\) y \(\max(Y_m)\pconv 1\).
+
+Notemos ahora que
+\(\mathrm{DMIN}_m= \min\{\mu_m Y_m(i):i=1,\dots,n\}=\mu_m \min(Y_m)\) y
+de igual forma \(\mathrm{DMAX}_m=\mu_m \max(Y_m)\). Así,
+\[ \frac{\mathrm{DMAX}_m}{\mathrm{DMIN}_m}=\frac{\mu_m \max(Y_m)}{\mu_m \min(Y_m)}=\frac{\max(Y_m)}{\max(Y_m)}\pconv \frac 1 1= 1.\]
+
+Por definición de convergencia en probabilidad, para cada
+\(\varepsilon>0\) se tiene
+
+\begin{equation}
+  \label{eq:conv-dmax-dmin}
+  \lim_{m\rightarrow +\infty} P\left[\left\lvert \frac{\mathrm{DMAX}_m}{\mathrm{DMIN}_m} - 1 \right\rvert\leq\varepsilon\right] = 1,
+  \end{equation}
+y usando que \(P\left[\mathrm{DMAX}_m \geq \mathrm{DMIN}_m \right]=1\),
+\begin{gather*}
+  P\left[\left\lvert \frac{\mathrm{DMAX}_m}{\mathrm{DMIN}_m} - 1 \right\rvert\leq\varepsilon\right]=
+P\left[\frac{\mathrm{DMAX}_m}{\mathrm{DMIN}_m} - 1 \leq\varepsilon\right]=\\=
+P\left[\mathrm{DMAX}_m\leq (1+ \varepsilon)\mathrm{DMIN}_m \right],
+\end{gather*}
+luego el límite \eqref{eq:conv-dmax-dmin} es el que queríamos demostrar.
+\proofe
+\theoe
+
+Nótese que este resultado es más general de lo que necesitamos, usando
+cualquier función valuada no negativa \(d_m\) que podemos interpretar
+como la distancia a un punto fijo. Como caso particular, en
+\textcite{aggarwal2001} se prueba el resultado para la distancia
+asociada a la norma \(L_p\). Además, no menciona realmente la
+dimensionalidad, que se puede interpretar como un caso particular de la
+cantidad \(m\) del teorema.
+
+Por otro lado, requiere de una condición que no necesariamente se dará
+en todos los escenarios,
+\(\lim_{m\rightarrow +\infty}\Var\left[\frac{d_m(X_{m1})^p}{E[d_m(X_{m1})^p]}\right]=0\).
+Un análisis de las situaciones en que el resultado es aplicable se
+encuentra de nuevo en \textcite{beyer1999}. Esencialmente, es suficiente
+que las distribuciones de los datos sean independientes e idénticamente
+distribuidas a lo largo de todas las dimensiones, y los momentos
+convenientes sean finitos. También se aportan varios ejemplos donde no se
+da la independencia y sí se verifican las condiciones del teorema.

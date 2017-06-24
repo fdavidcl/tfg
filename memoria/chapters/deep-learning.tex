@@ -1,3 +1,7 @@
+
+En este capítulo nos centramos en el ámbito de las técnicas que aplicaremos
+en la práctica, el Deep Learning. Estas técnicas están basadas en redes neuronales, de las que introducimos algunos aspectos al hablar de las redes prealimentadas profundas. Se describen y se clasifican las unidades que las componen. Posteriormente, se expone el proceso de evaluación de una red de este tipo mediante la propagación hacia adelante y hacia atrás. Además, se especifican los algoritmos derivados de gradiente descendente que permiten realizar aprendizaje sobre ellas. Por último, se definen las estructuras principales de redes que efectúan un aprendizaje no supervisado sobre los datos.
+
 \section{Redes neuronales prealimentadas
 profundas}\label{redes-neuronales-prealimentadas-profundas}
 
@@ -32,8 +36,47 @@ neuronales mantienen esta estructura de capas de forma que la capa
 \(i\)-ésima; en particular, sólo la primera capa utiliza directamente
 los datos de entrada. Además, por la inspiración biológica de las redes,
 cada componente de cada capa (\emph{unidad}) se puede interpretar como
-una neurona, actuando como una función de \(\RR^{n_{i-1}}\) en \(\RR\),
-donde \(n_{i-1}\) es el número de componentes de la capa anterior. El
+una neurona biológica. Las neuronas de los seres vivos se componen de dendritas que recogen estímulos de otras neuronas, un núcleo que los acumula y un axón con terminales que se conectan a otras neuronas y le permiten transmitir nuevos impulsos. Se ejemplifica esta estructura en la \autoref{fig:neuron}.
+
+\begin{figure}[hbtp]
+  \centering
+  \includegraphics[width=\textwidth]{images/neurona_biologica}
+  \caption[Neurona biológica]{Ilustración de una neurona biológica, indicando las equivalencias con la neurona artificial}
+  \label{fig:neuron}
+\end{figure}
+
+\begin{figure}[hbtp]
+  \centering
+  
+\begin{tikzpicture}[scale=0.2]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (39.4,-29) circle (5.5);
+\draw (39.4,-29) node {$g(\Tr wx+b)$};
+%\draw (51.6,-29) node {$f$};
+\draw [black] (44.9,-29) -- (48.6,-29);
+\fill [black] (48.6,-29) -- (47.8,-28.5) -- (47.8,-29.5);
+
+\draw (15.9,-20.2) node {$x_1$};
+\draw (15.9,-36.7) node {$x_m$};
+\draw (15.9,-30.9) node {$\vdots$};
+\draw (15.9,-26) node {$x_2$};
+\draw [black] (18.66,-21.37) -- (33.84,-27.83);
+\fill [black] (33.84,-27.83) -- (33.3,-27.05) -- (32.91,-27.97);
+\draw (24.55,-25.12) node [below] {$w_1$};
+\draw [black] (18.87,-26.43) -- (33.63,-28.57);
+\fill [black] (33.63,-28.57) -- (32.91,-27.96) -- (32.77,-28.95);
+\draw (25.63,-28.16) node [below] {$w_2$};
+\draw [black] (18.71,-35.65) -- (33.79,-30.05);
+\fill [black] (33.79,-30.05) -- (32.86,-29.86) -- (33.21,-30.79);
+\draw (28.87,-33.42) node [below] {$w_m$};
+\end{tikzpicture}
+
+  \caption[Neurona artificial]{Una neurona artificial con $m$ entradas y función de activación $g$}
+  \label{fig:art-neuron}
+\end{figure}
+
+La analogía se lleva a la neurona artificial, como se muestra en la \autoref{fig:art-neuron}, mediante una función de \(\RR^{m}\) en \(\RR\),
+donde \(m\) es el número de unidades en la capa anterior. El
 comportamiento es similar a una neurona en el sentido de que recoge
 información de varias unidades cercanas y calcula su propio valor de
 activación, así como la estructuración en capas se ha tomado de la
@@ -87,7 +130,7 @@ salidas de funciones que se toman como entradas de otras funciones.
 \draw [black] (38.38,-37.34) -- (48.62,-25.66);
 \fill [black] (48.62,-25.66) -- (47.72,-25.93) -- (48.47,-26.59);
 \end{tikzpicture}
-\caption{\label{fig:dfnn} Ilustración ejemplificando una red neuronal prealimentada de tres capas}
+\caption{\label{fig:dfnn}Ilustración ejemplificando una red neuronal prealimentada de tres capas}
 \end{figure}
 
 Para entender cómo las redes prealimentadas aproximan funciones,
@@ -112,13 +155,12 @@ del tipo
 \begin{equation}
   f^{*}(x)\approx f(x;\theta,w)=\Tr{\phi(x;\theta)}w, 
 \end{equation}
-
 donde \(\theta\) es un vector de parámetros que facilita escoger una
 función \(f\) concreta de entre la clase que define, y \(w\) es otro
 vector de parámetros que permite aplicar la transformación obtenida en
 la salida deseada. Para encontrar los parámetros que corresponden a una
 buena aproximación, se utilizará un algoritmo de optimización basado en
-la técnica de gradiente descendiente vista en la sección
+la técnica de gradiente descendente presentada en la sección
 \ref{sec:grad-desc}. Se trata de un enfoque muy flexible, ya que se
 puede proveer al algoritmo de una clase de funciones más general o más
 concreta, según el conocimiento sobre el problema que se posea.
@@ -127,7 +169,7 @@ La clase de funciones, dentro de la cual una red neuronal busca la
 aproximación, se determina escogiendo la estructura de la red y los
 tipos de unidades ocultas y de salida.
 
-\subsection{Funciones de coste}\label{funciones-de-coste}
+\subsection{Funciones de coste}\label{sec:funciones-de-coste}
 
 La mayoría de diseños de redes neuronales involucran definir una
 distribución \(P(y\mid x;\theta)\) y aplicar el principio de máxima
@@ -141,7 +183,7 @@ la distribución de los datos, \(\hat p\), y la del modelo, \(p\), y
 sobre la variable de la salida generada \(y\) respecto de la entrada
 \(x\):
 \[J(\theta)=C(\hat p(y\mid x), p(y\mid x))=-\E_{\hat p}[\log p(y\mid x)].\]
-Una ventaja de este enfoque que esta función de coste viene determinada
+Una ventaja de este enfoque es que esta función de coste viene determinada
 automáticamente por el modelo \(p(y\mid x)\) que escojamos y evita tener
 que definir una nueva función para cada modelo. Además, la entropía
 cruzada suele permitir calcular gradientes relativamente ``grandes'', en
@@ -173,7 +215,6 @@ error cuadrático medio.
 
 \subsubsection{Unidades con activación
 sigmoidal}\label{unidades-con-activaciuxf3n-sigmoidal}
-
 En muchas tareas, la variable objetivo \(y\) es de tipo binario. Por
 ejemplo, los problemas de clasificación binaria son un caso particular
 de esta situación. La técnica de máxima verosimilitud lleva a definir
@@ -182,12 +223,21 @@ distribución está determinada por un único número en el intervalo
 \([0, 1]\), que se corresponde con \(P(y=1\mid x)\).
 
 Para que la unidad de salida tenga un buen comportamiento, es necesario
-que no genere gradiente 0 ni muy cercano a 0 en casos en los que el
+que no genere gradiente $0$ ni muy cercano a $0$ en casos en los que el
 modelo no se acerque a una solución. Esto se consigue utilizando una
 \emph{función de activación}, es decir, se compone el cómputo de la
 unidad con otra función que la regulariza de alguna manera. En este
 caso, se utiliza la función logística:
 \[z=\Tr wh+b;\ \hat y = \sigma(z) = \frac{1}{1+e^{-z}}\]
+
+En la \autoref{fig:relu} se observan los valores en los que se aplica $\sigma$ según el valor de $z$.
+
+\begin{figure}[hbtp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{images/sigmoid.png}
+  \caption[Logística]{Gráfica de la función logística}
+  \label{fig:sigm}
+\end{figure}
 
 Definamos ahora una distribución de probabilidad sobre \(y\), usando el
 valor \(z\). Podemos comenzar asumiendo que la probabilidad no
@@ -203,7 +253,7 @@ y utilizando de nuevo que \(y\in\{0,1\}\) se tiene
 
 El resultado es una distribución de Bernoulli determinada por una
 transformación logística de \(z\). De hecho, puesto que los posibles
-valores de \(y\) son 0 y 1, también podemos expresarla más claramente
+valores de \(y\) son $0$ y $1$, también podemos expresarla más claramente
 como:
 \[P(y)=\sigma(z)^y\sigma(-z)^{1-y}=p^y(1-p)^{1-y}\mbox{ donde }p=\sigma(z).\]
 
@@ -224,8 +274,8 @@ situación se da en problemas de clasificación multiclase. Así, se pueden
 interpretar como una generalización de las unidades sigmoidales.
 
 Mientras que para caracterizar una variable binaria bastaba con una sola
-unidad de salida (la salida era un escalar entre 0 y 1), ahora se
-utilizarán tantas unidades como posibles valores de la variable. Si
+unidad de salida (la salida era un escalar entre $0$ y $1$), ahora se
+utilizarán tantas unidades como posibles valores puedar tomar la variable. Si
 \(y\) puede tomar uno de entre \(n\) posibles valores, la capa de salida
 con \emph{softmax} generará un vector \(\hat y\) donde
 \(\hat y_i=P(y=i\mid x)\), exigiendo que \(\sum_{i=1}^n\hat y_i=1\).
@@ -239,7 +289,10 @@ La función vectorial \emph{softmax} se define en cada componente
 
 El vector \(z\) al que se aplica la función se obtiene de una capa de
 unidades lineales que proporcionan probabilidades logarítmicas sin
-normalizar: \[z=\Tr Wh+b;\ z_{i}=\log\tilde P(y=i\mid x).\] De nuevo, la
+normalizar:
+\[z=\Tr Wh+b;\ z_{i}=\log\tilde P(y=i\mid x).\]
+
+De nuevo, la
 función de coste se puede definir siguiendo la misma técnica, mediante
 la entropía cruzada.
 
@@ -250,7 +303,7 @@ capa oculta, pero existen más y el diseño de unidades ocultas es un
 campo de investigación muy activo, pese a la falta de principios
 teóricos que lo guíen. A continuación se exponen algunos de los tipos
 más usuales. Salvo que se indique lo contrario, todas las capas de
-unidades calculan una transformación afín \[z=\Tr Wx+b,\] donde \(x\) es
+unidades calculan una transformación afín \[z= \Tr Wx+b,\] donde \(x\) es
 el vector de entrada, equivalentemente, el vector de salida de la capa
 inmediatamente anterior o un vector de datos si se trata de la primera
 capa. Se compone esta transformación con la función de activación
@@ -266,11 +319,20 @@ La función de activación de las unidades lineales rectificadas
 g(z)_i=\max\{0,z_i\}.
 \end{equation}
 
+Se muestra en la \autoref{fig:relu} el valor que toma la ReLU según el valor de $z_i$.
+
+\begin{figure}[hbtp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{images/relu.png}
+  \caption[ReLU]{Gráfica de la función de activación de una ReLU}
+  \label{fig:relu}
+\end{figure}
+
 Estas unidades son fáciles de optimizar ya que son similares a las
 unidades lineales. Aunque no es diferenciable en \(z=0\), se pueden
 utilizar algoritmos basados en gradiente para optimizar la función
 objetivo. Esto es debido a que, generalmente, durante el entrenamiento
-no se llega a un punto en el que el gradiente sea exactamente 0, así que
+no se llega a un punto en el que el gradiente sea exactamente $0$, así que
 se pueden aceptar puntos donde el gradiente no esté definido en los
 mínimos de la función coste.
 
@@ -286,11 +348,18 @@ componentes de \(z\) son negativas:
   \(g(z)_{i}=\lvert z_{i} \rvert\)
 \item
   \textbf{\emph{Leaky} ReLU}: \(g(z)_i=\max(0,z_i)+\alpha\min(0,z_i)\)
-  con \(\alpha\) pequeño como \(0,01\)
+  con \(\alpha\) pequeño como \(0,01\) (\autoref{fig:leaky})
 \item
   \textbf{ReLU paramétrica}: \(g(z)_i=\max(0,z_i)+\alpha_i\min(0,z_i)\),
   con \(\alpha_i\) como un parámetro optimizable
 \end{itemize}
+
+\begin{figure}[hbtp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{images/leaky.png}
+  \caption[Leaky ReLU]{Función de activación de una \emph{leaky} ReLU para $\alpha=0.1$}
+  \label{fig:leaky}
+\end{figure}
 
 Las capas de \textbf{unidades \emph{maxout}} agrupan las componentes de
 \(z\) en conjuntos de \(k\) valores cada uno. Cada una de las unidades
@@ -312,12 +381,17 @@ neuronales son la función logística
 \begin{equation}
   g(z)_i=\sigma(z_i)=\frac{1}{1+e^{-z_i}},
 \end{equation}
-
-y la tangente hiperbólica
-
+y la tangente hiperbólica (\autoref{fig:tanh})
 \begin{equation}
   g(z)_i=\tanh(z_i)=\frac{e^{z_i}-e^{-z_i}}{e^{z_i}+e^{-z_i}}.
 \end{equation}
+
+\begin{figure}[hbtp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{images/tanh.png}
+  \caption[$\tanh$]{Gráfica de la función tangente hiperbólica}
+  \label{fig:tanh}
+\end{figure}
 
 Se puede comprobar que \(\tanh(z_i)=2\sigma(2z_i)-1\).
 
@@ -342,12 +416,30 @@ comunes:
   diferente a la salida.
 \item
   La función \emph{softplus} \(g(z)_i=\zeta(z_i)=\log(1+e^{z_i})\) es
-  una versión infinitamente derivable de la unidad lineal rectificada.
+  una versión infinitamente derivable de la unidad lineal rectificada (\autoref{fig:softplus}).
   Sin embargo, en la práctica no suele presentar ventajas sobre la ReLU.
 \end{itemize}
 
+\begin{figure}[hbtp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{images/softplus.png}
+  \caption[Softplus]{Gráfica de la función \emph{softplus}}
+  \label{fig:softplus}
+\end{figure}
+
 \section{Entrenamiento de redes neuronales
 profundas}\label{entrenamiento-de-redes-neuronales-profundas}
+
+El proceso de entrenamiento de una red neuronal profunda
+requiere realizar observaciones sobre las salidas a partir de los datos
+de entrada, y evaluar el error cometido respecto a las salidas deseadas.
+Para calcular la salida de la red $f(x)$ frente a una instancia $x$ se
+utiliza el mecanismo de propagación hacia adelante, en el que intuitivamente
+podemos decir que los datos ``atraviesan'' la red. La evaluación de la
+red se realiza en base a una función de coste y posteriormente se deben
+actualizar los parámetros para alterar la función $f$, para lo cual es
+necesario calcular el gradiente de dicho coste. El cómputo del gradiente
+se obtiene mediante la técnica de propagación hacia atrás.
 
 \subsection{Propagación hacia
 adelante}\label{propagaciuxf3n-hacia-adelante}
@@ -386,7 +478,7 @@ Consideremos una red neuronal prealimentada profunda, determinada por un
 vector de parámetros \(\theta\). Durante el entrenamiento, la salida
 generada por la propagación hacia adelante se compara con la salida
 deseada y se calcula un coste \(J(y,y^{*};\theta)\in\RR\). Para aplicar
-un algoritmo de optimización basado en gradiente descendiente (se
+un algoritmo de optimización basado en gradiente descendente (se
 estudiarán en la sección \ref{sec:dl-opt}), es necesario conocer el
 gradiente de la función \(J\) respecto de los parámetros \(\theta\).
 Este gradiente se puede calcular analíticamente, pero evaluar
@@ -418,10 +510,10 @@ Consideremos la red neuronal de la figura \ref{fig:ex-backprop}. Suponiendo que 
 \draw (39.21,-29.35) node [below] {$w_{11}^{(2)}$};
 \draw [black] (17.6,-26.5) -- (31.6,-37);
 \fill [black] (31.6,-37) -- (31.26,-36.12) -- (30.66,-36.92);
-\draw (19.45,-29.25) node [below] {$w_{12}^{(1)}$};
+\draw (19.45,-29.25) node [below] {$w_{21}^{(1)}$};
 \draw [black] (17.6,-37) -- (31.6,-26.5);
 \fill [black] (31.6,-26.5) -- (30.66,-26.58) -- (31.26,-27.38);
-\draw (22.75,-33.50) node [below] {$w_{21}^{(1)}$};
+\draw (22.75,-33.50) node [below] {$w_{12}^{(1)}$};
 \draw [black] (51.7,-33) -- (58.1,-33);
 \fill [black] (58.1,-33) -- (57.3,-32.5) -- (57.3,-33.5);
 \draw [black] (25.83,-15.81) -- (31.97,-22.49);
@@ -445,15 +537,15 @@ Consideremos la red neuronal de la figura \ref{fig:ex-backprop}. Suponiendo que 
 
 En este caso, el vector de parámetros que determina la red será
 $$\theta=\left(w_{11}^{(1)},w_{12}^{(1)},w_{21}^{(1)},w_{22}^{(1)},b_{1}^{(1)},b_{2}^{(1)},w_{11}^{(2)},w_{12}^{(2)},b_{1}^{(2)}\right).$$
-Puesto que la función de coste $J$ vendrá determinada por el valor de $f$ en el mismo punto, para calcular su gradiente nos interesa conocer el de $f$. La expresión desarrollada de $f$ queda
+Puesto que la función de coste $J$ vendrá determinada por el valor de $f$ en el mismo punto, para calcular su gradiente nos interesa conocer el de $f$. La expresión desarrollada de $f$ queda\footnotesize
 \begin{gather*}
-f(x_1,x_2;\theta)=\\g\left(w_{21}^{(2)}g\left(w_{11}^{(1)}x_{1}+w_{12}^{(1)}x_2+b_1^{(1)}\right)+w_{22}^{(2)}g\left(w_{21}^{(1)}x_1+w_{22}^{(1)}x_2+b_2^{(1)}\right)+b_1^{(2)}\right).
-\end{gather*}
+f(x_1,x_2;\theta)=\\g\left(w_{11}^{(2)}g\left(w_{11}^{(1)}x_{1}+w_{12}^{(1)}x_2+b_1^{(1)}\right)+w_{12}^{(2)}g\left(w_{21}^{(1)}x_1+w_{22}^{(1)}x_2+b_2^{(1)}\right)+b_1^{(2)}\right).
+\end{gather*}\normalsize
 
 Ahora, mediante la regla de la cadena podemos desarrollar la parcial de $f$ respecto de cualquiera de los parámetros. Llamamos
 \footnotesize
 \begin{align*}
-  \alpha&=g'\left(w_{21}^{(2)} g\left(w_{11}^{(1)}x_{1}+w_{12}^{(1)}x_2+b_1^{(1)}\right) + w_{22}^{(2)} g\left(w_{21}^{(1)}x_1+w_{22}^{(1)}x_2+b_2^{(1)}\right)+b_1^{(2)}\right)\\
+  \alpha&=g'\left(w_{11}^{(2)} g\left(w_{11}^{(1)}x_{1}+w_{12}^{(1)}x_2+b_1^{(1)}\right) + w_{12}^{(2)} g\left(w_{21}^{(1)}x_1+w_{22}^{(1)}x_2+b_2^{(1)}\right)+b_1^{(2)}\right)\\
   \beta&=g'\left(w_{11}^{(1)}x_{1}+w_{12}^{(1)}x_2+b_1^{(1)}\right)\\
   \gamma&=g'\left(w_{21}^{(1)}x_{1}+w_{22}^{(1)}x_2+b_2^{(1)}\right)
 \end{align*}
@@ -501,21 +593,30 @@ costosos.
 \end{algorithm}
 
 \section{Optimización en Deep
-Learning}\label{optimizaciuxf3n-en-deep-learning}
-
+Learning}
 \label{sec:dl-opt}
 
-\subsection{Gradiente descendiente estocástico
-(SGD)}\label{gradiente-descendiente-estocuxe1stico-sgd}\label{sec:sgd}
+Como se ha visto, una red profunda define una función $f$ que queda
+determinada por una secuencia finita de parámetros. Estos parámetros se deben
+optimizar para que la salida de la red sea lo más próxima posible a la
+salida deseada. Para ello, sería interesante utilizar la técnica de
+gradiente descendente estudiada en la \autoref{sec:grad-desc}. Sin embargo,
+el coste computacional de calcular el gradiente respecto del conjunto
+de datos al completo lo hace inviable. En esta sección se introducen
+algoritmos derivados de gradiente descendente que aproximan el mismo
+comportamiento pero resultan mucho más eficientes.
+
+\subsection{Gradiente descendente estocástico
+(SGD)}\label{gradiente-descendente-estocuxe1stico-sgd}\label{sec:sgd}
 
 En aprendizaje automático, y especialmente en Deep Learning, es común
 utilizar conjuntos de datos con un gran número de instancias, para
 favorecer la capacidad de generalización de los modelos producidos por
-algoritmos. Esto provoca que el coste computacional de calcular cada
+los algoritmos. Esto provoca que el coste computacional de calcular cada
 paso de un gradiente descendente haga inviable su uso. Sin embargo, se
 puede utilizar una aproximación estocástica al algoritmo denominada
-gradiente descendiente estocástico (\emph{Stochastic Gradient Descent},
-SGD). En esta versión de gradiente descendiente se asienta la mayor
+gradiente descendente estocástico (\emph{Stochastic Gradient Descent},
+SGD). En esta versión de gradiente descendente se asienta la mayor
 parte del desarrollo del Deep Learning en la actualidad.
 
 Al ser una aproximación estocástica, SGD calcula un estimador del
@@ -523,7 +624,7 @@ gradiente de la función objetivo a partir de un número reducido de
 muestras. Se describe en el algoritmo \ref{alg:sgd}.
 
 \begin{algorithm}
-\caption{Gradiente descendiente estocástico, iteración $k$-ésima}
+\caption{Gradiente descendente estocástico, iteración $k$-ésima}
 \label{alg:sgd}
 \begin{algorithmic}
   \REQUIRE{Tasa de aprendizaje $\varepsilon_k$}
@@ -538,15 +639,33 @@ muestras. Se describe en el algoritmo \ref{alg:sgd}.
 
 \subsection{Variantes de SGD}\label{variantes-de-sgd}
 
-\subsubsection{SGD con momento}\label{sgd-con-momento}
+Existen múltiples variantes de SGD que adaptan el aprendizaje de distintas formas a lo largo de las iteraciones. En muchos casos mejoran respecto al comportamiento de SGD pero esto varía según el conjunto de datos tratado.
 
-El momento es un término adicional que fuerza a que SGD varíe menos la
+\begin{itemize}
+\item \textbf{SGD con momento:} el momento es un término adicional que fuerza a que SGD varíe menos la
 dirección de una iteración a otra. De esta forma, el zigzagueo
 característico de GD, también presente en SGD, se atenúa. Esta versión
 se describe en el algoritmo \ref{alg:sgdm}.
+\item \textbf{AdaGrad} \autocite{adagrad} es una versión adaptativa de SGD, en el
+sentido de que varía los parámetros de forma inversamente proporcional a
+la raíz cuadrada de la suma de los cuadrados de los valores anteriores.
+Así, en lugar de decrementar la tasa de aprendizaje de igual forma para
+todos los parámetros, la decrementa más rápido en los parámetros que
+tienen mayores derivadas parciales. Como resultado adicional, en las
+zonas de menor pendiente del espacio de parámetros el algoritmo progresa
+más rápidamente que SGD. Se describe en el algoritmo \ref{alg:adagrad}.
+\item \textbf{RMSProp}, detallado en el algoritmo \ref{alg:rmsprop},
+sustituye la acumulación de gradientes de AdaGrad por una media
+exponencial, de forma que tenga mejor comportamiento al optimizar
+funciones no convexas.
+\item \textbf{Adam} es un algoritmo que también adapta la tasa de aprendizaje y además
+introduce un momento adaptativo, se puede considerar una combinación de
+RMSProp con momento. Se describe en el algoritmo \ref{alg:adam}.
+
+\end{itemize}
 
 \begin{algorithm}
-\caption{Gradiente descendiente estocástico con momento}
+\caption{Gradiente descendente estocástico con momento}
 \label{alg:sgdm}
 \begin{algorithmic}
   \REQUIRE{Tasa de aprendizaje $\varepsilon$, momento $\alpha$}
@@ -560,22 +679,13 @@ se describe en el algoritmo \ref{alg:sgdm}.
 \end{algorithmic}
 \end{algorithm}
 
-\subsubsection{AdaGrad}\label{adagrad}
-
-Adagrad \autocite{adagrad} es una versión adaptativa de SGD, en el
-sentido de que varía los parámetros de forma inversamente proporcional a
-la raíz cuadrada de la suma de los cuadrados de los valores anteriores.
-Así, en lugar de decrementar la tasa de aprendizaje de igual forma para
-todos los parámetros, la decrementa más rápido en los parámetros que
-tienen mayores derivadas parciales. Como resultado adicional, en las
-zonas de menor pendiente del espacio de parámetros el algoritmo progresa
-más rápidamente que SGD. Se describe en el algoritmo \ref{alg:adagrad}.
-
 \begin{algorithm}
 \caption{Adagrad}
 \label{alg:adagrad}
+\small
 \textbf{Notación:} $\odot$ es el producto componente a componente, $\sqrt{.}$ es la raíz cuadrada componente a componente y la división por $\frac{1}{\delta + \sqrt r}$ se realiza componente a componente.
 \begin{algorithmic}
+  \small
   \REQUIRE{Tasa de aprendizaje $\varepsilon$, constante pequeña $\delta$}
   \REQUIRE{Parámetro inicial $\theta$}
   \STATE{Inicializar: $r\gets 0$}
@@ -589,12 +699,6 @@ más rápidamente que SGD. Se describe en el algoritmo \ref{alg:adagrad}.
 \end{algorithmic}
 \end{algorithm}
 
-\subsubsection{RMSProp}\label{rmsprop}
-
-El algoritmo RMSProp, detallado en el algoritmo \ref{alg:rmsprop},
-sustituye la acumulación de gradientes de AdaGrad por una media
-exponencial, de forma que tenga mejor comportamiento al optimizar
-funciones no convexas.
 
 \begin{algorithm}
 \caption{RMSProp}
@@ -614,12 +718,6 @@ funciones no convexas.
   \ENDWHILE
 \end{algorithmic}
 \end{algorithm}
-
-\subsubsection{Adam}\label{adam}
-
-Adam es un algoritmo que también adapta la tasa de aprendizaje y además
-introduce un momento adaptativo, se puede considerar una combinación de
-RMSProp con momento. Se describe en el algoritmo \ref{alg:adam}.
 
 \begin{algorithm}
 \caption{Adam}
@@ -645,7 +743,7 @@ RMSProp con momento. Se describe en el algoritmo \ref{alg:adam}.
 \section{Estructuras profundas no
 supervisadas}\label{estructuras-profundas-no-supervisadas}
 
-En esta sección nos centramos en las estructuras dedicadas a aprendizaje no supervisado en Deep Learning. Estudiaremos las máquinas de Boltzmann restringidas (\textit{Restricted Boltzmann Machine}, RBM) y los autoencoders y sus variantes. La fuente principal de esta sección es \textcite[capítulos 14 y 20]{goodfellow2016}.
+En esta sección nos centramos en las estructuras dedicadas a aprendizaje no supervisado en Deep Learning. Estudiaremos las máquinas de Boltzmann restringidas (\textit{Restricted Boltzmann Machine}, RBM) y los autoencoders y sus variantes. También analizaremos una propuesta de entrenamiento específica para autoencoders. La fuente principal de esta sección es \textcite[capítulos 14 y 20]{goodfellow2016}.
 
 \subsection{Máquina de Boltzmann restringida
 (RBM)}\label{muxe1quina-de-boltzmann-restringidas-rbm}
@@ -710,7 +808,7 @@ Puesto que dicha constante $Z$ es, en general, demasiado costosa de calcular com
 
 \subsection{Autoencoder}\label{sec:autoencoder}
 
-Un autoencoder es una red neuronal que se entrena con el objetivo de copiar la entrada a su salida. Internamente, contiene una capa oculta que describe un código utilizado para representar la entrada. Se puede considerar una red compuesta por dos partes: una función codificadora $f$ que transforma la entrada en el código, y una función decodificadora $g$ que se aplica al código y trata de reconstruir la entrada. Una ilustración de la arquitectura se muestra en la \autoref{fig:autoencoder}, donde la etapa de codificación se realiza entre la primera y la segunda capa, y la decodificación entre la segunda y la última.
+Un autoencoder es una red neuronal que se entrena con el objetivo de reproducir la entrada a su salida. Internamente, contiene una capa oculta que describe un código utilizado para representar la entrada. Se puede considerar una red compuesta por dos partes: una función codificadora $f$ que transforma la entrada en el código, y una función decodificadora $g$ que se aplica al código y trata de reconstruir la entrada. Una ilustración de la arquitectura se muestra en la \autoref{fig:autoencoder}, donde la etapa de codificación se realiza entre la primera y la segunda capa, y la decodificación entre la segunda y la última.
 
 \begin{figure}[hbtp]
   \centering
@@ -776,7 +874,7 @@ El proceso de aprendizaje consiste en minimizar una función de coste del tipo
 \[
   L(x,g(f(x)))~,
 \]
-donde $L$ da una medida de la diferencia entre la entrada y su reconstrucción, como puede ser el error medio cuadrático.
+donde $L$ da una medida de la diferencia entre la entrada y su reconstrucción, como puede ser el error cuadrático medio.
 
 Adicionalmente, se puede añadir un término de \textit{regularización} $\Omega$ junto a la función $L$, que dependa de los valores de la capa de codificación y añada ciertas propiedades deseadas al autoencoder. Algunas de las variaciones que se mencionan a continuación surgen a partir de esta generalización.
 
@@ -815,9 +913,9 @@ Una aplicación de los autoencoders contractivos es realizar aprendizaje de vari
 \subsection{Entrenamiento de
   autoencoders}\label{entrenamiento-de-autoencoders}
 
-Para el entrenamiento de autoencoders, es posible utilizar las técnicas que se han estudiado anteriormente, en concreto la propagación hacia atrás (\autoref{sec:backprop}) para calcular gradientes y los algoritmos basados en gradiente descendiente estocástico (\autoref{sec:dl-opt}) para optimizar la función objetivo.
+Para el entrenamiento de autoencoders, es posible utilizar las técnicas que se han estudiado anteriormente, en concreto la propagación hacia atrás (\autoref{sec:backprop}) para calcular gradientes y los algoritmos basados en gradiente descendente estocástico (\autoref{sec:dl-opt}) para optimizar la función objetivo.
 
-Sin embargo, en autoencoders muy profundos, este aprendizaje se puede tornar un proceso muy lento, por el hecho de que la inicialización de pesos no utiliza información acerca de los datos. Para solventar este problema, se puede añadir una fase previa de pre-entrenamiento que encuentra unos pesos que acercan el autoencoder a un mínimo local, tras lo cual la fase de aprendizaje se emplea para realizar ajustes sobre dichos pesos \autocite{hinton2006autoencoder}. Este mismo proceso de entrenamiento es el que se utiliza en las \textit{Deep Belief Network}, que después se pueden entrenar adicionalmente para tareas supervisadas.
+Sin embargo, al emplear autoencoders muy profundos este aprendizaje se puede tornar un proceso muy lento, por el hecho de que la inicialización de pesos no utiliza información acerca de los datos. Para solventar este problema se puede añadir una fase previa de pre-entrenamiento que encuentra unos pesos que acercan el autoencoder a un mínimo local, tras lo cual la fase de aprendizaje se emplea para realizar ajustes sobre dichos pesos \autocite{hinton2006autoencoder}. Este mismo proceso de entrenamiento es el que se utiliza en las \textit{Deep Belief Network}, que después se pueden entrenar adicionalmente para tareas supervisadas \autocite{hinton2006dbn}.
 
 \subsubsection{Pre-entrenamiento}\label{pre-entrenamiento}
 

@@ -1,0 +1,301 @@
+\section{Documentación para el paquete Ruta en la versión 0.2.0}
+
+\subsection{Predecir salidas para modelos entrenados y nuevos datos}
+
+\paragraph{Descripción}
+Se debe pasar al menos un argumento de modelo y uno de tarea. La tarea puede contener los mismos datos de entrada que se utilizaron para entrenar el modelo, o datos nuevos con la misma estructura. El resto de argumentos serán pasados a la función interna de predicción.
+
+\paragraph{Uso}
+~
+
+\begin{lstlisting}
+## S3 method for class 'rutaModel'
+predict(object, ...)\end{lstlisting}
+
+\paragraph{Argumentos}
+\begin{itemize}
+\item \emph{object}	Un objeto \texttt{``rutaModel''}.
+\item \emph{...}	Parámetros específicos para la función de predicción interna.
+\end{itemize}
+
+\paragraph{Valor}
+Una matriz conteniendo predicciones para cada instancia de la tarea dada.
+
+\subsection{Obtener las características internas de un modelo de autoencoder entrenado}
+
+\paragraph{Descripción}
+Extrae las características de la capa de codificación de un autoencoder previamente entrenado.
+
+\paragraph{Uso}
+~
+
+\begin{lstlisting}
+ruta.deepFeatures(model, task, ...)
+\end{lstlisting}
+
+\paragraph{Argumentos}
+\begin{itemize}
+\item \emph{model}	Un objeto \texttt{``rutaModel''} de un modelo de autoencoder.
+\item \emph{task}	Un objeto \texttt{``rutaTask''}.
+\item \emph{...}	Parámetros específicos para la función de predicción interna.
+\end{itemize}
+
+\paragraph{Valor}
+Una matriz conteniendo la codificación para cada instancia de la tarea dada.
+
+
+\subsection{Obtener los pesos de cualquier capa de un modelo entrenado}
+
+\paragraph{Descripción}
+Extrae los pesos de los parámetros fijados al entrenar un modelo.
+
+\paragraph{Uso}
+~
+
+\begin{lstlisting}
+ruta.getWeights(model, layer)
+\end{lstlisting}
+
+\paragraph{Argumentos}
+\begin{itemize}
+\item \emph{model}	Un objeto \texttt{``rutaModel''} de un modelo de autoencoder.
+\item \emph{layer}	Un entero indicando el índice de la capa de la que se extraerán los pesos.
+\end{itemize}
+
+\paragraph{Valor}
+Una matriz conteniendo los pesos de la capa dada.
+
+
+\subsection{Obtener las salidas de cualquier capa de un modelo entrenado}
+
+\paragraph{Descripción}
+Extrae las salidas de la capa indicada a partir de un modelo entrenado y datos nuevos
+
+\paragraph{Uso}
+~
+
+\begin{lstlisting}
+ruta.layerOutputs(model, task, layerInput = 1, layerOutput, ...)
+\end{lstlisting}
+
+\paragraph{Argumentos}
+\begin{itemize}
+\item \emph{model}	Un objeto \texttt{``rutaModel''} de un modelo de autoencoder o RBM.
+\item \emph{task}	Un objeto \texttt{``rutaTask''} conteniendo los datos que deben propagarse por la red.
+\item \emph{layerInput}	Un entero indicando el índice de la capa en la que se inyectarán los datos. En autoencoders se inyectan siempre en la primera capa.
+\item \emph{layerOutput}	Un entero indicando el índice de la capa que se pretende extraer.
+  \item \emph{...} Parámetros específicos para la función de predicción interna.
+\end{itemize}
+
+\paragraph{Valor}
+Una matriz conteniendo salidas para cada instancia de la capa dada.
+
+
+\subsection{Representar un algoritmo de aprendizaje}
+
+\paragraph{Descripción}
+Crea un objeto que representa un algoritmo de aprendizaje.
+
+\paragraph{Uso}
+~
+
+\begin{lstlisting}
+ruta.makeLearner(cl, id = cl, ...)
+\end{lstlisting}
+
+\paragraph{Argumentos}
+\begin{itemize}
+\item \emph{cl}	Una cadena de caracteres indicando el tipo de algoritmo (\texttt{``autoencoder''} o \texttt{``rbm''}).
+\item \emph{id}	Una cadena de caracteres opcional indicando un nombre para el objeto.
+  \item \emph{...} Parámetros adicionales para el objeto, específicos al algoritmo requerido.
+\end{itemize}
+
+\paragraph{Valor}
+Un objeto para el algoritmo de aprendizaje que almacena los parámetros provistos.
+
+\paragraph{Ejemplos}
+~
+
+\begin{lstlisting}
+ruta.makeLearner("rbm", hidden = 4, activation = "bin")
+ruta.makeLearner("autoencoder", "ae1",
+                 hidden = c(4, 2, 4),
+                 activation = "relu")
+               \end{lstlisting}
+
+
+\subsection{Representar una tarea de aprendizaje}
+
+\paragraph{Descripción}
+Crea un objeto que representa una tarea de aprendizaje.
+
+\paragraph{Uso}
+~
+
+\begin{lstlisting}
+ruta.makeTask(id, data, cl = NULL)
+\end{lstlisting}
+
+\paragraph{Argumentos}
+\begin{itemize}
+\item \emph{id}	Una cadena de caracteres opcional indicando un nombre para el objeto.
+\item \emph{data}	Un conjunto de datos, será convertido a un \emph{data.frame}.
+\item \emph{cl}	El índice de la columna correspondiente a la clase, o \texttt{NULL} si el conjunto no incluye clase.
+\end{itemize}
+
+\paragraph{Valor}
+Un objeto genérico para la tarea de aprendizaje que almacena los datos dados.
+
+\subsection{Representar una tarea de aprendizaje no supervisado}
+
+\paragraph{Descripción}
+Crea un objeto que representa una tarea de aprendizaje no supervisado.
+
+\paragraph{Uso}
+~
+
+\begin{lstlisting}
+ruta.makeUnsupervisedTask(id, data, cl = NULL)
+\end{lstlisting}
+
+\paragraph{Argumentos}
+\begin{itemize}
+\item \emph{id}	Una cadena de caracteres opcional indicando un nombre para el objeto.
+\item \emph{data}	Un conjunto de datos, será convertido a un \emph{data.frame}.
+\item \emph{cl}	El índice de la columna correspondiente a la clase, o \texttt{NULL} si el conjunto no incluye clase.
+\end{itemize}
+
+\paragraph{Valor}
+Un objeto para la tarea de aprendizaje no supervisado que almacena los datos dados y los parámetros.
+
+\paragraph{Ejemplo}
+~
+
+\begin{lstlisting}
+data(iris)
+irisTask <- ruta.makeUnsupervisedTask(
+              "iris",
+              data = iris,
+              cl = 5)
+\end{lstlisting}
+
+\subsection{Pre-entrenamiento de autoencoders}
+
+\paragraph{Descripción}
+Obtener los pesos iniciales para un autoencoder mediante una pila de RBMs.
+
+\paragraph{Uso}
+~
+
+\begin{lstlisting}
+ruta.pretrain(x, task, epochs = 10, ...)
+\end{lstlisting}
+
+\paragraph{Argumentos}
+\begin{itemize}
+\item \emph{x}	Un objeto \texttt{``rutaAutoencoder''}.
+\item \emph{task}	Un objeto \texttt{``rutaTask''}.
+\item \emph{epochs}	El número de épocas para el proceso de entrenamiento de cada RBM.
+\end{itemize}
+
+\paragraph{Valor}
+Una lista de matrices de pesos iniciales para pasar como el argumento \texttt{initial.args} en una llamada a \texttt{train} con un objeto de clase \texttt{``rutaAutoencoder''}.
+
+
+\subsection{Entrenamiento de modelos}
+
+\paragraph{Descripción}
+Generar un modelo entrenado para un objeto asociado 
+
+\paragraph{Uso}
+~
+
+\begin{lstlisting}
+train(x, ...)
+\end{lstlisting}
+
+\paragraph{Argumentos}
+\begin{itemize}
+\item \emph{x}	Un objeto representando un algoritmo de aprendizaje de clase \texttt{``rutaAutoencoder''} o \texttt{``rutaRBM''}.
+\item \emph{task}	Un objeto \texttt{``rutaTask''}.
+\item \emph{...} Resto de parámetros según tipo de algoritmo.
+
+  En el caso de un autoencoder:
+  \begin{itemize}
+  \item \emph{epochs}	El número de iteraciones sobre el algoritmo de optimización.
+  \item \emph{optimizer} El nombre del optimizador a usar (\texttt{``sgd''}, \texttt{``adagrad''}, \texttt{``rmsprop''}, \texttt{``adam''} o \texttt{``adadelta''}).
+  \item \emph{eval.metric} Medida de evaluación (por defecto, el error cuadrático medio).
+  \item \emph{initial.args} Lista de argumentos iniciales (pesos obtenidos por \texttt{ruta.pretrain}).
+  \item \emph{initializer.scale} Escala de la distribución uniforme para inicializar pesos.
+  \item \emph{...} Parámetros adicionales para el optimizador.
+  \end{itemize}
+
+  En el caso de una RBM:
+  \begin{itemize}
+  \item \emph{numepochs} El número de iteraciones para el entrenamiento.
+  \end{itemize}
+\end{itemize}
+
+\paragraph{Valor}
+Una lista de matrices de pesos iniciales para pasar como el argumento \texttt{initial.args} en una llamada a \texttt{train} con un objeto de clase \texttt{``rutaAutoencoder''}.
+
+\begin{lstlisting}
+data(iris)
+irisTask <- ruta.makeUnsupervisedTask(
+              "iris",
+              data = iris,
+              cl = 5)
+
+ae <- ruta.makeLearner(
+        "autoencoder",
+        hidden = c(4, 2, 4),
+        activation = "leaky")
+model <- train(
+           ae,
+           task,
+           epochs = 80,
+           optimizer = "adagrad",
+           learning.rate = 0.02,
+           initializer.scale = 2)         
+\end{lstlisting}
+
+\section{Documentación para el paquete Rutavis en la versión 0.2.0}
+
+\subsection{Representar la codificación de un modelo entrenado}
+
+\paragraph{Descripción}
+Obtener y representar la capa interna de un modelo entrenado con unos datos de entrada.
+
+\paragraph{Uso}
+~
+
+\begin{lstlisting}
+## S3 method for class 'rutaModel'
+plot(model, task, ...)
+\end{lstlisting}
+
+\paragraph{Argumentos}
+\begin{itemize}
+\item \emph{model}	Un objeto \texttt{``rutaModel''} entrenado mediante un autoencoder.
+\item \emph{task}	Un objeto \texttt{``rutaTask''} con los datos de entrada.
+\item \emph{...}	Parámetros adicionales para la función de representación gráfica.
+\end{itemize}
+
+\paragraph{Valor}
+Genera un gráfico de Plotly y lo muestra en un panel interactivo.
+
+
+\subsection{Lanzar la interfaz de usuario web}
+
+\paragraph{Descripción}
+Carga la interfaz gráfica de usuario web y abre una nueva pestaña de navegador para mostrarla.
+
+\paragraph{Uso}
+~
+
+\begin{lstlisting}
+ruta.gui()
+\end{lstlisting}
+
+\paragraph{Valor}
+No devuelve nada.

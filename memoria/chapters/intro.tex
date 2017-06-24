@@ -1,13 +1,51 @@
+\section{Contextualización}
+
+En este trabajo se estudian las principales técnicas orientadas a reducción de la dimensionalidad en el campo del Deep Learning y se presentan dos herramientas software dedicadas al uso de dichas técnicas y al análisis de su comportamiento mediante visualizaciones.
+
+Las tecnologías utilizadas se enmarcan dentro del ámbito del Deep Learning no supervisado, y permiten tratar el problema de reducción de la dimensionalidad. Las técnicas de Deep Learning se plasman en forma de redes neuronales profundas, un tipo de redes neuronales artificiales, que son a su vez una generalización del perceptrón. Pese a que el desarrollo teórico de las redes profundas se remonta varias décadas atrás en el tiempo \autocite{Rumelhart} \autocite{lecun1989backprop} su utilización era prácticamente inviable debido al coste computacional que implicaba. Sin embargo, el Deep Learning ha experimentado un resurgimiento en los últimos años debido a la creciente capacidad de procesamiento disponible, especialmente en dispositivos GPU, y al desarrollo de algoritmos de entrenamiento mucho más eficientes \autocite{hinton2007multiple} \autocite{hinton06}.
+
+El problema de reducción de la dimensionalidad surge a su vez como resultado del tratamiento de tareas de minería de datos, especialmente de clasificación, donde el conjunto de datos considerado posee un alto número de dimensiones. Estos dos problemas pertenecen al aprendizaje automático, una rama de la inteligencia artificial.
+
+Para estudiar los fundamentos de los problemas mencionados y las técnicas con las que los abordamos, son necesarios conocimientos de varias áreas de las matemáticas, concretamente la teoría de la probabilidad, la teoría de la información y el álgebra tensorial. De ellas se extraen conceptos y resultados teóricos que dan fundamento a los algoritmos que se aplican para construir y entrenar las estructuras profundas.
+
+\section{Descripción del problema}
+
+En la actualidad, la ingente recolección de datos de distintas fuentes para su posterior procesamiento requiere de potentes algoritmos que reconozcan patrones y extraigan información útil, así como de grandes capacidades de cómputo para su ejecución. En particular, uno de los problemas frecuentemente tratados es el de clasificación, que consiste en la predicción de una o varias etiquetas asociadas a muestras de datos, habiendo aprendido previamente a partir de ejemplos ya etiquetados. Existe una gran variedad de algoritmos disponibles para abordar este problema \autocite{kotsiantis2007}.
+
+En muchos casos, los datos recogidos presentan una alta dimensionalidad, en el sentido de que cada muestra determina valores sobre un alto número de variables. La reducción de la dimensionalidad es una tarea de preprocesamiento utilizada para mejorar el rendimiento de los algoritmos que tratan problemas de clasificación frente a conjuntos de datos de este tipo, y ha sido tratada desde distintas perspectivas \autocite{fodor2002}.
+
+El enfoque que se explora en este texto es el basado en estructuras de Deep Learning no supervisado. El aprendizaje profundo o Deep Learning es una rama del aprendizaje automático donde se hace uso de redes compuestas por muchas capas por las que se propagan y transforman los datos. Existen diversas implementaciones que permiten construir y entrenar dichas redes, pero normalmente se dirigen a lenguajes como Python o C++ \autocite{tensorflow} \autocite{theano} \autocite{caffe}.
+
+En el caso del lenguaje R, algunas de las técnicas más relevantes de Deep Learning no supervisado
+están disponibles ya en paquetes como \texttt{h2o} \autocite{h2o},
+\texttt{deepnet} \autocite{deepnet} o \texttt{darch} \autocite{darch}. Sin embargo, hasta ahora ninguna herramienta para R se ha centrado en ser exhaustiva con las estructuras no supervisadas, ni ha incluido mecanismos de visualización que faciliten entender el comportamiento de
+estas redes o los modelos generados por ellas.
+
+El software desarrollado en este TFG, denominado Ruta, trata de llenar este hueco suministrando una serie de funcionalidades para la creación, entrenamiento y evaluación de técnicas de Deep Learning no supervisado de muy fácil uso. Está basado en la biblioteca de operaciones y algoritmos para redes neuronales MXNet \autocite{mxnet}. El proyecto complementario Rutavis, descrito en la sección \ref{sec:rutavis}, se encarga de proporcionar una interfaz gráfica de usuario desde la que entrenar modelos y generar visualizaciones que expliquen su comportamiento.
+
+Para entender el funcionamiento de las redes profundas, en este trabajo se estudian los conceptos matemáticos que se utilizan para desarrollarlas de forma teórica y para justificar el problema que abordamos. Asimismo, se analizan los algoritmos que optimizan los parámetros de estas redes, y las estructuras que permiten realizar aprendizaje no supervisado sobre los datos. Por último, la herramienta desarrollada permite poner en práctica estos conocimientos y trata de resolver la escasez de utilidades que proporcionan estas funcionalidades.
+
+\section{Estructura del trabajo}
+
+Este trabajo se divide en dos partes diferenciadas:
+\begin{enumerate}
+\item Matemáticas: se exponen los conceptos de probabilidad y teoría de la información que son la base de las redes profundas y se motiva el problema que abordamos de forma teórica. Además, se introducen los conceptos que originan el uso de tensores en las implementaciones existentes.
+\item Informática: se explican los conceptos básicos de aprendizaje automático y se desarrollan los problemas de clasificación y de reducción de dimensionalidad, se analizan los algoritmos que buscan soluciones en estructuras profundas y se documenta la herramienta desarrollada y se describe su funcionalidad.
+\end{enumerate}
+
+En parte de matemáticas, el \autoref{ch:probability} recuerda conceptos de probabilidad utilizados a lo largo del texto, enuncia unos resultados esenciales sobre convergencia y deduce un teorema que da fundamento al problema abordado. El \autoref{ch:information} define la entropía y varios conceptos asociados relevantes, y expone un resultado interesante, la desigualdad de la información. Por último, el \autoref{ch:tensors} es una introducción al álgebra de tensores, idea que se aplica en herramientas de Deep Learning.
+
+Por otro lado, la parte de informática analiza el problema estudiado y las técnicas usadas para tratarlo. El \autoref{ch:learning} es una introducción al aprendizaje automático con énfasis en los problemas de clasificación y reducción de la dimensionalidad. El \autoref{ch:deep} describe los algoritmos y estructuras necesarias para construir y optimizar redes profundas no supervisadas. El \autoref{ch:ruta} muestra las funcionalidades de la herramienta desarrollada y ejemplos de su uso.
+
+El código fuente asociado al software implementado se puede encontrar en un repositorio público, así como el código fuente asociado a esta documentación\footnote{\url{https://github.com/fdavidcl/tfg}}.
+
+\section{Bibliografía fundamental}
+
+Se han consultado muy variadas fuentes a lo largo del estudio realizado. De entre ellas, es preciso destacar algunos libros y artículos fundamentales:
+
 \begin{itemize}
-\tightlist
-\item
-  Objetivo del trabajo
-\item
-  Introducción del problema
-\item
-  Idea general del contenido
-\item
-  Organización del trabajo
-\item
-  Nota sobre documentación y software libre
+\item \emph{Deep Learning}, por \textcite{goodfellow2016}, es la referencia principal del texto, especialmente de los contenidos acerca de Deep Learning y aprendizaje automático, y también es donde se ha analizado qué aspectos matemáticos componen los fundamentos teóricos de estas técnicas.
+\item \emph{Probability theory: The logic of science}, por \textcite{jaynes2003}, es la fuente de los conceptos sobre teoría de la probabilidad, junto con el artículo \autocite{beyer1999} que motiva el problema de reducción de dimensionalidad.
+\item \emph{Elements of information theory}, por \textcite{coverit}, se ha empleado para entender y exponer el capítulo sobre teoría de la información.
+\item \emph{Linear algebra done wrong}, por \textcite{treil2013}, es la fuente de la introducción a álgebra tensorial realizada en el \autoref{ch:tensors}.
 \end{itemize}

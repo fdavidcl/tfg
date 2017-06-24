@@ -1,26 +1,27 @@
-El álgebra tensorial es una herramienta ampliamente utilizada en la
-implementación de técnicas de aprendizaje automático, \textbf{POR QUÉ}
-La fuente principal de esta sección es \textcite[capítulo 8]{treil2013}.
+El álgebra tensorial es una rama del álgebra que extiende los conceptos del álgebra lineal. Además, el concepto de tensor se traslada a la implementación de técnicas de aprendizaje automático, puesto que la aplicación que se realiza de ellos permite hacer más eficientes los cómputos de operaciones respecto al uso exclusivo de matrices.
+La fuente principal de este capítulo es \textcite[capítulo 8]{treil2013}.
 
 \section{Espacios duales}\label{espacios-duales}
+
+En esta sección introducimos los conceptos esenciales sobre duales de espacios vectoriales, necesarios para llegar a la definición de tensor.
 
 \subsection{Funcionales lineales y el espacio
 dual}\label{funcionales-lineales-y-el-espacio-dual}
 
 \defineb
-Un \textbf{funcional lineal} en un espacio vectorial finito dimensional
-\(V\) sobre un cuerpo \(K\) es una aplicación lineal
-\(L:V\rightarrow K\). \definee
+Un \emph{funcional lineal} en un espacio vectorial finito dimensional
+\(V\) sobre un cuerpo \(\KK\) es una aplicación lineal
+\(L:V\rightarrow \KK\). \definee
 \defineb
-El \textbf{espacio dual} de un espacio vectorial finito dimensional
-\(V\) es \(V^*=\{L:V\rightarrow K\text{ lineal}\}=\mathcal{L}(V, K)\).
+El \emph{espacio dual} de un espacio vectorial finito dimensional
+\(V\) es \(V^*=\{L:V\rightarrow \KK\text{ lineal}\}=\mathcal{L}(V, \KK)\).
 \definee
 
 \exampleb
 Sea \(V=\mathbb R^n\) y consideramos
 \((\mathbb R^n)^*=\left\{L:\mathbb R^n\rightarrow\mathbb R\text{ lineal}\right\}\).
 Sabemos que toda aplicación lineal de \(\mathbb{R}^{n}\) en
-\(\mathbb{R}^{m}\) se expresa, fijada una base, como una matrix
+\(\mathbb{R}^{m}\) se expresa, fijada una base, como una matriz
 \(m\times n\), luego identificamos \((\mathbb{R}^{n})^{*}\) con matrices
 \(1\times n\) (en la base usual). Evidentemente hay un isomorfismo entre
 este conjunto y \(\mathbb{R}^{n}\):
@@ -30,14 +31,14 @@ este conjunto y \(\mathbb{R}^{n}\):
   (m_{1} \dots m_{n}) &\mapsto (m_{1}, \dots m_{n})
 \end{align*}
 
-Este hecho se generaliza para cualquier cuerpo \(K\):
-\((K^{n})^{*}\cong K^{n}\). \examplee
+Este hecho se generaliza para cualquier cuerpo \(\KK\):
+\((\KK^{n})^{*}\cong \KK^{n}\). \examplee
 
 \subsubsection{Cambio de coordenadas}\label{cambio-de-coordenadas}
 
-Sea \(V\) \(K\)-espacio vectorial, sean
+Sea \(V\) \(\KK\)-espacio vectorial, sean
 \(A=\left\{a_{1}, \dots a_{n}\right\}, B=\left\{b_{1}, \dots b_{n}\right\}\)
-bases de \(V\) donde \(n = \dim_{K}V\).
+bases de \(V\) donde \(n = \dim_{\KK}V\).
 
 Introducimos la siguiente notación: dada una base \(B\) de \(V\), \(B'\)
 de \(W\), \(L\in\mathcal L(V, W)\), notaremos \([L]_{B', B}\) a la
@@ -114,12 +115,12 @@ aplicaciones \(p\)-lineales de \(V_1\times \dots\times V_p\) en \(V\).
 Un \emph{tensor} o \emph{funcional multilineal} es una aplicación
 multilineal con codominio \(\KK\),
 \(F:V_1\times \dots\times V_p\rightarrow \KK\). La cantidad \(p\) se
-denomina la \emph{valencia} del tensor.
+denomina el \emph{rango} o \emph{valencia} del tensor.
 
 \definee
 
-En particular, un tensor de valencia 1 es un funcional lineal, y un
-tensor de valencia 2 es una forma bilineal.
+En particular, un tensor de rango 1 es un funcional lineal, y un
+tensor de rango 2 es una forma bilineal.
 
 \exampleb
 
@@ -180,12 +181,10 @@ coeficientes \(\alpha_{i_1,i_2,\dots,i_p}\in\KK\) tales que
 \end{equation}
 
 Por la definición de los funcionales, se tiene que
-
 \begin{equation}
   \label{eq:evalbasetensor}
   f_{i_1}^{(1)}\otimes\dots\otimes f_{i_p}^{(p)}\left(b_{j_1}^{(1)},\dots,b_{j_p}^{(p)}\right)=1\Leftrightarrow i_1=j_1,\dots,i_p=j_p
 \end{equation}
-
 y, en otro caso,
 \[f_{i_1}^{(1)}\otimes\dots\otimes f_{i_p}^{(p)}\left(b_{j_1}^{(1)},\dots,b_{j_p}^{(p)}\right)=0\ .\]
 
@@ -195,14 +194,12 @@ Evaluando ahora \(F\) \eqref{eq:basetensor} en
 \begin{equation*}
 F\left(b_{i_1}^{(1)},\dots,b_{i_p}^{(p)}\right)=\alpha_{i_1,\dots,i_p}
 \end{equation*}
-
 lo cual nos da la unicidad de los coeficientes, en caso de que existan.
 La existencia se deduce definiendo
 
 \begin{equation*}
 \alpha_{i_1,\dots,i_p}:=F\left(b_{i_1}^{(1)},\dots,b_{i_p}^{(p)}\right),
 \end{equation*}
-
 de forma que la condición \eqref{eq:evalbasetensor} se mantiene para
 todas las tuplas del tipo \(b_{j_1}^{(1)},\dots,b_{j_p}^{(p)}\). Así, se
 tiene la descomposición que buscamos y \(B\) es una base.
@@ -219,7 +216,7 @@ de los espacios es el conjunto de funcionales multilineales
 \(\LL(V_1^*,V_2^*,\dots,V_p^*;\KK)\), y lo notamos
 \(V_1\otimes V_2\otimes\dots\otimes V_p\). \definee
 
-\corb
+\corb\label{cor:base-tensor}
 Sean \(V_1,\dots,V_p\) \(\KK\)-espacios vectoriales con bases
 \(B^{(1)},\dots,B^{(p)}\) respectivamente. Llamamos \(b_i^{(k)}\) al
 \(i\)-ésimo elemento de la base \(B^{(k)}\) y observamos que podemos
@@ -257,23 +254,31 @@ Sean \(X_1,X_2,\dots X_p,V\) espacios vectoriales y sea \(V_k\) bien
 \(X_k\) o bien \(X_k^*\), para cada \(k=1,2,\dots,p\).
 
 \defineb
-Decimos que una aplicación multilineal \(F\in \LL(V_1,V_2,\dots,V_p;V)\)
-es \emph{covariante} en la \(k\)-ésima variable si \(V_k=X_k\) y
+Decimos que  \(F\in \LL(V_1,V_2,\dots,V_p;V)\)
+es una aplicación multilineal \emph{covariante} en la \(k\)-ésima variable si \(V_k=X_k\) y
 \emph{contravariante} en dicha variable si \(V_k=X_k^*\).
 
 Si \(F\) es covariante (resp. contravariante) en todas las variables
 decimos simplemente que es covariante (resp. contravariante). Si \(F\)
 es covariante en \(r\) variables y contravariante en \(s\) variables,
-decimos que es \(r\)-covariante \(s\)-contravariante, o de valencia
-\((r, s)\). \definee
+decimos que es \(r\)-covariante \(s\)-contravariante, o de \emph{tipo}
+\((r, s)\).\definee
 
-\exampleb
-- Dado un espacio vectorial \(V\), un funcional \(f\in V^*\) es un
-tensor 1-covariante. - Un vector \(v\in V\), visto en el doble dual
-\(V^{**}\), es un tensor 1-contravariante. \examplee
+\exampleb Algunos casos particulares de tensores, para observar que generalizan los objetos del álgebra lineal:
+\begin{itemize}
+\item Dado un espacio vectorial \(V\), un funcional \(f\in V^*\) es un
+  tensor 1-covariante.
+  \item Un vector \(v\in V\), visto en el doble dual
+    \(V^{**}\), es un tensor 1-contravariante.
+    \item Por convención, se dice que una constante $\lambda\in\KK$ es un tensor de tipo \((0,0)\).
+\end{itemize}
+\examplee
 
 \section{Los tensores en aprendizaje
 automático}\label{los-tensores-en-aprendizaje-automuxe1tico}
 
-\subsection{\texorpdfstring{Tensores como
-\emph{multi-arrays}}{Tensores como multi-arrays}}\label{tensores-como-multi-arrays}
+Se ha visto que los tensores generalizan estructuras como los vectores y las aplicaciones lineales. Es importante notar que dichos objetos se pueden representar mediante secuencias finitas de escalares, las componentes, que dependen de la base escogida para los espacios vectoriales donde se esté trabajando. De igual forma, un tensor se puede expresar en componentes del cuerpo $\KK$ respecto de una base.
+
+La expresión de un tensor en componentes necesitará una representación en tantas dimensiones como su rango. Intuitivamente, podemos decir que el rango de un tensor es el número de índices necesarios para recorrer sus componentes.
+
+Esta idea se lleva al aprendizaje automático como una generalización de las matrices. Esencialmente, se le llama \emph{tensor} de rango $p$ a un objeto $T\in \KK^{d_1}\times \dots\times \KK^{d_p}$. Aunque este es un caso particular de los tensores estudiados en este capítulo, no se suele hacer uso de sus propiedades algebraicas. Sin embargo, algunas de las operaciones y descomposiciones de cálculo con tensores permiten realizar un uso eficiente de la memoria disponible en la máquina a la hora de entrenar una red neuronal \autocite{kolda2009}.

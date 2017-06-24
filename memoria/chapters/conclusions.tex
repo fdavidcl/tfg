@@ -1,0 +1,11 @@
+En este trabajo hemos estudiado los fundamentos teóricos de las técnicas de Deep Learning que se aplican al problema de reducción de la dimensionalidad. Desde conceptos básicos de probabilidad a muy abstractos de álgebra, observamos que tiene raíces en áreas diversas de las matemáticas. Los algoritmos que permiten realizar el aprendizaje también son diferentes entre sí y pueden recurrir a su vez a otras teorías, como el análisis matemático.
+
+En la parte práctica, se ha desarrollado una herramienta software novedosa que proporciona fácil acceso a estas técnicas e incorpora una interfaz de usuario y visualizaciones gráficas, apoyándonos en una biblioteca eficientes de cálculo para redes neuronales.
+
+Los objetivos iniciales se han cumplido en buena medida, pero el estudio realizado demuestra que aún hay espacio para seguir trabajando en la implementación y la ampliación del software. Algunas vías de trabajo futuras que se pueden plantear son las siguientes:
+\begin{itemize}
+\item Incorporar más variantes de los autoencoders al paquete. Ya es posible entrenar autoencoders infracompletos y supercompletos, y sería deseable añadir autoencoders dispersos y contractivos.
+\item Permitir la elección de otra biblioteca base distinta de MXNet. Puesto que Ruta abstrae el proceso de construcción y entrenamiento de redes, podría mostrar la misma interfaz de programación aun usando diferentes \emph{backends}.
+\item Aplicar nuevas técnicas de visualización para puntos en más de tres dimensiones, incluso en espacios de alta dimensionalidad. Por ejemplo, utilizar las componentes de los puntos como coeficientes de series de Fourier, y representar gráficamente las funciones obtenidas en el intervalo $[-\pi,\pi]$ \autocite{andrews1972}.
+\item Introducir en el software de visualización acceso a otras herramientas de reducción de la dimensionalidad no basadas en redes neuronales, para permitir comparaciones. Entre los métodos deseables a incorporar estarían t-SNE \autocite{maaten2008} y LLE \autocite{roweis2000}.
+\end{itemize}
