@@ -148,11 +148,7 @@ un modelo adecuado a partir de una cantidad finita de muestras. Por contraposici
 considerados sobre el conjunto de todas las distribuciones de datos
 posibles, todos los algoritmos de clasificación presentan en media la
 misma tasa de error en la predicción de clases para nuevos ejemplos
-(hecho conocido como el teorema de \textit{No Free Lunch}\textcolor{red}{ref!}).
-
-%\begin{example}
-%\textcolor{red}{Si se me ocurre un ejemplo, añadirlo.}
-%\end{example}
+(hecho conocido como el teorema de \textit{No Free Lunch} \autocite{wolpert1997}).
 
 \subsection{Estructura del espacio de
 atributos}\label{estructura-del-espacio-de-atributos}
@@ -199,7 +195,7 @@ menor dimensionalidad.
 
 Con el objetivo de reducir la dimensionalidad de un conjunto de datos,
 se alteran las características del mismo en un proceso denominado
-\emph{extracción de características}, que comprende dos procesos alternativos que en ocasiones se combinan
+\emph{extracción de características}, que comprende dos mecanismos alternativos que en ocasiones se combinan
 \autocite{guyon2006}:
 
 \begin{enumerate}
@@ -215,10 +211,7 @@ se alteran las características del mismo en un proceso denominado
   descartan las que no son útiles.
 \end{enumerate}
 
-En ocasiones únicamente es necesaria una selección de características y
-se puede obviar la primera fase. En otras, la propia construcción de
-características sirve para sustituir a las originales y por tanto
-incluye la segunda etapa.
+En ocasiones, las características construidas en el primer mecanismo se añaden al espacio de características existente para realizar una posterior selección entre todas.
 
 La selección de características se puede realizar mediante muy distintas
 técnicas, desde metaheurísticas hasta basadas en teoría de la

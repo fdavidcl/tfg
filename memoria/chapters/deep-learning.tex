@@ -36,7 +36,7 @@ neuronales mantienen esta estructura de capas de forma que la capa
 \(i\)-ésima; en particular, sólo la primera capa utiliza directamente
 los datos de entrada. Además, por la inspiración biológica de las redes,
 cada componente de cada capa (\emph{unidad}) se puede interpretar como
-una neurona biológica. Las neuronas de los seres vivos se componen de dendritas que recogen estímulos de otras neuronas, un núcleo que los acumula y un axón con terminales que se conectan a otras neuronas y le permiten transmitir nuevos impulsos. Se ejemplifica esta estructura en la \autoref{fig:neuron}.
+una neurona. Las neuronas de los seres vivos se componen de dendritas que recogen estímulos de otras neuronas, un núcleo que los acumula y un axón con terminales que se conectan a otras neuronas y le permiten transmitir nuevos impulsos. Se ejemplifica esta estructura en la \autoref{fig:neuron}.
 
 \begin{figure}[hbtp]
   \centering
@@ -230,7 +230,7 @@ unidad con otra función que la regulariza de alguna manera. En este
 caso, se utiliza la función logística:
 \[z=\Tr wh+b;\ \hat y = \sigma(z) = \frac{1}{1+e^{-z}}\]
 
-En la \autoref{fig:relu} se observan los valores en los que se aplica $\sigma$ según el valor de $z$.
+En la \autoref{fig:sigm} se observan los valores en los que se aplica $\sigma$ según el valor de $z$.
 
 \begin{figure}[hbtp]
   \centering

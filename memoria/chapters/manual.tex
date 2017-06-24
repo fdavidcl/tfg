@@ -3,7 +3,7 @@
 \subsection{Predecir salidas para modelos entrenados y nuevos datos}
 
 \paragraph{Descripción}
-Se debe pasar al menos un argumento de modelo y uno de tarea. La tarea puede contener los mismos datos de entrada que se utilizaron para entrenar el modelo, o datos nuevos con la misma estructura. El resto de argumentos serán pasados a la función interna de predicción.
+Se deben entregar al menos un argumento de modelo y uno de tarea. La tarea puede contener los mismos datos de entrada que se utilizaron para entrenar el modelo, o datos nuevos con la misma estructura. El resto de argumentos serán facilitados a la función interna de predicción.
 
 \paragraph{Uso}
 ~
@@ -199,7 +199,7 @@ ruta.pretrain(x, task, epochs = 10, ...)
 \end{itemize}
 
 \paragraph{Valor}
-Una lista de matrices de pesos iniciales para pasar como el argumento \texttt{initial.args} en una llamada a \texttt{train} con un objeto de clase \texttt{``rutaAutoencoder''}.
+Una lista de matrices de pesos iniciales para facilitar como el argumento \texttt{initial.args} en una llamada a \texttt{train} con un objeto de clase \texttt{``rutaAutoencoder''}.
 
 
 \subsection{Entrenamiento de modelos}
@@ -211,7 +211,7 @@ Generar un modelo entrenado para un objeto asociado
 ~
 
 \begin{lstlisting}
-train(x, ...)
+train(x, task, ...)
 \end{lstlisting}
 
 \paragraph{Argumentos}
@@ -237,7 +237,7 @@ train(x, ...)
 \end{itemize}
 
 \paragraph{Valor}
-Una lista de matrices de pesos iniciales para pasar como el argumento \texttt{initial.args} en una llamada a \texttt{train} con un objeto de clase \texttt{``rutaAutoencoder''}.
+Un objeto de clase \texttt{``rutaModel''} que contiene el modelo entrenado.
 
 \begin{lstlisting}
 data(iris)

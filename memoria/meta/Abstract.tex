@@ -5,37 +5,66 @@
 \pdfbookmark[1]{Resumen}{Resumen}
 
 \chapter*{Resumen}
-\textcolor{red}{\textbf{Redactar esto}}
 
-La clasificación es una tarea del aprendizaje automático muy estudiada en la actualidad, debido al
-incremento notable de la información que se genera y se recopila, y se pretende utilizar para
-predecir la clase de nuevos ejemplos. En multitud de casos no es suficiente realizar un
-aprendizaje sobre la información, ya que esta puede presentar ciertos obstáculos (ruido, valores
-ausentes, desbalanceo de clases), que hace preciso el tratamiento previo mediante técnicas de
-preprocesamiento de datos.
+En este trabajo se analizan desde una perspectiva teórica las técnicas basadas en redes neuronales profundas que permiten abordar el problema de reducción de la dimensionalidad y se explica el software desarrollado, que permite el uso de dichas técnicas y la generación de visualizaciones sobre ellas, bien mediante programación o bien a través de una interfaz gráfica de usuario web.
 
-El campo de Deep Learning engloba un conjunto de técnicas que tratan con el problema de la
-complejidad que representan los datos mediante amplias jerarquías de representaciones más simples
-de los datos. Dichas técnicas se basan en los conceptos de neurona artificial y redes neuronales,
-que se fundamentan en la teoría de la información y teoría de probabilidad, entre otros ámbitos
-matemáticos. Además, algunas de ellas tienen aplicaciones en el preprocesamiento de datos, por
-ejemplo mediante la extracción de nuevas características a partir de las originales, lo que permite
-reducir la dimensionalidad del conjunto de datos. Ejemplos de estos métodos son los autoencoders
-y las Restricted Boltzmann Machines. En la actualidad, existen distintas herramientas que
-realizan aprendizaje mediante las técnicas mencionadas, pero no facilitan el estudio visual y
-exploratorio de las representaciones internas aprendidas.
+Primero se introducen conceptos matemáticos que ayudan a comprender los algoritmos y modelos que fundamentan estas redes profundas, haciendo hincapié en resultados teóricos que dan ideas acerca del problema que se va a abordar. Posteriormente, se describen los algoritmos y que realizan el aprendizaje sobre dichas estructuras, y las arquitecturas relevantes que tratan este problema. Por último, se documenta el software implementado y se muestran ejemplos de su uso.
 
-El presente trabajo fin de grado tiene como objetivo el estudio de los fundamentos matemáticos de
-las técnicas de Deep Learning orientadas a preprocesamiento y reducción de la dimensionalidad
-más relevantes y el desarrollo de un paquete software que las recopile y permita el análisis visual y
-exploratorio por distintos métodos. De esta forma se compensará la falta de interpretabilidad de las
-representaciones aprendidas por las técnicas, y se compondrá una herramienta que facilite dicho
-análisis. Asimismo, se realizará un estudio comparativo del rendimiento de las técnicas relacionado
-con los resultados generados por el software desarrollado, con el objetivo de valorar la medida en
-que ayudan a conocer el comportamiento de cada una de las técnicas.
+\paragraph{Palabras clave} Deep Learning, redes neuronales, reducción de dimensionalidad, clasificación, aprendizaje no supervisado, probabilidad, teoría de la información.
+
 
 \begin{otherlanguage}{american}
 \pdfbookmark[1]{Abstract}{Abstract}
 \chapter*{Abstract}
-Wheeeew
+
+This work studies, from a theoretical perspective, techniques based on deep neural networks that tackle the high dimensionality problem. It also explains the piece of software developed for this project, which allows the use of said techniques and includes resources for visualization, offering both a programming interface and a web-based graphic user interface.
+
+\section*{Description of the addressed problem}
+
+The current trend in data collection from diverse sources for its subsequent processing implies the need for powerful learning algorithms as well as high computation abilities. One of the most common tasks is classification, where an algorithm attempts to predict one or several labels tied to data samples, having previously learned from already classified examples.
+
+Classification algorithms often suffer some performance loss when trained against high dimensional data sets, a phenomenon known as the \emph{curse of dimensionality}. From the very varied approaches to tackle this problem, this work focuses on dimensionality reduction via unsupervised deep neural networks. Neural networks generalize the perceptron, and deep networks are an extension of this concept. It was defined decades ago but has made a comeback thanks to the progress on high performance computing and efficient training algorithms.
+
+Techniques of this kind can be found in software for languages such as Python or C++, whereas the data-oriented language R lacks a library offering easy access to unsupervised deep neural networks. The software implemented in this project, Ruta, aims to resolve this absence. Furthermore, a companion tool named Rutavis adds visualization mechanisms and a web-based graphic user interface.
+
+The documentation is divided into two distinct parts. One offers a mathematical framework which serves as a basis for the concepts needed to describe the Deep Learning techniques related to this work. The areas of mathematics used are probability theory, information theory and tensor algebra. The other main part describes the common machine learning notions, problems and algorithms that also apply to Deep Learning and continues with the specification of the techniques used in unsupervised deep neural networks. It finishes by describing the design and implementation of both pieces of software, Ruta and Rutavis.
+
+The following sections constitute a summary of this documentation.
+
+\section*{Mathematical foundations of Deep Learning}
+
+Deep Learning finds its roots in several areas of mathematics. Especially, there are important concepts to be studied in probability theory, information theory and tensor algebra.
+
+The needed definitions from probability theory are very basic but essential to the rest of the text, so special attention is given to rigurously compile them. The ideas of probability distribution, conditional distribution, independence and the main moments (expectation and variance) are explained. As a preliminary result, the theorem of the continuous mapping is formulated. It is then used to prove one of the main theoretical results of this work, a theorem describing the \emph{curse of dimensionality} that motivates the task known as dimensionality reduction. As a consequence it is deduced that, as the dimensionality of a data set increases, the difference between the nearest neighbor and the farthest one becomes insignificant.
+
+The next chapter introduces the convenient notions around entropy. The entropy of a random variable is defined and several properties are deduced. Then, measures of the information involved among two variables are presented as the joint entropy and conditional entropy. These are used to infer the chain rule of entropy. Later, two important concepts are defined: the Kullback-Leibler divergence and cross entropy, which will be applied later to the construction of objective functions in deep neural networks. Some properties and alternative expressions of these concepts are verified. Lastly, Jensen's inequality, which is a well-known result among the mathematical field, is used to prove the information inequality and its consequences. Intuitively, it is deduced that probabilistic models assumed around sampled data need to be as close as the true probability distribution as possible in order to be able to optimize the compression of data.
+
+After that, a chapter is dedicated to concepts around the notion of tensor. The mathematical foundations of tensors rely on multilinear algebra, which is explained starting from linear functionals and dual spaces, then introducing the mechanics of the change of coordinates within these spaces. The second dual is shown to be trivially isomorphic to the origin vector space. These results allow the definition of multilinear mappings and, in particular, multilinear functionals or tensors. The tensor product of functionals is introduced and later used to define a base for the tensor product of vector spaces. The distinction between covariant and contravariant tensors is explained. Finally, the use of tensors in machine learning is shown to be a distant application of the previous definitions.
+
+\section*{Algorithms and structures in Deep Learning}
+
+Deep Learning is considered a branch of machine learning. Thus, a notable amount of theoretical content and algorithms can be applied to the problem studied. However, many of the latest developments on Deep Learning are novel and deserve a thorough study.
+
+The essential notions of learning and learners are introduced and several common learning tasks are enumerated. The two main types of learning, supervised and unsupervised, are distinguished. Some examples are also provided. Later, the classification problem is presented, and a theoretical formulation with a simple notation is introduced, which relates to the field of PAC learning. Different types of classification problems are enumerated as well. The structure of the space where the data belongs is lightly discussed afterwards.
+
+The main problem addressed in this work, the dimensionality reduction task, is described and connected to the theoretical results proved before. Several means of action that tackle this problem are explained, and the approach studied in the work is highlighted. There is also a breakdown of the process referred to as feature extraction, and some mechanisms to build new features are mentioned. Lastly, one of the most common optimization algorithms in machine learning, gradient descent, is thoroughly described. It will serve as a basis for the optimization methods in Deep Learning.
+
+Afterwards, the chapter dedicated to Deep Learning begins by outlining the common structure used in many of its applications, the deep feedforward neural network. A mathematical notation is introduced and the biological inspiration behind the artificial neuron is discussed. Later, an introduction to the way cost functions are derived from the selected probabilistic model is made. Different types of output units or neurons are explained, as well as the cost function they determine. Especially, the most commonly found ones are described: linear, sigmoid and softmax units. This explanation is extended to all hidden units in a feedforward network by adding rectified linear units and their variants, as well as the hyperbolic tangent and other activation functions.
+
+The training process of a deep neural network requires some special techniques, known as forward propagation and backward propagation. These algorithms are motivated and thoroughly depicted, and a small example on the computation of gradients is made. The algorithms derived from gradient descent, specific for training deep networks, analyzed in this work are stochastic gradient descent and its variants AdaGrad, RMSProp and Adam. These allow to optimize the cost functions via several iterations where a minibatch of data is propagated through the network and gradients are computed.
+
+Deep neural networks can be designed in a specific means to be trained in an unsupervised fashion. The main architectures that allow this kind of training are restricted Boltzmann machines and autoencoders. These are characterized and illustrated in the present work, paying special attention to some variants of the autoencoder and their properties: undercomplete, sparse, denoising and contractive autoencoders are all specified in quite detail. Finally, a special training procedure for autoencoders involving a stack of restricted Boltzmann machines is explained.
+
+\section*{Software implementation: the Ruta package}
+
+During the realization of this project, two pieces of software have been designed and implemented. One of them, named Ruta, gives uncomplicated access to unsupervised deep neural networks, from building their architecture to their training and evaluation. The second one is a complementary project called Rutavis, which allows to generate graphical representations of the models trained with Ruta.
+
+First, an introduction to the R language is offered, and simple instructions for its installation are provided. There is also a general description of the language and the object orientations it admits. Afterwards, a neural network library called MXNet is introduced. It implements the necessary operations and algorithms needed to build and train deep architectures. Instructions for its installation are provided as well as a specification of the programming mechanic it offers, including a complete example of the training and prediction of a simple neural network oriented to regression.
+
+The Ruta software is presented and motivated. It is mentioned that an early prototype was previously introduced at a national conference. Later, there is an exhaustive description of its structure and functionality. The main objects used to work with this package abstract the notions of learning tasks, learners and trained models. These objects are defined and exemplified making use of the Iris data set and a simple deep autoencoder.
+
+The Rutavis package is also outlined via the same main points, its structure and functionality. Some example plots are shown and screenshots of an use case with the web-based graphic user interface are offered as well.
+
+The document ends with some conclusions and sketches some future work.
+
 \end{otherlanguage}
