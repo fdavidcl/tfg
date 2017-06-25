@@ -1,4 +1,4 @@
-A lo largo de este capítulo se definen conceptos básicos de la teoría de la probabilidad, que serán utilizados en el resto del trabajo. También se hace mención a unas propiedades de la convergencia que nos permiten después demostrar un resultado técnico que motiva el problema de reducción de la dimensionalidad, estudiado con más detalle en la \autoref{sec:red-dim}.  La fuente principal del capítulo es \textcite{jaynes2003}.
+A lo largo de este capítulo se definen conceptos básicos de la teoría de la probabilidad, que serán utilizados en el resto del trabajo. También se hace mención a unas propiedades de la convergencia que nos permiten después demostrar un resultado técnico que motiva el problema de reducción de la dimensionalidad, estudiado con más detalle en la \autoref{sec:red-dim}.  La fuente principal del capítulo es \textcite[capítulo 3]{goodfellow2016}.
 
 \section{Recordatorio de conceptos}\label{conceptos}
 
@@ -31,7 +31,7 @@ trabajar con probabilidades en el resto del texto.
 \defineb
 Una \emph{variable aleatoria} es una función medible
 \(X:\Omega\rightarrow E\) donde \(\Omega\) es un espacio de probabilidad
-y \(E\) un espacio métrico. \definee
+y \(E\) un espacio medible. \definee
 \defineb
 El par \((\Omega, \Sigma)\) donde \(\Omega\) es un conjunto y \(\Sigma\)
 una \(\sigma\)-álgebra sobre \(\Omega\) es un \emph{espacio medible}.
@@ -53,15 +53,42 @@ estados que puede tomar la variable \(X\) vienen dados por su imagen,
 \(X(\Omega)\) es numerable (incluyendo el caso finito), y es
 \emph{continua} si \(X(\Omega)\) es no numerable.
 
-Una distribución de probabilidad sobre una variable discreta \(X\) se
-puede describir mediante una función de probabilidad (\emph{Probability
-Mass Function}, PMF) \(P:X(\Omega)\rightarrow [0,1]\), que verifica
-\(\sum_{x\in X(\Omega)} P(x)=1\).
 
-Una distribución de probabilidad sobre una variable continua \(X\) se
-puede describir mediante una función de densidad (\emph{Probability
-Density Function}, PDF) \(p:X(\Omega)\rightarrow [0,1]\), que verifica
-\(\int_{X(\Omega)} x dx=1\).
+\subsection{Notación de probabilidad}
+
+En ocasiones preferiremos hablar de la probabilidad de que se dé un suceso, en lugar de la probabilidad de un valor concreto. Dado un espacio de probabilidad $(\Omega, \mathcal F, \mu)$ y una variable aleatoria $X:\Omega\rightarrow E$, notaremos
+\[
+  \Pr{X=x}=\mu(\{s\in\Omega:X(s)=x\})=\mu(X^{-1}(\{x\}))~.
+\]
+
+En general, podemos expresar de forma similar la probabilidad de una proposición lógica arbitraria sobre los valores de X. Si tenemos una condición $c$,
+\[
+  \Pr{X\mbox{ verifica }c}=\mu(\{s\in\Omega:X(s)\mbox{ verifica }c\})~.
+\]
+
+
+\subsection{Distribuciones de probabilidad}
+
+\defineb
+Una distribución de probabilidad sobre una variable discreta \(X\) se
+describe mediante una \emph{función de probabilidad} (\emph{Probability
+  Mass Function}, PMF) \(p:X(\Omega)\rightarrow [0,1]\), que se define como
+\[
+  p(x)=\Pr{X=x}~.
+\]
+\definee
+
+\defineb
+Una distribución de probabilidad sobre una variable continua \(X\) valuada en los números reales se
+describe mediante una \emph{función de densidad} (\emph{Probability
+  Density Function}, PDF) \(p:X(\Omega)\rightarrow [0,1]\), definida como
+\[
+  p(x)=\frac{d}{dx}\mu([-\infty,x])~,
+\]
+donde \(x\mapsto \mu([-\infty,x])\) se denomina \emph{función de distribución}.
+\definee
+
+Es común el abuso del lenguaje por el cual se nota a varias funciones de probabilidad de distintas variables aleatorias por la misma letra, pero no hay posibilidad de confusión ya que se evalúan en distintos valores.
 
 \subsection{Distribuciones marginales}\label{marginal}
 
@@ -70,19 +97,19 @@ conocer la distribución de un subconjunto de las mismas. Esta se
 denomina \emph{distribución marginal}, y se consigue sumando o
 integrando a lo largo de todos los valores de las variables que no están
 en el subconjunto. Por ejemplo, si \(X\) e \(Y\) son variables
-discretas, se tiene \[P(x) = \sum_{y\in Y(\Omega)}P(x, y)~.\] Si son
+discretas, se tiene \[p(x) = \sum_{y\in Y(\Omega)}p(x, y)~.\] Si son
 continuas, entonces se verifica
-\[P(x) = \int\limits_{Y(\Omega)}p(x, y)dy~.\]
+\[p(x) = \int\limits_{Y(\Omega)}p(x, y)dy~.\]
 
 \subsection{Probabilidad condicionada}\label{probabilidad-condicionada}
 
 En ocasiones es útil representar la probabilidad de un suceso
 condicionado a la ocurrencia de otro. Para ello se utilizan
-\emph{probabilidades condicionadas}, que se notan \(P(y|x)\) (donde
+\emph{probabilidades condicionadas}, que se notan \(p(y|x)\) (donde
 \(y\in Y(\Omega), x\in X(\Omega)\)) y se calculan mediante la siguiente
-fórmula, suponiendo que \(P(x) > 0\):
+fórmula, suponiendo que \(p(x) > 0\):
 
-\begin{equation}P(y|x)=\frac{P(y,x)}{P(x)}~.\label{eq:cond}\end{equation}
+\begin{equation}p(y|x)=\frac{p(y,x)}{p(x)}~.\label{eq:cond}\end{equation}
 
 %\subsubsection{Encadenando probabilidades
 %condicionadas}\label{encadenando-probabilidades-condicionadas}
@@ -90,7 +117,7 @@ fórmula, suponiendo que \(P(x) > 0\):
 Una distribución de probabilidad conjunta sobre varias variables se
 puede descomponer como probabilidades condicionadas sobre una sola
 variable:
-\[P(x_1, \dots x_n) = P(x_1)\prod\limits_{i=2}^n P(x_i\mid x_1, \dots x_{i-1})~.\]
+\[p(x_1, \dots x_n) = p(x_1)\prod\limits_{i=2}^n p(x_i\mid x_1, \dots x_{i-1})~.\]
 
 Esta expresión se deduce por inducción de la ecuación~\eqref{eq:cond}.
 
@@ -100,34 +127,36 @@ condicionada}\label{independencia-e-independencia-condicionada}
 \defineb
 Dos variables aleatorias, \(X\) e \(Y\), son \emph{independientes} si
 la su probabilidad conjunta equivale al producto de sus probabilidades:
-\[P(x,y)=P(x)P(y)\forall x\in X^{-1}(\Omega),y\in Y^{-1}(\Omega)~.\]
+\[p(x,y)=p(x)p(y)\forall x\in X(\Omega),y\in Y(\Omega)~.\]
 \definee
 
 \defineb
 Además, se dice que son \emph{condicionalmente independientes}
 respecto a una variable \(Z\) si la distribución de probabilidad
 condicionada se factoriza por \(X\) e \(Y\):
-\[P(x,y|z)=P(x|z)P(y|z)\forall x\in X^{-1}(\Omega),y\in Y^{-1}(\Omega),z\in Z^{-1}(\Omega)~.\]
+\[p(x,y|z)=p(x|z)p(y|z)\forall x\in X(\Omega),y\in Y(\Omega),z\in Z(\Omega)~.\]
 \definee
 
 \subsection{Momentos: esperanza, varianza y
 covarianza}\label{momentos-esperanza-varianza-y-covarianza}
 
+Para hablar de los momentos de variables aleatorias, nos centramos en las valuadas en los números reales. En el caso de una variable con codominio $\RR^{k}$, se pueden estudiar los momentos marginales de forma análoga.
+
 \defineb
 La \emph{esperanza} de una variable aleatoria \(X\) viene dada por las
 expresiones siguientes, para variables discretas y continuas
 respectivamente:
-\[\mathrm E[X]=\sum_{x\in X^{-1}(\Omega)}xP(x);\quad \mathrm E[X]=\int_{X^{-1}(\Omega)}xp(x)dx~.\]
+\[\mathrm E[X]=\sum_{x\in X(\Omega)}xp(x);\quad \mathrm E[X]=\int_{X(\Omega)}xp(x)dx~.\]
 \definee
 
-\textbf{Nota:} Todos los momentos se toman respecto de una variable
+\note{Todos los momentos se toman respecto de una variable
 aleatoria y una distribución de probabilidad asociada, por lo que la
-notación correcta sería \(\mathrm E_{X~P}[X]\). Sin embargo, se omitirá
-excepto para prevenir ambigüedades.
+notación correcta sería \(\mathrm E_{X\sim p}[X]\). Sin embargo, se omitirá
+excepto para prevenir ambigüedades.}
 
 Se puede definir la esperanza de una función \(f\) sobre los valores de
 una variable aleatoria, del siguiente modo:
-\[\mathrm E[X]=\sum_{x\in X^{-1}(\Omega)}f(x)P(x);\quad \mathrm E[X]=\int_{X^{-1}(\Omega)}f(x)p(x)dx~.\]
+\[\mathrm E[f(X)]=\sum_{x\in X(\Omega)}f(x)p(x);\quad \mathrm E[f(X)]=\int_{X(\Omega)}f(x)p(x)dx~.\]
 
 \defineb
 La \emph{varianza} da idea acerca de cómo de diferentes entre sí son
@@ -159,13 +188,13 @@ sea \(X:\Omega \rightarrow \RR^k\) una variable aleatoria.
 
 \defineb
 Se dice que \(X_n\) \emph{converge en probabilidad} a \(X\) si para cada
-\(\varepsilon>0\) se tiene \(P(d(X_n, X)>\varepsilon)\rightarrow 0\). Lo
+\(\varepsilon>0\) se tiene \(\Pr{d(X_n, X)>\varepsilon}\rightarrow 0\). Lo
 denotamos \(X_n\pconv X\). \definee
 
 \defineb
 Se dice que \(X_n\) \emph{converge casi seguramente} a \(X\) si se da la
 convergencia puntual en un conjunto de medida 1:
-\[X_n\asconv X\Leftrightarrow P\left(\lim_{n\rightarrow +\infty} d(X_n, X)=0\right)=1\]
+\[X_n\asconv X\Leftrightarrow \Pr{\lim_{n\rightarrow +\infty} d(X_n, X)=0}=1\]
 \definee
 
 Es un resultado conocido que \(X_n\pconv X\Rightarrow X_n\asconv X\).
@@ -224,7 +253,7 @@ e idénticamente distribuidas. Supongamos que tenemos una función
 Entonces, si
 \(\lim_{m\rightarrow +\infty}\Var\left[\frac{d_m(X_{m1})^p}{E[d_m(X_{m1})^p]}\right]=0\)
 se tiene que, para cada \(\varepsilon > 0\),
-\[\lim_{m\rightarrow +\infty}P\left[\mathrm{DMAX}_m\leq (1+\varepsilon) \mathrm{DMIN}_m\right]=1.\]
+\[\lim_{m\rightarrow +\infty}\Pr{\mathrm{DMAX}_m\leq (1+\varepsilon) \mathrm{DMIN}_m}=1.\]
 \proofb
 
 Puesto que las muestras \(X_{mi}\) son idénticamente distribuidas,
@@ -256,13 +285,13 @@ Por definición de convergencia en probabilidad, para cada
 
 \begin{equation}
   \label{eq:conv-dmax-dmin}
-  \lim_{m\rightarrow +\infty} P\left[\left\lvert \frac{\mathrm{DMAX}_m}{\mathrm{DMIN}_m} - 1 \right\rvert\leq\varepsilon\right] = 1,
+  \lim_{m\rightarrow +\infty} \Pr{\left\lvert \frac{\mathrm{DMAX}_m}{\mathrm{DMIN}_m} - 1 \right\rvert\leq\varepsilon} = 1,
   \end{equation}
-y usando que \(P\left[\mathrm{DMAX}_m \geq \mathrm{DMIN}_m \right]=1\),
+y usando que \(\Pr{\mathrm{DMAX}_m \geq \mathrm{DMIN}_m}=1\),
 \begin{gather*}
-  P\left[\left\lvert \frac{\mathrm{DMAX}_m}{\mathrm{DMIN}_m} - 1 \right\rvert\leq\varepsilon\right]=
-P\left[\frac{\mathrm{DMAX}_m}{\mathrm{DMIN}_m} - 1 \leq\varepsilon\right]=\\=
-P\left[\mathrm{DMAX}_m\leq (1+ \varepsilon)\mathrm{DMIN}_m \right],
+  \Pr{\left\lvert \frac{\mathrm{DMAX}_m}{\mathrm{DMIN}_m} - 1 \right\rvert\leq\varepsilon}=
+\Pr{\frac{\mathrm{DMAX}_m}{\mathrm{DMIN}_m} - 1 \leq\varepsilon}=\\=
+\Pr{\mathrm{DMAX}_m\leq (1+ \varepsilon)\mathrm{DMIN}_m },
 \end{gather*}
 luego el límite \eqref{eq:conv-dmax-dmin} es el que queríamos demostrar.
 \proofe
