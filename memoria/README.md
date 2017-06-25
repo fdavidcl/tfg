@@ -20,3 +20,4 @@ El código de la memoria utiliza [classicthesis](http://www.miede.de/#classicthe
 plantilla y por tanto se distribuye bajo la licencia GNU General Public License v3, o una
 posterior a tu elección. El texto completo de la licencia está disponible en 
 <https://www.gnu.org/licenses/gpl.html>.
+
