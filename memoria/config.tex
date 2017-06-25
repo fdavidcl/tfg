@@ -19,11 +19,26 @@
 \usepackage{tikz}
 
 %% Theorem environments
+\usepackage{aliascnt}
+\def\NewTheorem#1#2{%
+  \newaliascnt{#1}{theorem}
+  \newtheorem{#1}[#1]{#2}
+  \aliascntresetthe{#1}
+  \expandafter\def\csname #1autorefname\endcsname{#2}
+}
 \usepackage{amsthm}
+% \newtheorem{satz}{Satz}[chapter]
+% \newtheorem*{satz*}{Satz}
+% \newtheorem{lemma}[satz]{Lemma}
+% \newtheorem{corollar}[satz]{Korollar} 
+% \newcommand{\satzautorefname}{Satz}
 \newtheorem{theorem}{Teorema}[chapter]
-\newtheorem{lemma}[theorem]{Lema}
-\newtheorem{prop}[theorem]{Proposición}
-\newtheorem{cor}[theorem]{Corolario}
+\NewTheorem{lemma}{Lema}
+\NewTheorem{prop}{Proposición}
+\NewTheorem{cor}{Corolario}
+%\newtheorem{lemma}[theorem]{Lema}
+%\newtheorem{prop}[theorem]{Proposición}
+%\newtheorem{cor}[theorem]{Corolario}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definición}[chapter]
@@ -32,6 +47,19 @@
 
 \theoremstyle{remark}
 \newtheorem{remark}{Observación}[chapter]
+
+% Autoref commands
+%\newcommand{\corollaryautorefname}{corolario}
+%\newcommand{\corautorefname}{corolario}
+%\newcommand{\propautorefname}{proposición}
+%\newcommand{\propositionautorefname}{proposición}
+%\newcommand{\lemmaautorefname}{lema}
+\newcommand*{\definitionautorefname}{definición}
+\newcommand*{\exampleautorefname}{ejemplo}
+\newcommand*{\remarkautorefname}{observación}
+\newcommand*{\algorithmautorefname}{algoritmo}
+\def\theoremautorefname{teorema}
+\def\sectionautorefname{sección}
 
 %\numberwithin{equation}{section}
 
@@ -81,14 +109,3 @@
 \newcommand{\asconv}{\overset{cs}{\rightarrow}}
 \newcommand{\pconv}{\overset{P}{\rightarrow}}
 \newcommand{\softmax}[1]{\mathrm{softmax}(#1)}
-
-% Autoref commands
-\newcommand*{\corollaryautorefname}{corolario}
-\newcommand*{\propositionautorefname}{proposición}
-\newcommand*{\lemmaautorefname}{lema}
-\newcommand*{\definitionautorefname}{definición}
-\newcommand*{\exampleautorefname}{ejemplo}
-\newcommand*{\remarkautorefname}{observación}
-\newcommand*{\algorithmautorefname}{algoritmo}
-\def\theoremautorefname{teorema}
-\def\sectionautorefname{sección}
