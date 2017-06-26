@@ -25,8 +25,8 @@ magnitudes}\label{entropuxeda.-propiedades-y-magnitudes}
 
 \defineb
 La \emph{entropía} \(H\) de una variable aleatoria discreta \(X\) con
-distribución \(p(x)=P(X=x)\) viene dada por la siguiente expresión:
-\[H(X)=-\sum_{x\in X^{-1}(\Omega)}p(x)\log p(x)~.\] $\log$ denota el logaritmo neperiano. Si se usa otra base
+distribución \(p(x)=\Pr{X=x}\) viene dada por la siguiente expresión:
+\[H(X)=-\sum_{x\in X(\Omega)}p(x)\log p(x)~.\] $\log$ denota el logaritmo neperiano. Si se usa otra base
 \(b\) para el logaritmo de la definición notaremos \(H_{b}\). \definee
 
 Observamos que se puede expresar como la esperanza de una función de la
@@ -80,7 +80,7 @@ condicional}\label{entropuxeda-conjunta-y-entropuxeda-condicional}
 La \emph{entropía conjunta} \(H(X,Y)\) de dos variables aleatorias
 discretas con distribución conjunta \(p(x,y)\) se define como
 
-\begin{equation}H(X,Y)=-\sum_{x\in\Omega}\sum_{x\in\Omega'}p(x,y)\log p(x,y)~,\end{equation}
+\begin{equation}H(X,Y)=-\sum_{x}\sum_{y}p(x,y)\log p(x,y)~,\end{equation}
 que también se puede expresar como
 \begin{equation}H(X,Y)=-\E\left[\log p(x,y)\right]~.\end{equation}
 
@@ -91,9 +91,9 @@ Si \((X,Y)\sim p(x,y)\), entonces se define la entropía condicional
 \(H(Y\mid X)\) como
 
 \begin{align}
-  H(Y\mid X) &= \sum_{x\in\Omega}p(x)H(Y\mid X=x)\\
-             &= -\sum_{x\in\Omega}p(x)\sum_{y\in\Omega'}p(y\mid x) \log p(y \mid x)\\
-             &= -\sum_{x\in\Omega}\sum_{y\in\Omega'}p(x,y) \log p(y \mid x)\\
+  H(Y\mid X) &= \sum_{x}p(x)H(Y\mid X=x)\\
+             &= -\sum_{x}p(x)\sum_{y}p(y\mid x) \log p(y \mid x)\\
+             &= -\sum_{x}\sum_{y}p(x,y) \log p(y \mid x)\\
              &= -\E_{p(x,y)} \log p(Y \mid X)~.
 \end{align}
 
@@ -107,10 +107,10 @@ Estas dos definiciones están relacionadas por el siguiente teorema.
 \proofb
 
 \begin{align*}
-  H(X,Y)&=-\sum_{x\in\Omega}\sum_{x\in\Omega'}p(x,y)\log p(x,y)\\
-        &=-\sum_{x\in\Omega}\sum_{x\in\Omega'}p(x,y)\log\left(p(x)p(y\mid x)\right)\\
-        &=-\sum_{x\in\Omega}\sum_{x\in\Omega'}p(x,y)\log p(x) - \sum_{x\in\Omega}\sum_{x\in\Omega'}p(x,y)\log p(y\mid x)\\
-        &=-\sum_{x\in\Omega}p(x)\log p(x) - \sum_{x\in\Omega}\sum_{x\in\Omega'}p(x,y)\log p(y\mid x)\\
+  H(X,Y)&=-\sum_{x}\sum_{y}p(x,y)\log p(x,y)\\
+        &=-\sum_{x}\sum_{y}p(x,y)\log\left(p(x)p(y\mid x)\right)\\
+        &=-\sum_{x}\sum_{y}p(x,y)\log p(x) - \sum_{x}\sum_{y}p(x,y)\log p(y\mid x)\\
+        &=-\sum_{x}p(x)\log p(x) - \sum_{x}\sum_{y}p(x,y)\log p(y\mid x)\\
         &=H(X)+H(Y\mid X)~.
 \end{align*}
 
@@ -136,7 +136,7 @@ un código basado en \(p\).
 \defineb
 La \emph{entropía relativa} o \emph{divergencia de Kullback-Leibler}
 entre dos funciones de probabilidad \(p\) y \(q\) se define como
-\[D(p\Mid q)=\sum_{x\in\Omega}p(x)\log\frac{p(x)}{q(x)}=\E_{p}\left[\log\frac{p(X)}{q(X)}\right]~.\]
+\[D(p\Mid q)=\sum_{x}p(x)\log\frac{p(x)}{q(x)}=\E_{p}\left[\log\frac{p(X)}{q(X)}\right]~.\]
 \definee
 
 En la definición anterior usamos la convención de que
@@ -155,7 +155,7 @@ entropía relativa entre la distribución conjunta y el producto de las
 distribuciones:
 
 \begin{align*}
-  I(X;Y)&=\sum_{x\in\Omega}\sum_{y\in\Omega'}p(x,y)\log\frac{p(x,y)}{p(x)p(y)}\\
+  I(X;Y)&=\sum_{x}\sum_{y}p(x,y)\log\frac{p(x,y)}{p(x)p(y)}\\
         &=D(p(x,y)\Mid p(x)p(y))\\
         &=\E_{p(x,y)}\left[\log\frac{p(X,Y)}{p(X)p(Y)}\right]~.
 \end{align*}
@@ -170,10 +170,10 @@ sobre \(Y\) como \(Y\) sobre \(X\):
 \[I(X;Y)=H(X)+H(Y)-H(X,Y)~,\] en particular, \[I(X;X)=H(X)~.\] \proofb
 
 \begin{align*}
-  I(X;Y)&=\sum_{x\in\Omega}\sum_{y\in\Omega'}p(x,y)\log\frac{p(x,y)}{p(x)p(y)}\\
-        &=\sum_{x\in\Omega}\sum_{y\in\Omega'}p(x,y)\log\frac{p(x\mid y)}{p(x)}\\
-        &=-\sum_{x\in\Omega}\sum_{y\in\Omega'}p(x,y)\log p(x) + \sum_{x\in\Omega}\sum_{y\in\Omega'}p(x,y)\log p(x\mid y)\\
-        &=-\sum_{x\in\Omega}p(x)\log p(x) -\left(- \sum_{x\in\Omega}\sum_{y\in\Omega'}p(x,y)\log p(x\mid y)\right)\\
+  I(X;Y)&=\sum_{x}\sum_{y}p(x,y)\log\frac{p(x,y)}{p(x)p(y)}\\
+        &=\sum_{x}\sum_{y}p(x,y)\log\frac{p(x\mid y)}{p(x)}\\
+        &=-\sum_{x}\sum_{y}p(x,y)\log p(x) + \sum_{x}\sum_{y}p(x,y)\log p(x\mid y)\\
+        &=-\sum_{x}p(x)\log p(x) -\left(- \sum_{x}\sum_{y}p(x,y)\log p(x\mid y)\right)\\
         &=H(X)-H(X\mid Y)~.
 \end{align*}
 
@@ -188,7 +188,7 @@ Definimos una versión condicionada de la entropía relativa.
 La \emph{entropía relativa condicional}
 \(D\left(p(y\mid x)\Mid q(y\mid x)\right)\) se define como
 
-\begin{gather*}D\left(p(y\mid x)\Mid q(y\mid x)\right)=\\\sum_{x\in\Omega}p(x)\sum_{y\in\Omega'}p(y\mid x)\log\frac{p(y\mid x)}{q(y\mid x)}=\E_{p(x,y)}\left[\log\frac{p(Y\mid X)}{q(Y\mid X)}\right]
+\begin{gather*}D\left(p(y\mid x)\Mid q(y\mid x)\right)=\\\sum_{x}p(x)\sum_{y}p(y\mid x)\log\frac{p(y\mid x)}{q(y\mid x)}=\E_{p(x,y)}\left[\log\frac{p(Y\mid X)}{q(Y\mid X)}\right]
 \end{gather*}
 
 \definee
@@ -215,9 +215,9 @@ La entropía cruzada de \(p\) respecto de \(q\) para \(Y\) condicionada a
 
 \begin{align*}
   C(p(y\mid x),q(y \mid x))=&H(Y\mid X) + D\left(p(y\mid x)\Mid q(y\mid x)\right)\\
-                =&\sum_{x\in\Omega}p(x)\sum_{y\in\Omega'}p(y\mid x)\left(-\log p(y\mid x)
+                =&\sum_{x}p(x)\sum_{y}p(y\mid x)\left(-\log p(y\mid x)
                   +\log\frac{p(y\mid x)}{q(y\mid x)}\right)\\
-                =&-\sum_{x\in\Omega}p(x)\sum_{y\in\Omega'}p(y\mid x)\log q(y\mid x)\\
+                =&-\sum_{x}p(x)\sum_{y}p(y\mid x)\log q(y\mid x)\\
                 =&-\E_p[\log q(Y\mid X)]~.
 \end{align*}
 
@@ -267,12 +267,12 @@ distribuciones continuas. \proofe
 \theob[Desigualdad de la información]\label{th:information-ineq}
 Sean \(p\), \(q\), funciones de probabilidad de una variable aleatoria
 \(X\). Entonces, \[D(p\Mid q)\geq 0\] \proofb
-Sea \(A=\{x\in\Omega :p(x)>0\}\) el soporte de \(p\). Entonces, notando
+Sea \(A=\{x :p(x)>0\}\) el soporte de \(p\). Entonces, notando
 que la función \(-\log\) es convexa por concavidad del logaritmo,
 
 \begin{align*}
   D(p\Mid q)&=\E_p\left[-\log\frac{q(X)}{p(X)}\right]\geq -\log\E_p\left[\frac{q(X)}{p(X)}\right]\\
-            &=-\log\left(\sum_{x\in\Omega}p(x)\frac{q(x)}{p(x)}\right)=-\log\left(\sum_{x\in\Omega}q(x)\right)\\
+            &=-\log\left(\sum_{x}p(x)\frac{q(x)}{p(x)}\right)=-\log\left(\sum_{x}q(x)\right)\\
             &=-\log 1= 0
 \end{align*}
 
