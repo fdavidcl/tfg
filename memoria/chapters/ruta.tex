@@ -174,6 +174,15 @@ Puesto que se trata de un software científico que se sostiene sobre varias piez
 
 Para asistir a la comprobación del software completo durante su desarrollo, se ha utilizado un sistema de integración continua, es decir, automatización de \textit{builds} y de tests. Este sistema realiza, a cada avance publicado en GitHub, una comprobación mediante el programa \texttt{R CMD check}.
 
+Además, se ha desarrollado un sencillo sitio web disponible en la dirección \url{http://ruta.software/} que da acceso a la descarga del software y a la documentación. Se ha diseñado de manera \emph{responsive}, con el objetivo de que la página se adapte automáticamente al tamaño de la pantalla de cada dispositivo. Se puede comprobar el diseño en la \autoref{fig:rutaweb}.
+
+\begin{figure}[hbtp]
+  \centering
+  \includegraphics[width=\textwidth]{images/responsive_web.png}
+  \caption[Sitio web de Ruta]{El sitio web del proyecto Ruta en distintos dispositivos}
+  \label{fig:rutaweb}
+\end{figure}
+
 \subsection{Instalación}
 
 Para instalar la última versión estable de Ruta y el paquete compañero Rutavis, basta con utilizar el conocido paquete \texttt{devtools} \autocite{devtools} para realizar automáticamente la descarga y la instalación. Desde la consola de R ejecutamos:
