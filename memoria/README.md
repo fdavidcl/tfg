@@ -21,3 +21,6 @@ plantilla y por tanto se distribuye bajo la licencia GNU General Public License 
 posterior a tu elección. El texto completo de la licencia está disponible en 
 <https://www.gnu.org/licenses/gpl.html>.
 
+## Gracias
+
+Para la estructura y el formato de este trabajo me he inspirado en los correspondientes TFGs de [@ranea](https://github.com/ranea/TFG/tree/master/memoria), [@agarciamontoro](https://github.com/agarciamontoro/TFG/tree/master/Documentation/Report) y [@analca3](https://github.com/analca3/TFG/tree/master/Memoria). Mil gracias por liberar vuestros trabajos <3
