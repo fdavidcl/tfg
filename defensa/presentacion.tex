@@ -1,0 +1,162 @@
+\documentclass[,ignorenonframetext,compress]{beamer}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+    \setmainfont[]{Fira Sans}
+\fi
+\usetheme[]{metropolis}
+\usecolortheme{metropolis}
+\usefonttheme{serif} % use mainfont rather than sansfont for slide text
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[shorthands=off,main=]{babel}
+\else
+  \usepackage{polyglossia}
+  \setmainlanguage[]{}
+\fi
+\newif\ifbibliography
+\hypersetup{
+            pdftitle={Reducción de la dimensionalidad en problemas de clasificación con Deep Learning},
+            pdfauthor={Francisco David Charte Luque},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight0.8\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+
+% Prevent slide breaks in the middle of a paragraph:
+\widowpenalties 1 10000
+\raggedbottom
+
+\AtBeginPart{
+  \let\insertpartnumber\relax
+  \let\partname\relax
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \let\insertsectionnumber\relax
+    \let\sectionname\relax
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \let\insertsubsectionnumber\relax
+  \let\subsectionname\relax
+  \frame{\subsectionpage}
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+\newcommand{\columnsbegin}{\begin{columns}}
+\newcommand{\columnsend}{\end{columns}}
+\definecolor{headbg}{RGB}{61, 96, 103}
+\definecolor{headfg}{RGB}{232, 239, 241}
+\definecolor{lightgrey}{RGB}{230, 230, 230}
+\setbeamercolor{headtitle}{fg=headfg,bg=headbg}
+\setbeamercolor{headnav}{fg=headfg,bg=headbg}
+\setbeamercolor{section in head/foot}{fg=headfg,bg=headbg}
+\defbeamertemplate*{headline}{miniframes theme no subsection}{ \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex, leftskip=.3cm,rightskip=.3cm plus1fil]{headtitle} {\usebeamerfont{title in head/foot}\insertshorttitle} \hfill \leavevmode{\usebeamerfont{author in head/foot}\insertshortauthor} \end{beamercolorbox} \begin{beamercolorbox}[colsep=1.5pt]{upper separation line head} \end{beamercolorbox} \begin{beamercolorbox}{headnav} \vskip2pt\textsc{\insertnavigation{\paperwidth}}\vskip2pt \end{beamercolorbox} \begin{beamercolorbox}[colsep=1.5pt]{lower separation line head} \end{beamercolorbox} }
+\makeatletter\renewcommand{\@metropolis@frametitlestrut}{ \vphantom{ÁÉÍÓÚABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz()1234567890} }\makeatother
+\defbeamertemplate*{footline}{miniframes theme no subsection}{}
+\beamertemplatenavigationsymbolsempty
+
+\title{Reducción de la dimensionalidad en problemas de clasificación con Deep
+Learning}
+\subtitle{Análisis y propuesta de herramienta en R}
+\author{Francisco David Charte Luque}
+\institute{Universidad de Granada}
+\date{Trabajo Fin de Grado}
+
+\begin{document}
+\frame{\titlepage}
+
+\section{Fundamentos matemáticos}\label{fundamentos-matemuxe1ticos}
+
+\subsection{Probabilidad y
+dimensionalidad}\label{probabilidad-y-dimensionalidad}
+
+\begin{frame}{Maldición de la dimensionalidad}
+
+x
+
+\end{frame}
+
+\section{Deep Learning}\label{deep-learning}
+
+\subsection{Aprendizaje automático}\label{aprendizaje-automuxe1tico}
+
+\begin{frame}{Gradiente descendente}
+
+\end{frame}
+
+\section{La herramienta Ruta}\label{la-herramienta-ruta}
+
+\subsection{El lenguaje R}\label{el-lenguaje-r}
+
+\begin{frame}{R}
+
+\end{frame}
+
+\begin{frame}{Referencias}
+
+\begin{thebibliography}{9}
+
+\bibitem{gelfand63}
+  Gelfand, I.M.; Minlos, R.A.; Shapiro, Z.Ya. (1963),
+  Representations of the Rotation and Lorentz Groups and their Applications,
+  New York: Pergamon Press.
+
+\bibitem{vince11}
+  Vince, John (2011),
+  Quaternions for Computer Graphics,
+  Springer-Verlag London.
+
+\bibitem{aluffi07}
+  Aluffi, Paolo (2007),
+  Algebra: Chapter 0,
+  Graduate Studies in Mathematics. American Mathematical Society
+
+\bibitem{unity}
+  Unity Game Engine,
+  Sitio Oficial,
+  https://unity3d.com
+
+\end{thebibliography}
+
+\end{frame}
+
+\end{document}
