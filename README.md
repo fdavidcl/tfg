@@ -1,7 +1,7 @@
 # tfg
 Reducción de la dimensionalidad en problemas de clasificación con Deep Learning: documentación y software asociado
 
-[DOI: 10.13140/RG.2.2.16155.57123](http://dx.doi.org/10.13140/RG.2.2.16155.57123)
+[DOI: 10.13140/RG.2.2.16155.57123/1](http://dx.doi.org/10.13140/RG.2.2.16155.57123/1)
 
 ## Directorios:
 
